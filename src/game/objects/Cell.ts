@@ -1,8 +1,9 @@
 import { LineBasicMaterial, Mesh, Vector2, Vector3 } from 'three';
+import { Wall } from './Wall';
 import { drawLine } from '../../utils/Level';
 
 //prettier-ignore
-type BinCode = 
+export type BinCode = 
  '1000'| '0100' | '0010' | '0001' 
 |'1100'| '0110' | '0011' | '1001'
 |'0101'| '1010' | '1111' | '0000'
@@ -31,5 +32,8 @@ export class Cell extends Mesh {
     for (let line of Object.keys(lines)) {
       this.add(lines[line]);
     }
+
+    const wall = new Wall(code, width, origin);
+    this.add(wall);
   }
 }

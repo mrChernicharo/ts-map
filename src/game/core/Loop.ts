@@ -20,16 +20,16 @@ class Loop {
   }
 
   setUp() {
-    const [cube, cube2] = [new Cube(-10, 4, 20), new Cube(3, 4, 50)];
-    this.add(cube);
-    this.add(cube2);
+    // const [cube, cube2] = [new Cube(-10, 4, 20), new Cube(3, 4, 50)];
+    // this.add(cube);
+    // this.add(cube2);
 
     const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelEnd)];
 
     this.add(startFlag);
     this.add(endFlag);
 
-    setInterval(() => this.add(new Enemy('sphere')), 2000);
+    setInterval(() => this.add(new Enemy('sphere')), 1000);
   }
 
   start() {

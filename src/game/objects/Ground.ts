@@ -9,7 +9,7 @@ import {
   BufferGeometry,
   Material,
 } from 'three';
-import { drawLine } from '../../utils/Level';
+import { drawLine, randomBin } from '../../utils/Level';
 import { Cell } from './Cell';
 
 export class Ground extends Mesh {
@@ -40,7 +40,7 @@ export class Ground extends Mesh {
 
     for (let j = this.edges.bottom; j < this.edges.top; j += tileSize) {
       for (let i = this.edges.left; i < this.edges.right; i += tileSize) {
-        const cell = new Cell('1111', tileSize, new Vector3(i, j));
+        const cell = new Cell(randomBin(), tileSize, new Vector3(i, j));
         cells.push(cell);
       }
     }

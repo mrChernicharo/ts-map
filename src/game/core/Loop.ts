@@ -3,6 +3,8 @@ import { Camera } from './Camera';
 import { Cube } from '../objects/Cube';
 import { Scene } from './Scene';
 import { Enemy } from '../objects/Enemy';
+import { levelEnd, levelStart } from '../../utils/Level';
+import { Flag } from '../objects/Flag';
 
 interface IUpdatable extends Mesh {
   tick: (delta: number) => void;
@@ -21,6 +23,11 @@ class Loop {
     const [cube, cube2] = [new Cube(-10, 4, 20), new Cube(3, 4, 50)];
     this.add(cube);
     this.add(cube2);
+
+    const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelEnd)];
+
+    this.add(startFlag);
+    this.add(endFlag);
 
     setInterval(() => this.add(new Enemy('sphere')), 2000);
   }

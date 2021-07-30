@@ -5,7 +5,8 @@ export class Enemy extends Mesh {
   type: string;
   hp: number;
   speed: number;
-
+  initialPos;
+  targetPos;
   constructor(type: string) {
     super();
     this.type = type;
@@ -16,8 +17,10 @@ export class Enemy extends Mesh {
     this.geometry = new SphereGeometry(5);
 
     new Mesh(this.geometry, this.material);
+    this.initialPos = levelStart.clone();
+    this.targetPos = levelEnd.clone();
 
-    this.position.set(levelStart.x, levelStart.y, levelStart.z);
+    this.position.set(this.initialPos.x, this.initialPos.y, this.initialPos.z);
   }
 
   tick(delta: number) {
@@ -25,9 +28,12 @@ export class Enemy extends Mesh {
   }
 
   calculateVelocity() {
-    let x = levelEnd.x - levelStart.x;
-    let y = levelEnd.y - levelStart.y;
-    let z = levelEnd.z - levelStart.z;
+    // const clone = levelStart.clone();
+    // const vel = clone.subVectors(levelEnd, levelStart);
+    // return new Vector3(vel.x, vel.y, vel.z).normalize();
+    let x = this.targetPos.x - this.initialPos.x;
+    let y = this.targetPos.y - this.initialPos.y;
+    let z = this.targetPos.z - this.initialPos.z;
     return new Vector3(x, y, z).normalize();
   }
 }

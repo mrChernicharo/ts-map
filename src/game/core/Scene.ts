@@ -7,6 +7,7 @@ import { Flag } from '../objects/Flag';
 import { Ground } from '../objects/Ground';
 import { Rulers } from '../objects/Rulers';
 import { Camera } from './Camera';
+import { AppGUI } from './AppGUI';
 import { Loop } from './Loop';
 
 class Scene extends THREEScene {
@@ -15,17 +16,18 @@ class Scene extends THREEScene {
   controls: OrbitControls;
   loop: Loop;
   lights: Light;
-
+  gui: AppGUI;
   constructor(private domContainer: HTMLDivElement) {
     super();
     new THREEScene();
+    this.gui = new AppGUI();
+    // this.fog = new Fog(0x565656, -1, 1200);
+    this.fog = new Fog(0x003300, -1, 1200);
+    this.background = new Color('black');
     this.init();
   }
 
   init() {
-    this.fog = new Fog(0x565656, -1, 1000);
-    this.background = new Color('black');
-
     this.loop = new Loop(this.camera, this, this.renderer);
 
     this.renderer = new WebGL1Renderer({ antialias: true });
@@ -40,20 +42,15 @@ class Scene extends THREEScene {
     this.lights = new DirectionalLight('white', 1.8);
     this.add(this.lights);
 
+    const rulers = new Rulers();
     const ground = new Ground(GROUND_WIDTH, GROUND_DEPTH);
     ground.makeGrid();
 
-    const [startFlag, endFlag] = [
-      new Flag(levelStart.x, levelStart.y, levelStart.z),
-      new Flag(levelEnd.x, levelEnd.y, levelEnd.z),
-    ];
-
-    const rulers = new Rulers();
-
-    this.add(ground, startFlag, endFlag, rulers);
+    this.add(ground, rulers);
 
     window.addEventListener('resize', () => {
       this.setSize(this.domContainer);
+
       // perform any custom actions
       this.onResize();
     });

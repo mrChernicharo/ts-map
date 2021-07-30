@@ -26,5 +26,7 @@ export class Rulers extends Mesh {
     for (let line of Object.keys(lines)) {
       this.add(lines[line]);
     }
+
+    this.position.set(GROUND_WIDTH / 2, 0, 0);
   }
 }

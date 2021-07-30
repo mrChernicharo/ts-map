@@ -1,10 +1,11 @@
 import { Scene as THREEScene, Color, Fog, WebGL1Renderer, Light, DirectionalLight } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { levelStart, levelEnd } from '../../utils/Level';
+import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH } from '../../utils/Level';
 import { Cube } from '../objects/Cube';
 import { Enemy } from '../objects/Enemy';
 import { Flag } from '../objects/Flag';
 import { Ground } from '../objects/Ground';
+import { Rulers } from '../objects/Rulers';
 import { Camera } from './Camera';
 import { Loop } from './Loop';
 
@@ -39,15 +40,17 @@ class Scene extends THREEScene {
     this.lights = new DirectionalLight('white', 1.8);
     this.add(this.lights);
 
-    const ground = new Ground(400, 400);
+    const ground = new Ground(GROUND_WIDTH, GROUND_DEPTH);
     ground.makeGrid();
 
-    const [start, end] = [
+    const [startFlag, endFlag] = [
       new Flag(levelStart.x, levelStart.y, levelStart.z),
       new Flag(levelEnd.x, levelEnd.y, levelEnd.z),
     ];
 
-    this.add(ground, start, end);
+    const rulers = new Rulers();
+
+    this.add(ground, startFlag, endFlag, rulers);
 
     window.addEventListener('resize', () => {
       this.setSize(this.domContainer);

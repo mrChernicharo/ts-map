@@ -10,6 +10,7 @@ import {
   Material,
 } from 'three';
 import { drawLine } from '../../utils/Level';
+import { Cell } from './Cell';
 
 export class Ground extends Mesh {
   edges;
@@ -35,20 +36,16 @@ export class Ground extends Mesh {
   makeGrid() {
     const tileSize = 20;
     const material = new LineBasicMaterial({ color: 'green' });
+    const cells = [];
 
-    for (let i = this.edges.left; i <= this.edges.right; i += tileSize) {
-      const pointA = new Vector3(i, this.edges.bottom, 0.05);
-      const pointB = new Vector3(i, this.edges.top, 0.05);
-
-      const line = drawLine(pointA, pointB, material);
-      this.add(line);
+    for (let j = this.edges.bottom; j < this.edges.top; j += tileSize) {
+      for (let i = this.edges.left; i < this.edges.right; i += tileSize) {
+        const cell = new Cell('1111', tileSize, new Vector3(i, j));
+        cells.push(cell);
+      }
     }
-    for (let j = this.edges.bottom; j <= this.edges.top; j += tileSize) {
-      const pointA = new Vector3(this.edges.left, j, 0.05);
-      const pointB = new Vector3(this.edges.right, j, 0.05);
 
-      const line = drawLine(pointA, pointB, material);
-      this.add(line);
-    }
+    console.log(cells);
+    cells.forEach(cell => this.add(cell));
   }
 }

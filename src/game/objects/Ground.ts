@@ -11,6 +11,7 @@ import {
 } from 'three';
 import { drawLine, tileSize, GROUND_DEPTH, GROUND_WIDTH, randomBin } from '../../utils/constants';
 import { Cell, INeighbors } from './Cell';
+import { Wall } from './Wall';
 
 export class Ground extends Mesh {
   edges;
@@ -62,7 +63,11 @@ export class Ground extends Mesh {
 
       const newCell = new Cell(i, cell.code, tileSize, cell.origin, neighbors);
 
+      const wall = new Wall(newCell);
+      newCell.add(wall);
       this.add(newCell);
     });
+
+    console.log(this);
   }
 }

@@ -14,11 +14,13 @@ export class Cell extends Mesh {
   width: number;
   origin: Vector3;
   coords: string;
+  neighbors: INeighbors;
   constructor(index: number, code: Bin, width: number, origin: Vector3, neighbors: INeighbors) {
     super();
     this.code = code;
     this.width = width;
     this.origin = origin;
+    this.neighbors = neighbors;
 
     const lineMaterial = new LineBasicMaterial({ color: 'green' });
 
@@ -39,7 +41,5 @@ export class Cell extends Mesh {
     for (let line of Object.keys(lines)) {
       this.add(lines[line]);
     }
-
-    // console.log(index, neighbors);
   }
 }

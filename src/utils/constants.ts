@@ -10,7 +10,7 @@ export type BinCode =
 export type Bin = '0' | '1';
 
 export const GROUND_WIDTH = 400;
-export const GROUND_DEPTH = 700;
+export const GROUND_DEPTH = 300;
 export const tileSize = 50;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, 10, GROUND_DEPTH / 2);

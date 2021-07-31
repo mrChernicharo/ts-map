@@ -99,7 +99,7 @@ class Scene extends THREEScene {
   }
 
   testObjects() {
-    new Polyhedron(this);
+    // new Polyhedron(this);
   }
 }
 export { Scene };

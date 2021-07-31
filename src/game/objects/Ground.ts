@@ -9,43 +9,60 @@ import {
   BufferGeometry,
   Material,
 } from 'three';
-import { drawLine, randomBin } from '../../utils/Level';
-import { Cell } from './Cell';
+import { drawLine, tileSize, GROUND_DEPTH, GROUND_WIDTH, randomBin } from '../../utils/constants';
+import { Cell, INeighbors } from './Cell';
 
 export class Ground extends Mesh {
   edges;
-  constructor(private width: number, private height: number) {
+  width;
+  depth;
+  constructor() {
     super();
+    this.width = GROUND_WIDTH;
+    this.depth = GROUND_DEPTH;
 
     this.edges = {
-      top: this.height / 2,
-      bottom: -this.height / 2,
+      top: this.depth / 2,
+      bottom: -this.depth / 2,
       left: -this.width / 2,
       right: this.width / 2,
     };
 
-    this.geometry = new PlaneGeometry(width, height);
+    this.geometry = new PlaneGeometry(this.width, this.depth);
     this.material = new MeshBasicMaterial({ color: '#242424', wireframe: false });
 
     new Mesh(this.geometry, this.material);
 
     this.rotation.x -= Math.PI / 2;
-    console.log(this.position);
   }
 
   makeGrid() {
-    const tileSize = 20;
     const material = new LineBasicMaterial({ color: 'green' });
-    const cells = [];
+    const cellsArr: Cell[] = [];
 
-    for (let j = this.edges.bottom; j < this.edges.top; j += tileSize) {
-      for (let i = this.edges.left; i < this.edges.right; i += tileSize) {
-        const cell = new Cell(randomBin(), tileSize, new Vector3(i, j));
-        cells.push(cell);
+    let [rows, cols] = [this.width / tileSize, this.depth / tileSize];
+
+    for (let j = 0; j < cols; j++) {
+      for (let i = 0; i < rows; i++) {
+        const currIdx = j * cols + i;
+        const origin = new Vector3(i * tileSize - this.width / 2, j * tileSize - this.depth / 2, 0);
+        const dummyCell = new Cell(currIdx, randomBin(), tileSize, origin, {} as INeighbors);
+
+        cellsArr.push(dummyCell);
       }
     }
 
-    console.log(cells);
-    cells.forEach(cell => this.add(cell));
+    cellsArr.forEach((cell, i, arr) => {
+      const neighbors: INeighbors = {
+        left: i % cols === 0 ? null : cellsArr[i - 1],
+        right: (i + 1) % cols === 0 ? null : cellsArr[i + 1],
+        top: i - cols < 0 ? null : cellsArr[i - cols],
+        bottom: i + cols + 1 > cols * rows ? null : cellsArr[i + cols],
+      };
+
+      const newCell = new Cell(i, cell.code, tileSize, cell.origin, neighbors);
+
+      this.add(newCell);
+    });
   }
 }

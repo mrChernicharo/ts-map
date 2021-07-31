@@ -1,13 +1,13 @@
 import { Scene as THREEScene, Color, Fog, WebGL1Renderer, Light, DirectionalLight } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH } from '../../utils/Level';
+import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH } from '../../utils/constants';
 import { Cube } from '../objects/Cube';
 import { Enemy } from '../objects/Enemy';
 import { Flag } from '../objects/Flag';
 import { Ground } from '../objects/Ground';
 import { Rulers } from '../objects/Rulers';
 import { Camera } from './Camera';
-import { AppGUI } from './AppGUI';
+import { GUI } from './GUI';
 import { Loop } from './Loop';
 
 class Scene extends THREEScene {
@@ -16,12 +16,11 @@ class Scene extends THREEScene {
   controls: OrbitControls;
   loop: Loop;
   lights: Light;
-  gui: AppGUI;
+  gui: GUI;
   constructor(private domContainer: HTMLDivElement) {
     super();
     new THREEScene();
-    this.gui = new AppGUI();
-    // this.fog = new Fog(0x565656, -1, 1200);
+    this.gui = new GUI();
     this.fog = new Fog(0x003300, -1, 1200);
     this.background = new Color('black');
     this.init();
@@ -43,7 +42,7 @@ class Scene extends THREEScene {
     this.add(this.lights);
 
     const rulers = new Rulers();
-    const ground = new Ground(GROUND_WIDTH, GROUND_DEPTH);
+    const ground = new Ground();
     ground.makeGrid();
 
     this.add(ground, rulers);

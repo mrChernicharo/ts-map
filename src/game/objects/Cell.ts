@@ -1,17 +1,24 @@
 import { LineBasicMaterial, Mesh, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
-import { drawLine } from '../../utils/Level';
+import { Bin, drawLine } from '../../utils/constants';
 
-//prettier-ignore
-export type BinCode = 
- '1000'| '0100' | '0010' | '0001' 
-|'1100'| '0110' | '0011' | '1001'
-|'0101'| '1010' | '1111' | '0000'
-|'1011'| '1101' | '1110' | '0111'
+export interface INeighbors {
+  top: Cell | undefined;
+  right: Cell | undefined;
+  bottom: Cell | undefined;
+  left: Cell | undefined;
+}
 
 export class Cell extends Mesh {
-  constructor(code: BinCode, width: number, origin: Vector3) {
+  code: Bin;
+  width: number;
+  origin: Vector3;
+  coords: string;
+  constructor(index: number, code: Bin, width: number, origin: Vector3, neighbors: INeighbors) {
     super();
+    this.code = code;
+    this.width = width;
+    this.origin = origin;
 
     const lineMaterial = new LineBasicMaterial({ color: 'green' });
 
@@ -33,7 +40,6 @@ export class Cell extends Mesh {
       this.add(lines[line]);
     }
 
-    const wall = new Wall(code, width, origin);
-    this.add(wall);
+    console.log(index, neighbors);
   }
 }

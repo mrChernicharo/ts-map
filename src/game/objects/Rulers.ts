@@ -1,5 +1,5 @@
 import { LineBasicMaterial, Mesh, Vector3 } from 'three';
-import { drawLine, GROUND_WIDTH, GROUND_DEPTH } from '../../utils/Level';
+import { drawLine, GROUND_WIDTH, GROUND_DEPTH } from '../../utils/constants';
 
 export class Rulers extends Mesh {
   constructor() {

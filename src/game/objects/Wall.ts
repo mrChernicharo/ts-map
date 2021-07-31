@@ -12,7 +12,7 @@ export class Wall extends Mesh {
 
     new Mesh(this.geometry, this.material);
 
-    // console.log(cell.index);
+    console.log(cell);
 
     // this.position.set(origin.x + width / 2, origin.y + width / 2, origin.z + width / 2);
     // this.translateX(width / 2);

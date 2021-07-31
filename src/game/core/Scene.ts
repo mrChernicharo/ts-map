@@ -9,6 +9,10 @@ import {
   TextGeometry,
   MeshBasicMaterial,
   Mesh,
+  PolyhedronGeometry,
+  MeshLambertMaterial,
+  MeshToonMaterial,
+  MeshPhongMaterial,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
@@ -20,7 +24,9 @@ import { Rulers } from '../objects/Rulers';
 import { Camera } from './Camera';
 import { GUI } from './GUI';
 import { Loop } from './Loop';
+import { Polyhedron } from '../objects/Meshes';
 
+// class WorldScene
 class Scene extends THREEScene {
   renderer: WebGL1Renderer;
   camera: Camera;
@@ -38,6 +44,22 @@ class Scene extends THREEScene {
   }
 
   init() {
+    this.initCore();
+
+    const rulers = new Rulers();
+    const ground = new Ground();
+    ground.makeGrid();
+
+    this.add(ground, rulers);
+
+    this.testObjects();
+
+    this.setEvents();
+
+    return this;
+  }
+
+  initCore() {
     this.loop = new Loop(this.camera, this, this.renderer);
 
     this.renderer = new WebGL1Renderer({ antialias: true });
@@ -51,23 +73,15 @@ class Scene extends THREEScene {
 
     this.lights = new DirectionalLight('white', 1.8);
     this.add(this.lights);
+  }
 
-    const rulers = new Rulers();
-    const ground = new Ground();
-    ground.makeGrid();
-
-    this.add(ground, rulers);
-
-    this.testObjects();
-
+  setEvents() {
     window.addEventListener('resize', () => {
       this.setSize(this.domContainer);
 
       // perform any custom actions
       this.onResize();
     });
-
-    return this;
   }
 
   setSize(container: Element) {
@@ -85,26 +99,7 @@ class Scene extends THREEScene {
   }
 
   testObjects() {
-    // const loader = new FontLoader();
-    // let fontMesh: Mesh;
-    // loader.load('assets/fonts/helvetiker_regular.typeface.json', font => {
-    //   const geometry = new TextGeometry('X', {
-    //     font: font,
-    //     size: 10,
-    //     height: 5,
-    //     curveSegments: 12,
-    //     bevelEnabled: true,
-    //     bevelThickness: 1,
-    //     bevelSize: 1,
-    //     bevelOffset: 0,
-    //     bevelSegments: 5,
-    //   });
-    //   const material = new MeshBasicMaterial({ color: 0xffffff });
-    //   fontMesh = new Mesh(geometry, material);
-    //   fontMesh.position.set(GROUND_WIDTH / 2 - tileSize, 0, GROUND_DEPTH / 2 + tileSize * 0.5);
-    //   // fontMesh.rotateX(-Math.PI / 2);
-    //   this.add(fontMesh);
-    // });
+    new Polyhedron(this);
   }
 }
 export { Scene };

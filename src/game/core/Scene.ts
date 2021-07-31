@@ -1,6 +1,17 @@
-import { Scene as THREEScene, Color, Fog, WebGL1Renderer, Light, DirectionalLight } from 'three';
+import {
+  Scene as THREEScene,
+  Color,
+  Fog,
+  WebGL1Renderer,
+  Light,
+  DirectionalLight,
+  FontLoader,
+  TextGeometry,
+  MeshBasicMaterial,
+  Mesh,
+} from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH } from '../../utils/constants';
+import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
 import { Cube } from '../objects/Cube';
 import { Enemy } from '../objects/Enemy';
 import { Flag } from '../objects/Flag';
@@ -21,8 +32,8 @@ class Scene extends THREEScene {
     super();
     new THREEScene();
     this.gui = new GUI();
-    this.fog = new Fog(0x003300, -1, 1200);
-    this.background = new Color('black');
+    this.fog = new Fog(0x003300, -1, 2000);
+    this.background = new Color(0x00000);
     this.init();
   }
 
@@ -47,6 +58,8 @@ class Scene extends THREEScene {
 
     this.add(ground, rulers);
 
+    this.testObjects();
+
     window.addEventListener('resize', () => {
       this.setSize(this.domContainer);
 
@@ -68,7 +81,30 @@ class Scene extends THREEScene {
   }
 
   onResize() {
-    console.log('resizing');
+    // console.log('resizing');
+  }
+
+  testObjects() {
+    // const loader = new FontLoader();
+    // let fontMesh: Mesh;
+    // loader.load('assets/fonts/helvetiker_regular.typeface.json', font => {
+    //   const geometry = new TextGeometry('X', {
+    //     font: font,
+    //     size: 10,
+    //     height: 5,
+    //     curveSegments: 12,
+    //     bevelEnabled: true,
+    //     bevelThickness: 1,
+    //     bevelSize: 1,
+    //     bevelOffset: 0,
+    //     bevelSegments: 5,
+    //   });
+    //   const material = new MeshBasicMaterial({ color: 0xffffff });
+    //   fontMesh = new Mesh(geometry, material);
+    //   fontMesh.position.set(GROUND_WIDTH / 2 - tileSize, 0, GROUND_DEPTH / 2 + tileSize * 0.5);
+    //   // fontMesh.rotateX(-Math.PI / 2);
+    //   this.add(fontMesh);
+    // });
   }
 }
 export { Scene };

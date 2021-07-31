@@ -40,6 +40,6 @@ export class Cell extends Mesh {
       this.add(lines[line]);
     }
 
-    console.log(index, neighbors);
+    // console.log(index, neighbors);
   }
 }

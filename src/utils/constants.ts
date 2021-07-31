@@ -9,17 +9,12 @@ export type BinCode =
 
 export type Bin = '0' | '1';
 
-export const GROUND_WIDTH = 100;
-export const GROUND_DEPTH = 200;
-export const tileSize = 10;
+export const GROUND_WIDTH = 400;
+export const GROUND_DEPTH = 700;
+export const tileSize = 50;
 
-export let levelStart = new Vector3(-GROUND_WIDTH / 2, 10, GROUND_DEPTH / 2);
-export let levelEnd = new Vector3(GROUND_WIDTH / 2, 10, -GROUND_DEPTH / 2);
-
-export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) => {
-  const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
-  return new Line(geometry, material);
-};
+export const levelStart = new Vector3(-GROUND_WIDTH / 2, 10, GROUND_DEPTH / 2);
+export const levelEnd = new Vector3(GROUND_WIDTH / 2, 10, -GROUND_DEPTH / 2);
 
 // prettier-ignore
 export const binCodes: BinCode[] = [
@@ -28,6 +23,11 @@ export const binCodes: BinCode[] = [
   '0101','1010','1111','0000',
   '1011','1101','1110','0111',
 ];
+
+export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) => {
+  const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
+  return new Line(geometry, material);
+};
 
 export const binOptions: Bin[] = ['0', '1'];
 

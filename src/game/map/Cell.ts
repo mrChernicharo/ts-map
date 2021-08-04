@@ -1,6 +1,13 @@
-import { LineBasicMaterial, Mesh, Vector2, Vector3 } from 'three';
+import { CircleGeometry, LineBasicMaterial, Mesh, MeshToonMaterial, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
 import { Bin, BinCode, drawLine, tileSize, ZERO } from '../../utils/constants';
+
+const points = {
+  a: new Vector3(0, 2, 0),
+  b: new Vector3(tileSize, 2, 0),
+  c: new Vector3(tileSize, 2, tileSize),
+  d: new Vector3(0, 2, tileSize),
+};
 
 export interface INeighbors {
   top: Cell | undefined;
@@ -10,23 +17,23 @@ export interface INeighbors {
 }
 
 export class Cell extends Mesh {
+  index: number;
   binCode: BinCode;
   origin: Vector3;
   coords: string;
   constructor(index: number, binCode: BinCode, origin: Vector3) {
     super();
+    this.index = index;
     this.binCode = binCode;
     this.origin = origin;
+    this.position.set(origin.x, origin.y, origin.z);
 
-    const width = tileSize;
+    this.drawLines();
+    this.appendEdgeCircle();
+  }
+
+  drawLines() {
     const lineMaterial = new LineBasicMaterial({ color: 'green' });
-
-    const points = {
-      a: new Vector3(origin.x, origin.y + 2, origin.z),
-      b: new Vector3(origin.x + width, origin.y + 2, origin.z),
-      c: new Vector3(origin.x + width, origin.y + 2, origin.z + width),
-      d: new Vector3(origin.x, origin.y + 2, origin.z + width),
-    };
 
     const lines = {
       ab: drawLine(points.a, points.b, lineMaterial),
@@ -35,10 +42,27 @@ export class Cell extends Mesh {
       da: drawLine(points.d, points.a, lineMaterial),
     };
 
-    for (let line of Object.keys(lines)) {
+    for (let line of ['ab', 'bc', 'cd', 'da']) {
+      lines[line].name = `${line}-line-${this.index}`;
       this.add(lines[line]);
     }
+  }
 
-    // console.log(index, neighbors);
+  appendEdgeCircle() {
+    Object.entries(points).forEach(([key, point], i) => {
+      const color = this.binCode.slice(i, 1) === '0' ? 0xffffff : 0xff0000;
+
+      const circleGeomety = new CircleGeometry(4);
+      const circleMaterial = new MeshToonMaterial({ color });
+
+      const circle = new Mesh(circleGeomety, circleMaterial);
+      circle.name = `${key}-circle-${this.index}`;
+
+      circle.position.set(point.x, point.y + 1, point.z);
+
+      circle.rotateX(-Math.PI / 2);
+
+      this.add(circle);
+    });
   }
 }

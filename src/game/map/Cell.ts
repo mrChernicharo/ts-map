@@ -20,7 +20,6 @@ export class Cell extends Mesh {
   index: number;
   binCode: BinCode;
   origin: Vector3;
-  coords: string;
   constructor(index: number, binCode: BinCode, origin: Vector3) {
     super();
     this.index = index;
@@ -30,6 +29,7 @@ export class Cell extends Mesh {
 
     this.drawLines();
     this.appendEdgeCircle();
+    this.buildWall();
   }
 
   drawLines() {
@@ -49,8 +49,9 @@ export class Cell extends Mesh {
   }
 
   appendEdgeCircle() {
+    // console.log(Object.entries(points));
     Object.entries(points).forEach(([key, point], i) => {
-      const color = this.binCode.slice(i, 1) === '0' ? 0xffffff : 0xff0000;
+      const color = this.binCode.slice(i, i + 1) === '1' ? 0xff0000 : 0xffffff;
 
       const circleGeomety = new CircleGeometry(4);
       const circleMaterial = new MeshToonMaterial({ color });
@@ -59,10 +60,22 @@ export class Cell extends Mesh {
       circle.name = `${key}-circle-${this.index}`;
 
       circle.position.set(point.x, point.y + 1, point.z);
-
       circle.rotateX(-Math.PI / 2);
 
       this.add(circle);
     });
+  }
+
+  buildWall() {
+    const wall = new Wall(this.binCode);
+    wall.name = `${this.index}-Wall`;
+    // console.log(wall.name);
+
+    // const equidistantPoint = points.a.distanceTo(points.c) / 2;
+    // console.log(equidistantPoint);
+
+    // wall.position.set()
+
+    this.add(wall);
   }
 }

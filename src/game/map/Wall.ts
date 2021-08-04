@@ -1,36 +1,107 @@
-import { Mesh, MeshToonMaterial, Shape, ExtrudeGeometry, BoxGeometry, Vector3 } from 'three';
-import { BinCode } from '../../utils/constants';
+import { Mesh, MeshToonMaterial, Shape, ExtrudeGeometry, BoxGeometry, Vector3, Vector2 } from 'three';
+import { Bin, BinCode, tileSize } from '../../utils/constants';
 import { Cell } from './Cell';
 
 export class Wall extends Mesh {
   material: MeshToonMaterial;
-  constructor(cell: Cell) {
+  binCode: BinCode;
+  constructor(binCode: BinCode) {
     super();
+    this.binCode = binCode;
 
     this.material = new MeshToonMaterial({ color: 0x9a9a9a });
-    // this.geometry = this.getGeometry(code);
+    this.geometry = this.getGeometry();
 
     new Mesh(this.geometry, this.material);
 
-    console.log(cell);
+    this.rotateX(Math.PI / 2);
+    this.position.y += tileSize / 2;
+  }
+
+  getGeometry() {
+    let wallGeometry;
+    let shape = new Shape();
+    let optionalShape = new Shape();
+    const [side, halfSide] = [tileSize, tileSize / 2];
+
+    const extrudeSettings = {
+      steps: 2,
+      depth: tileSize / 2,
+      bevelEnabled: false,
+      // bevelThickness: 1,
+      // bevelSize: 1,
+      // bevelOffset: 0,
+      // bevelSegments: 1,
+    };
+
+    switch (this.binCode) {
+      case '0000':
+        break;
+      case '1000':
+        shape.lineTo(halfSide, 0).lineTo(0, halfSide).closePath();
+        break;
+      case '0100':
+        shape.moveTo(halfSide, 0).lineTo(side, 0).lineTo(side, halfSide).closePath();
+        break;
+      case '0010':
+        shape.moveTo(halfSide, side).lineTo(side, side).lineTo(side, halfSide).closePath();
+        break;
+      case '0001':
+        shape.moveTo(0, side).lineTo(0, halfSide).lineTo(halfSide, side).closePath();
+        break;
+      case '1100':
+        shape.lineTo(side, 0).lineTo(side, halfSide).lineTo(0, halfSide).closePath();
+        break;
+      case '0110':
+        shape.moveTo(halfSide, 0).lineTo(side, 0).lineTo(side, side).lineTo(halfSide, side).closePath();
+        break;
+      case '0011':
+        shape.moveTo(0, side).lineTo(0, halfSide).lineTo(side, halfSide).lineTo(side, side).closePath();
+        break;
+      case '1001':
+        shape.lineTo(halfSide, 0).lineTo(halfSide, side).lineTo(0, side).closePath();
+        break;
+      case '1010':
+        shape.lineTo(halfSide, 0).lineTo(0, halfSide).lineTo(0, 0);
+        optionalShape.moveTo(side, side).lineTo(halfSide, side).lineTo(side, halfSide).lineTo(side, side);
+        break;
+      case '0101':
+        shape.moveTo(halfSide, 0).lineTo(side, 0).lineTo(side, halfSide).closePath();
+        optionalShape.moveTo(0, side).lineTo(0, halfSide).lineTo(halfSide, side).closePath();
+        break;
+      case '0111':
+        shape
+          .moveTo(halfSide, 0)
+          .lineTo(side, 0)
+          .lineTo(side, side)
+          .lineTo(0, side)
+          .lineTo(0, halfSide)
+          .closePath();
+        break;
+      case '1011':
+        shape.lineTo(halfSide, 0).lineTo(side, halfSide).lineTo(side, side).lineTo(0, side).closePath();
+        break;
+      case '1101':
+        console.log(1101);
+        shape.lineTo(side, 0).lineTo(side, halfSide).lineTo(halfSide, side).lineTo(0, side).closePath();
+        break;
+      case '1110':
+        shape
+          .lineTo(tileSize, 0)
+          .lineTo(tileSize, tileSize)
+          .lineTo(halfSide, side)
+          .lineTo(0, halfSide)
+          .closePath();
+        break;
+      case '1111':
+        shape.lineTo(tileSize, 0).lineTo(tileSize, tileSize).lineTo(0, tileSize).closePath();
+        break;
+
+      default:
+        break;
+    }
+    wallGeometry = new ExtrudeGeometry([shape, optionalShape], extrudeSettings);
+
+    return wallGeometry;
   }
 }
-
-// const shape = new THREE.Shape();
-// shape.moveTo( 0,0 );
-// shape.lineTo( 0, width );
-// shape.lineTo( length, width );
-// shape.lineTo( length, 0 );
-// shape.lineTo( 0, 0 );
-
-// const extrudeSettings = {
-// 	steps: 2,
-// 	depth: 16,
-// 	bevelEnabled: true,
-// 	bevelThickness: 1,
-// 	bevelSize: 1,
-// 	bevelOffset: 0,
-// 	bevelSegments: 1
-// };
-
-// const geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );

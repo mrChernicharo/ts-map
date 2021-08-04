@@ -49,10 +49,11 @@ export class Ground extends Mesh {
 
     this.geometry = new BoxGeometry(GROUND_WIDTH, 4, GROUND_DEPTH);
     this.material = new MeshBasicMaterial({ color: '#242424', wireframe: false });
+    this.name = 'Ground';
 
     this.fillPseudoCellsArr();
     this.createGrid();
-    console.log({ rows: this.rows, cols: this.cols, cells: this.pseudoCells, c: this });
+    // console.log({ rows: this.rows, cols: this.cols, cells: this.pseudoCells, c: this });
   }
 
   fillPseudoCellsArr() {
@@ -86,12 +87,12 @@ export class Ground extends Mesh {
       const originY = item.row * tileSize - GROUND_DEPTH / 2;
 
       const origin = new Vector3(originX, 0, originY);
-      console.log({
-        binCode,
-        originX,
-        originY,
-        col: item.col,
-      });
+      // console.log({
+      //   binCode,
+      //   originX,
+      //   originY,
+      //   col: item.col,
+      // });
       const cell = new Cell(item.index, binCode, origin);
       cell.name = `cell-${item.index}`;
       this.add(cell);

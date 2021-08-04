@@ -1,6 +1,6 @@
 import { LineBasicMaterial, Mesh, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
-import { Bin, drawLine } from '../../utils/constants';
+import { Bin, BinCode, drawLine, tileSize, ZERO } from '../../utils/constants';
 
 export interface INeighbors {
   top: Cell | undefined;
@@ -10,23 +10,22 @@ export interface INeighbors {
 }
 
 export class Cell extends Mesh {
-  code: Bin;
-  width: number;
+  binCode: BinCode;
   origin: Vector3;
   coords: string;
-  constructor(index: number, code: Bin, width: number, origin: Vector3, neighbors: INeighbors) {
+  constructor(index: number, binCode: BinCode, origin: Vector3) {
     super();
-    this.code = code;
-    this.width = width;
+    this.binCode = binCode;
     this.origin = origin;
 
+    const width = tileSize;
     const lineMaterial = new LineBasicMaterial({ color: 'green' });
 
     const points = {
-      a: origin,
-      b: new Vector3(origin.x + width, origin.y, 0),
-      c: new Vector3(origin.x + width, origin.y + width, 0),
-      d: new Vector3(origin.x, origin.y + width, 0),
+      a: new Vector3(origin.x, origin.y + 2, origin.z),
+      b: new Vector3(origin.x + width, origin.y + 2, origin.z),
+      c: new Vector3(origin.x + width, origin.y + 2, origin.z + width),
+      d: new Vector3(origin.x, origin.y + 2, origin.z + width),
     };
 
     const lines = {

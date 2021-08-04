@@ -9,9 +9,10 @@ export type BinCode =
 
 export type Bin = '0' | '1';
 
-export const GROUND_WIDTH = 400;
-export const GROUND_DEPTH = 700;
+export const GROUND_WIDTH = 200;
+export const GROUND_DEPTH = 200;
 export const tileSize = 50;
+export const ZERO = 0;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, 10, GROUND_DEPTH / 2);
 export const levelEnd = new Vector3(GROUND_WIDTH / 2, 10, -GROUND_DEPTH / 2);
@@ -34,3 +35,11 @@ export const binOptions: Bin[] = ['0', '1'];
 export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
 export const randomBin = () => binOptions[Math.round(Math.random())];
+
+export function* idGenerator() {
+  let id = 0;
+  while (true) {
+    yield id;
+    id++;
+  }
+}

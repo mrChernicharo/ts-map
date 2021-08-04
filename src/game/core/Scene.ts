@@ -13,18 +13,21 @@ import {
   MeshLambertMaterial,
   MeshToonMaterial,
   MeshPhongMaterial,
+  Vector2,
+  Vector3,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
 import { Cube } from '../objects/Cube';
 import { Enemy } from '../objects/Enemy';
 import { Flag } from '../objects/Flag';
-import { Ground } from '../objects/Ground';
+import { Ground } from '../map/Ground';
 import { Rulers } from '../objects/Rulers';
 import { Camera } from './Camera';
 import { GUI } from './GUI';
 import { Loop } from './Loop';
 import { Polyhedron } from '../objects/Meshes';
+import { createAxesHelper, createGridHelper } from '../../utils/helpers';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -46,13 +49,9 @@ class Scene extends THREEScene {
   init() {
     this.initCore();
 
-    const rulers = new Rulers();
-    const ground = new Ground();
-    ground.makeGrid();
+    // this.add(ground);
 
-    this.add(ground, rulers);
-
-    this.testObjects();
+    this.addObjects();
 
     this.setEvents();
 
@@ -72,7 +71,16 @@ class Scene extends THREEScene {
     this.controls.maxPolarAngle = Math.PI / 2;
 
     this.lights = new DirectionalLight('white', 1.8);
-    this.add(this.lights);
+  }
+
+  addObjects() {
+    // adding test objects
+    // new Polyhedron(this);
+    // this.add(ground, rulers, this.lights, createAxesHelper(), createGridHelper());
+
+    const rulers = new Rulers();
+    const ground = new Ground();
+    this.add(ground, rulers, this.lights);
   }
 
   setEvents() {
@@ -96,10 +104,6 @@ class Scene extends THREEScene {
 
   onResize() {
     // console.log('resizing');
-  }
-
-  testObjects() {
-    new Polyhedron(this);
   }
 }
 export { Scene };

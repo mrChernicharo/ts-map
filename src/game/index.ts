@@ -8,12 +8,12 @@ export class Game {
   loop: Loop;
 
   constructor(domContainer: HTMLDivElement) {
-    this.scene = new Scene(domContainer).init();
+    this.scene = new Scene(domContainer);
     this.loop = new Loop(this.scene.camera, this.scene, this.scene.renderer);
 
     domContainer.append(this.scene.renderer.domElement);
     this.scene.setSize(domContainer);
-    this.loop.setUp();
+    // this.loop.setUp();
   }
 
   start() {

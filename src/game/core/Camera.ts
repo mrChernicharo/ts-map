@@ -12,7 +12,7 @@ export class Camera extends PerspectiveCamera {
     this.far = 5000; // far clipping plane
 
     // this.position.set(400, 60, -480);
-    this.position.set(240, 200, 600);
+    this.position.set(0, 600, 600);
 
     this.lookAt(0, 0, 0);
   }

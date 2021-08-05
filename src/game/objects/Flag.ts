@@ -1,13 +1,14 @@
 import { BoxBufferGeometry, Mesh, MeshToonMaterial, BoxGeometry, Vector3 } from 'three';
 
 let i = -1;
-const flagColors = ['yellow', 'red'];
+const flagColors = [0xffff00, 0xff0000];
 
 export class Flag extends Mesh {
   constructor(private pos: Vector3) {
     super();
 
-    this.material = new MeshToonMaterial({ color: 'blue' });
+    // pole
+    this.material = new MeshToonMaterial({ color: 0xa9a9a9 });
     this.geometry = new BoxBufferGeometry(1, 40, 1);
 
     new Mesh(this.geometry, this.material);

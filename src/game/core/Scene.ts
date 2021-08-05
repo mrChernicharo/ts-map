@@ -30,6 +30,8 @@ import { Polyhedron } from '../objects/Meshes';
 import { createAxesHelper, createGridHelper } from '../../utils/helpers';
 import { InputManager } from './InputManager';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
+import { Raycaster } from './Raycaster';
+// import pathfinding from 'three-pathfinding';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -41,6 +43,7 @@ class Scene extends THREEScene {
   lights: Light;
   gui: GUI;
   inputManager: InputManager;
+  raycaster: Raycaster;
   constructor(private domContainer: HTMLDivElement) {
     super();
     new THREEScene();
@@ -65,12 +68,14 @@ class Scene extends THREEScene {
   initCore() {
     this.loop = new Loop(this.camera, this, this.renderer);
 
-    this.inputManager = new InputManager();
-
     this.renderer = new WebGL1Renderer({ antialias: true });
     this.renderer.physicallyCorrectLights = true;
 
     this.camera = new Camera();
+
+    this.inputManager = new InputManager();
+
+    this.raycaster = new Raycaster(this.camera, this);
 
     this.orbitControls = new OrbitControls(this.camera, this.domContainer);
     this.orbitControls.enableDamping = true;
@@ -104,6 +109,8 @@ class Scene extends THREEScene {
     window.addEventListener('mousedown', this.inputManager.handleMouseDown);
     window.addEventListener('mouseup', this.inputManager.handleMouseUp);
     window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
+
+    window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
 
     // document.addEventListener('click', () => {
     //   this.PointerLockControls.lock();

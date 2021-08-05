@@ -13,6 +13,7 @@
     "vite": "^2.4.3"
   },
   "dependencies": {
-    "three": "^0.130.1"
+    "three": "^0.130.1",
+    "three-pathfinding": "^0.14.1"
   }
 }

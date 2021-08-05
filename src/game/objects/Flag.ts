@@ -24,7 +24,7 @@ export class Flag extends Mesh {
   }
 
   tick(delta: number) {
-    // this.position.set(this.pos.x, this.pos.y + 10, this.pos.z);
+    this.position.set(this.pos.x, this.pos.y + 10, this.pos.z);
   }
 
   colorFlag() {

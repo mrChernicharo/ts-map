@@ -9,8 +9,8 @@ export type BinCode =
 
 export type Bin = '0' | '1';
 
-export const GROUND_WIDTH = 200;
-export const GROUND_DEPTH = 200;
+export const GROUND_WIDTH = 500;
+export const GROUND_DEPTH = 500;
 export const tileSize = 50;
 export const ZERO = 0;
 

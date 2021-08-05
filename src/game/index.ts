@@ -1,7 +1,7 @@
 import { Scene } from './core/Scene';
 import { Cube } from './objects/Cube';
 import { Loop } from './core/Loop';
-import { Enemy } from './objects/Enemy';
+import { Ball } from './objects/Ball';
 
 export class Game {
   scene: Scene;
@@ -13,7 +13,7 @@ export class Game {
 
     domContainer.append(this.scene.renderer.domElement);
     this.scene.setSize(domContainer);
-    // this.loop.setUp();
+    this.loop.setUp();
   }
 
   start() {

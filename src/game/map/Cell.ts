@@ -69,6 +69,7 @@ export class Cell extends Mesh {
   buildWall() {
     const wall = new Wall(this.binCode);
     wall.name = `${this.index}-Wall`;
+
     // console.log(wall.name);
 
     // const equidistantPoint = points.a.distanceTo(points.c) / 2;

@@ -38,7 +38,12 @@ export class Wall extends Mesh {
       case '0000':
         break;
       case '1000':
-        shape.lineTo(halfSide, 0).lineTo(0, halfSide).closePath();
+        // shape.lineTo(halfSide, 0).lineTo(0, halfSide).closePath();
+        shape
+          .lineTo(halfSide, 0)
+          .lineTo(halfSide / 2, halfSide / 2)
+          .lineTo(0, halfSide)
+          .closePath();
         break;
       case '0100':
         shape.moveTo(halfSide, 0).lineTo(side, 0).lineTo(side, halfSide).closePath();

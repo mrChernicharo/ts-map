@@ -19,7 +19,7 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
 import { Cube } from '../objects/Cube';
-import { Enemy } from '../objects/Enemy';
+import { Ball } from '../objects/Ball';
 import { Flag } from '../objects/Flag';
 import { Ground } from '../map/Ground';
 import { Rulers } from '../objects/Rulers';
@@ -28,20 +28,24 @@ import { GUI } from './GUI';
 import { Loop } from './Loop';
 import { Polyhedron } from '../objects/Meshes';
 import { createAxesHelper, createGridHelper } from '../../utils/helpers';
+import { InputManager } from './InputManager';
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 
 // class WorldScene
 class Scene extends THREEScene {
   renderer: WebGL1Renderer;
   camera: Camera;
-  controls: OrbitControls;
+  orbitControls: OrbitControls;
+  PointerLockControls: PointerLockControls;
   loop: Loop;
   lights: Light;
   gui: GUI;
+  inputManager: InputManager;
   constructor(private domContainer: HTMLDivElement) {
     super();
     new THREEScene();
     this.gui = new GUI();
-    this.fog = new Fog(0x003300, -1, 2000);
+    this.fog = new Fog(0x003300, -1, 5000);
     this.background = new Color(0x00000);
     this.init();
   }
@@ -61,14 +65,18 @@ class Scene extends THREEScene {
   initCore() {
     this.loop = new Loop(this.camera, this, this.renderer);
 
+    this.inputManager = new InputManager();
+
     this.renderer = new WebGL1Renderer({ antialias: true });
     this.renderer.physicallyCorrectLights = true;
 
     this.camera = new Camera();
 
-    this.controls = new OrbitControls(this.camera, this.domContainer);
-    this.controls.enableDamping = true;
-    this.controls.maxPolarAngle = Math.PI / 2;
+    this.orbitControls = new OrbitControls(this.camera, this.domContainer);
+    this.orbitControls.enableDamping = true;
+    this.orbitControls.maxPolarAngle = Math.PI / 2;
+
+    // this.PointerLockControls = new PointerLockControls(this.camera, this.domContainer);
 
     this.lights = new DirectionalLight('white', 1.8);
   }
@@ -90,6 +98,16 @@ class Scene extends THREEScene {
       // perform any custom actions
       this.onResize();
     });
+
+    window.addEventListener('keydown', this.inputManager.handleKeyDown);
+    window.addEventListener('keyup', this.inputManager.handleKeyUp);
+    window.addEventListener('mousedown', this.inputManager.handleMouseDown);
+    window.addEventListener('mouseup', this.inputManager.handleMouseUp);
+    window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
+
+    // document.addEventListener('click', () => {
+    //   this.PointerLockControls.lock();
+    // });
   }
 
   setSize(container: Element) {

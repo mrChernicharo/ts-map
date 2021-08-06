@@ -87,7 +87,6 @@ export class Wall extends Mesh {
         shape.lineTo(halfSide, 0).lineTo(side, halfSide).lineTo(side, side).lineTo(0, side).closePath();
         break;
       case '1101':
-        console.log(1101);
         shape.lineTo(side, 0).lineTo(side, halfSide).lineTo(halfSide, side).lineTo(0, side).closePath();
         break;
       case '1110':

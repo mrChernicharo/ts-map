@@ -66,7 +66,7 @@ export class Raycaster extends THREERaycaster {
       }
 
       if (mesh.name.includes('circle')) {
-        mesh.material = new MeshToonMaterial({ color: 0xffffff });
+        mesh.material = new MeshToonMaterial({ color: (mesh as any).hasWall ? 0x000000 : 0xffffff });
       }
 
       if (mesh.name === 'Ball') {

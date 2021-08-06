@@ -9,11 +9,11 @@ const points = {
   d: new Vector3(0, 2, tileSize),
 };
 
-export interface INeighbors {
-  top: Cell | undefined;
-  right: Cell | undefined;
-  bottom: Cell | undefined;
-  left: Cell | undefined;
+export interface CellEdges {
+  a: Bin;
+  b: Bin;
+  c: Bin;
+  d: Bin;
 }
 
 export class Cell extends Mesh {
@@ -22,6 +22,7 @@ export class Cell extends Mesh {
   origin: Vector3;
   row: number;
   col: number;
+  edges: CellEdges;
   constructor(index: number, row: number, col: number, binCode: BinCode, origin: Vector3) {
     super();
     this.index = index;
@@ -53,15 +54,35 @@ export class Cell extends Mesh {
   }
 
   appendEdgeCircle() {
-    Object.entries(points).forEach(([key, point], i) => {
-      const hasWall = this.binCode.slice(i, i + 1) === '1';
-      const color = hasWall ? 0xff0000 : 0xffffff;
+    let dotPoints: { [key: string]: Vector3 };
+    let binItems: string;
+
+    if (this.row === 0 && this.col === 0) {
+      dotPoints = { ...points };
+      binItems = this.binCode;
+      //
+    } else if (this.row === 0) {
+      dotPoints = { b: points.b, c: points.c };
+      binItems = this.binCode.substr(1, 2);
+      //
+    } else if ((this.row > 0, this.col === 0)) {
+      dotPoints = { c: points.c, d: points.d };
+      binItems = this.binCode.substr(2, 2);
+      //
+    } else {
+      dotPoints = { c: points.c };
+      binItems = this.binCode.substr(2, 1);
+    }
+
+    Object.entries(dotPoints).forEach(([key, point], i) => {
+      const hasWall = binItems[i] === '1';
+      const color = hasWall ? 0x000000 : 0xffffff;
 
       const circleGeomety = new CircleGeometry(4);
       const circleMaterial = new MeshToonMaterial({ color });
 
       const circle = new Mesh(circleGeomety, circleMaterial);
-      circle.name = `${key}-circle-${this.index}`;
+      circle.name = `circle-${this.index + key}`;
       (circle as any).hasWall = hasWall;
 
       circle.position.set(point.x, point.y + 1, point.z);

@@ -54,13 +54,15 @@ export class Cell extends Mesh {
 
   appendEdgeCircle() {
     Object.entries(points).forEach(([key, point], i) => {
-      const color = this.binCode.slice(i, i + 1) === '1' ? 0xff0000 : 0xffffff;
+      const hasWall = this.binCode.slice(i, i + 1) === '1';
+      const color = hasWall ? 0xff0000 : 0xffffff;
 
       const circleGeomety = new CircleGeometry(4);
       const circleMaterial = new MeshToonMaterial({ color });
 
       const circle = new Mesh(circleGeomety, circleMaterial);
       circle.name = `${key}-circle-${this.index}`;
+      (circle as any).hasWall = hasWall;
 
       circle.position.set(point.x, point.y + 1, point.z);
       circle.rotateX(-Math.PI / 2);

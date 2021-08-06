@@ -19,8 +19,17 @@ import {
   Bin,
   idGenerator,
   BinCode,
+  ZERO,
 } from '../../utils/constants';
 import { Cell, INeighbors } from './Cell';
+
+interface Spot {
+  index: number;
+  col: number;
+  row: number;
+  isWall: boolean;
+  position: Vector3;
+}
 
 interface IPseudoCell {
   index: number;
@@ -39,6 +48,7 @@ export class Ground extends Mesh {
   rows: number;
   pseudoCells: IPseudoCell[];
   cells: Cell[] = [];
+  spots: Spot[];
   constructor() {
     super();
 
@@ -54,12 +64,12 @@ export class Ground extends Mesh {
     this.fillPseudoCellsArr();
     this.createGrid();
 
-    console.log(
-      this.cells.forEach(cell =>
-        // console.log(cell)
-        console.log({ name: cell.name, row: cell.row, col: cell.col, ...cell.position })
-      )
-    );
+    console.log(this.spots);
+    // console.log(
+    //   this.cells.forEach(cell =>
+    //     // console.log({ name: cell.name, row: cell.row, col: cell.col, ...cell.position })
+    //   )
+    // );
   }
 
   fillPseudoCellsArr() {
@@ -87,6 +97,14 @@ export class Ground extends Mesh {
   }
 
   createGrid() {
+    // create cells
+    this.createCells();
+
+    // create spots
+    this.createSpots();
+  }
+
+  createCells() {
     this.pseudoCells.forEach(item => {
       const binCode = (item.a + item.b + item.c + item.d) as BinCode;
       const originX = item.col * tileSize - GROUND_WIDTH / 2;
@@ -99,6 +117,47 @@ export class Ground extends Mesh {
 
       this.cells.push(cell);
     });
+
     this.cells.forEach(cell => this.add(cell));
+  }
+  createSpots() {
+    const spotsSet = new Set<Spot>();
+    const spotsInfoSet = new Set<string>();
+
+    this.cells.forEach((cell, index) => {
+      //
+      cell.children
+        .filter(obj => obj.name.includes('circle'))
+        .forEach(circle => {
+          const [cellPos, circlePos] = [cell.position, circle.position];
+
+          const pos = new Vector3(cellPos.x + circlePos.x, ZERO, cellPos.z + circlePos.z);
+
+          spotsInfoSet.add([pos.x, pos.y, pos.z, (circle as any).hasWall].join(','));
+        });
+
+      if (index === this.cells.length - 1) {
+        let i = 0;
+
+        spotsInfoSet.forEach(info => {
+          // preencher spots apenas com spots únicos
+          const [x, y, z, isWallStr] = info.split(',');
+
+          const spot: Spot = {
+            col: cell.col,
+            row: cell.row,
+            index: i,
+            position: new Vector3(Number(x), Number(y), Number(z)),
+            isWall: isWallStr === 'true',
+          };
+          spotsSet.add(spot);
+
+          i++;
+        });
+
+        this.spots = Array.from(spotsSet);
+        console.log(this.spots);
+      }
+    });
   }
 }

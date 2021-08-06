@@ -15,8 +15,8 @@ export const tileSize = 50;
 export const GROUND_WIDTH = 300; // must be divisible by tileSize
 export const GROUND_DEPTH = 200;
 
-export const levelStart = new Vector3(-GROUND_WIDTH / 2, 10, GROUND_DEPTH / 2);
-export const levelEnd = new Vector3(GROUND_WIDTH / 2, 10, -GROUND_DEPTH / 2);
+export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
+export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
 
 // prettier-ignore
 export const binCodes: BinCode[] = [
@@ -31,7 +31,7 @@ export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) =
   return new Line(geometry, material);
 };
 
-export const binOptions: Bin[] = ['0', '1', '0'];
+export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '0', '1', '1', '1']; // 30% chance
 
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 

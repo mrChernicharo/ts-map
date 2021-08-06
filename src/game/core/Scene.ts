@@ -17,7 +17,7 @@ import {
   Vector3,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { levelStart, levelEnd, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
+import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
 import { Cube } from '../objects/Cube';
 import { Ball } from '../objects/Ball';
 import { Flag } from '../objects/Flag';
@@ -89,7 +89,6 @@ class Scene extends THREEScene {
   addObjects() {
     // adding test objects
     // new Polyhedron(this);
-    // this.add(ground, rulers, this.lights, createAxesHelper(), createGridHelper());
 
     const rulers = new Rulers();
     const ground = new Ground();
@@ -111,10 +110,6 @@ class Scene extends THREEScene {
     window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
 
     window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
-
-    // document.addEventListener('click', () => {
-    //   this.PointerLockControls.lock();
-    // });
   }
 
   setSize(container: Element) {

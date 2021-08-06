@@ -10,6 +10,7 @@ import {
   Material,
   BoxGeometry,
 } from 'three';
+import { aStarPathfinder } from '../../utils/aStarPathfinder';
 import {
   drawLine,
   tileSize,
@@ -20,6 +21,8 @@ import {
   idGenerator,
   BinCode,
   ZERO,
+  levelStart,
+  levelFinish,
 } from '../../utils/constants';
 import { Cell } from './Cell';
 
@@ -58,8 +61,9 @@ export class Ground extends Mesh {
 
     this.createGrid();
     this.getSpots();
+    this.findPath();
 
-    console.log(this.spots);
+    // console.log(this.spots);
   }
 
   createGrid() {
@@ -119,5 +123,9 @@ export class Ground extends Mesh {
 
         this.spots.push(spot);
       });
+  }
+
+  findPath() {
+    new aStarPathfinder(this.spots, levelStart, levelFinish);
   }
 }

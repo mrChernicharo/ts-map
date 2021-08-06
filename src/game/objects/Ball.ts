@@ -14,7 +14,8 @@ export class Ball extends Mesh {
     this.speed = 20;
 
     this.material = new MeshToonMaterial({ color: 'purple' });
-    this.geometry = new SphereGeometry(5);
+    this.geometry = new SphereGeometry(10);
+    this.name = 'Ball';
 
     new Mesh(this.geometry, this.material);
     this.initialPos = levelStart.clone();

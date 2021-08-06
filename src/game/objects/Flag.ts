@@ -10,12 +10,14 @@ export class Flag extends Mesh {
     // pole
     this.material = new MeshToonMaterial({ color: 0xa9a9a9 });
     this.geometry = new BoxBufferGeometry(1, 40, 1);
+    this.name = 'Flag';
 
     new Mesh(this.geometry, this.material);
 
     const flagGeo = new BoxGeometry(24, 12, 1);
     const flagMat = this.colorFlag();
     const flag = new Mesh(flagGeo, flagMat);
+    flag.name = 'flag-cloth';
 
     this.add(flag);
 

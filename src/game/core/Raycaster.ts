@@ -39,7 +39,7 @@ export class Raycaster extends THREERaycaster {
   higlightIntersectedObjects() {
     this.intersects.forEach(intersect => {
       let mesh = intersect.object as Mesh;
-      console.log(intersect.object.name);
+      // console.log(intersect.object.name);
 
       if (mesh.name.includes('Wall')) {
         (mesh as any).material.transparent = true;
@@ -47,8 +47,7 @@ export class Raycaster extends THREERaycaster {
       }
 
       if (mesh.name.includes('circle')) {
-        const color = 0x0046ff;
-        mesh.material = new MeshToonMaterial({ color });
+        mesh.material = new MeshToonMaterial({ color: 0x44ff11 });
       }
 
       if (mesh.name === 'Ball') {

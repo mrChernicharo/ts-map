@@ -25,4 +25,6 @@ export class Polyhedron {
     mesh.position.set(0, 40, 0);
     scene.add(mesh);
   }
+
+  tick() {}
 }

@@ -10,7 +10,7 @@ export type BinCode =
 export type Bin = '0' | '1';
 
 export const GROUND_WIDTH = 500;
-export const GROUND_DEPTH = 500;
+export const GROUND_DEPTH = 1000;
 export const tileSize = 50;
 export const ZERO = 0;
 
@@ -30,11 +30,14 @@ export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) =
   return new Line(geometry, material);
 };
 
-export const binOptions: Bin[] = ['0', '1'];
+export const binOptions: Bin[] = ['0', '1', '0'];
 
-export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
+// export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
-export const randomBin = () => binOptions[Math.round(Math.random())];
+export const randomBin = () => {
+  const len = binOptions.length - 1;
+  return binOptions[Math.round(Math.random() * len)];
+};
 
 export function* idGenerator() {
   let id = 0;

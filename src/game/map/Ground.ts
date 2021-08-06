@@ -38,7 +38,7 @@ export class Ground extends Mesh {
   cols: number;
   rows: number;
   pseudoCells: IPseudoCell[];
-  cells: Cell[];
+  cells: Cell[] = [];
   constructor() {
     super();
 
@@ -53,7 +53,13 @@ export class Ground extends Mesh {
 
     this.fillPseudoCellsArr();
     this.createGrid();
-    // console.log({ rows: this.rows, cols: this.cols, cells: this.pseudoCells, c: this });
+
+    console.log(
+      this.cells.forEach(cell =>
+        // console.log(cell)
+        console.log({ name: cell.name, row: cell.row, col: cell.col, ...cell.position })
+      )
+    );
   }
 
   fillPseudoCellsArr() {
@@ -87,15 +93,12 @@ export class Ground extends Mesh {
       const originY = item.row * tileSize - GROUND_DEPTH / 2;
 
       const origin = new Vector3(originX, 0, originY);
-      // console.log({
-      //   binCode,
-      //   originX,
-      //   originY,
-      //   col: item.col,
-      // });
-      const cell = new Cell(item.index, binCode, origin);
+
+      const cell = new Cell(item.index, item.row, item.col, binCode, origin);
       cell.name = `cell-${item.index}`;
-      this.add(cell);
+
+      this.cells.push(cell);
     });
+    this.cells.forEach(cell => this.add(cell));
   }
 }

@@ -20,9 +20,13 @@ export class Cell extends Mesh {
   index: number;
   binCode: BinCode;
   origin: Vector3;
-  constructor(index: number, binCode: BinCode, origin: Vector3) {
+  row: number;
+  col: number;
+  constructor(index: number, row: number, col: number, binCode: BinCode, origin: Vector3) {
     super();
     this.index = index;
+    this.col = col;
+    this.row = row;
     this.binCode = binCode;
     this.origin = origin;
     this.position.set(origin.x, origin.y, origin.z);
@@ -49,7 +53,6 @@ export class Cell extends Mesh {
   }
 
   appendEdgeCircle() {
-    // console.log(Object.entries(points));
     Object.entries(points).forEach(([key, point], i) => {
       const color = this.binCode.slice(i, i + 1) === '1' ? 0xff0000 : 0xffffff;
 
@@ -69,13 +72,6 @@ export class Cell extends Mesh {
   buildWall() {
     const wall = new Wall(this.binCode);
     wall.name = `${this.index}-Wall`;
-
-    // console.log(wall.name);
-
-    // const equidistantPoint = points.a.distanceTo(points.c) / 2;
-    // console.log(equidistantPoint);
-
-    // wall.position.set()
 
     this.add(wall);
   }

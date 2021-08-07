@@ -15,7 +15,7 @@ export class Wall extends Mesh {
     new Mesh(this.geometry, this.material);
 
     this.rotateX(Math.PI / 2);
-    this.position.y += tileSize / 2;
+    this.position.y += tileSize / 2 + 2;
   }
 
   getGeometry() {

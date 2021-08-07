@@ -38,7 +38,7 @@ export class Cell extends Mesh {
   }
 
   drawLines() {
-    const lineMaterial = new LineBasicMaterial({ color: 'green' });
+    const lineMaterial = new LineBasicMaterial({ color: 0x444400 });
 
     const lines = {
       ab: drawLine(points.a, points.b, lineMaterial),
@@ -78,7 +78,7 @@ export class Cell extends Mesh {
       const hasWall = binItems[i] === '1';
       const color = hasWall ? 0x000000 : 0xffffff;
 
-      const circleGeomety = new CircleGeometry(4);
+      const circleGeomety = new CircleGeometry(2);
       const circleMaterial = new MeshToonMaterial({ color });
 
       const circle = new Mesh(circleGeomety, circleMaterial);

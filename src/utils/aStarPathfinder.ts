@@ -99,7 +99,7 @@ export class AStarPathfinder {
 
       // Did I finish?
       if (current.pos.distanceTo(this.goal) < 6) {
-        console.log('DONE!');
+        console.log('DONE! 😎');
 
         this.getPathArray();
         return 1;
@@ -139,7 +139,7 @@ export class AStarPathfinder {
       return 0;
     } else {
       // Uh oh, no solution
-      console.log('no solution');
+      console.log('NO SOLUTION! 😅');
 
       this.getPathArray();
       return -1;

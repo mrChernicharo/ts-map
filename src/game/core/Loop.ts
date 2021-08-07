@@ -5,6 +5,7 @@ import { Scene } from './Scene';
 import { Ball } from '../objects/Ball';
 import { levelFinish, levelStart } from '../../utils/constants';
 import { Flag } from '../objects/Flag';
+import { Enemy } from '../objects/Enemy';
 
 interface IUpdatable extends Mesh {
   tick: (delta: number) => void;
@@ -23,6 +24,9 @@ class Loop {
     const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelFinish)];
     this.add(startFlag);
     this.add(endFlag);
+
+    const enemy = new Enemy();
+    this.add(enemy);
     // setInterval(() => this.add(new Ball('sphere')), 2000);
   }
 

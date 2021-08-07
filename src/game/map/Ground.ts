@@ -170,16 +170,17 @@ export class Ground extends Mesh {
       this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, 'closed')));
       this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, 'open')));
       this.add(new PathSpot(this.pathfinder.lastCheckedNode.pos, 'current'));
-    }, 0);
+    }, 40);
   }
 
   createPathLine() {
-    const pathMaterial = new LineDashedMaterial({ dashSize: 3, color: 0xff0000 });
+    const pathMaterial = new LineDashedMaterial({ dashSize: 3, color: 0xff9d00 });
     const pathGeometry = [];
 
     this.path.forEach(n => {
       // pathGeometry.push()
       const pathLine = drawLine(n?.previous?.pos || levelStart, n.pos, pathMaterial);
+      pathLine.position.y += 10;
 
       this.add(pathLine);
     });

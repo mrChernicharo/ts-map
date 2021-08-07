@@ -61,7 +61,7 @@ function* generateLog() {
   let i = 0;
 
   while (i < 11) {
-    console.log(`${event.type} funciona, logs acabando em ${10 - i} eventos`);
+    // console.log(`${event.type} funciona, logs acabando em ${10 - i} eventos`);
 
     if (i === 10) {
       break;

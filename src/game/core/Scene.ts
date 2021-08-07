@@ -91,9 +91,9 @@ class Scene extends THREEScene {
     // adding test objects
     // new Polyhedron(this);
 
-    const rulers = new Rulers();
+    // const rulers = new Rulers();
     const ground = new Ground();
-    this.add(ground, rulers, this.lights);
+    this.add(ground, this.lights);
   }
 
   setEvents() {

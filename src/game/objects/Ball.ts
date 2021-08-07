@@ -11,7 +11,7 @@ export class Ball extends Mesh {
     super();
     this.type = type;
     this.hp = 100;
-    this.speed = 350;
+    this.speed = 50;
 
     this.material = new MeshToonMaterial({ color: 'purple' });
     this.geometry = new SphereGeometry(10);

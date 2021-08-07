@@ -83,7 +83,8 @@ export class Cell extends Mesh {
 
       const circle = new Mesh(circleGeomety, circleMaterial);
       circle.name = `circle-${this.index + key}`;
-      (circle as any).hasWall = hasWall;
+      circle['hasWall'] = hasWall;
+      circle['origin'] = this.origin;
 
       circle.position.set(point.x, point.y + 1, point.z);
       circle.rotateX(-Math.PI / 2);

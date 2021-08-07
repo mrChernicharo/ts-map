@@ -12,8 +12,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const tileSize = 50;
 
-export const GROUND_WIDTH = 300; // must be divisible by tileSize
-export const GROUND_DEPTH = 200;
+export const GROUND_WIDTH = 400; // must be divisible by tileSize
+export const GROUND_DEPTH = 100;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);

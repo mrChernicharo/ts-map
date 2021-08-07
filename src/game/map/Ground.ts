@@ -36,7 +36,8 @@ const points = {
 export interface Spot {
   index: number;
   isWall: boolean;
-  pos: Vector3;
+  origin: Vector3;
+  localPos: Vector3;
   hl: number; // horizontal line
   vl: number; // vertical line
   name: string;
@@ -49,6 +50,7 @@ export class Ground extends Mesh {
   rows: number;
   cells: Cell[] = [];
   spots: Spot[] = [];
+  path = [];
   constructor() {
     super();
 
@@ -112,13 +114,15 @@ export class Ground extends Mesh {
       .map(cell => cell.children.filter(child => child.name.includes('circle')))
       .flat()
       .forEach((mesh, i) => {
+        //
         const spot: Spot = {
           index: i,
-          pos: mesh.position,
+          localPos: mesh.position,
+          origin: (mesh as any).origin,
           isWall: (mesh as any).hasWall,
+          name: mesh.name,
           hl: Math.floor(i / (this.cols + 1)),
           vl: i % (this.cols + 1),
-          name: mesh.name,
         };
 
         this.spots.push(spot);
@@ -126,6 +130,7 @@ export class Ground extends Mesh {
   }
 
   findPath() {
-    new aStarPathfinder(this.spots, levelStart, levelFinish);
+    const path = new aStarPathfinder(this.spots, levelStart, levelFinish);
+    // console.log(path);
   }
 }

@@ -25,14 +25,12 @@ class Loop {
     this.add(startFlag);
     this.add(endFlag);
 
-    const enemy = new Enemy();
+    const enemy = new Enemy(20);
     this.add(enemy);
-    // setInterval(() => this.add(new Ball('sphere')), 2000);
   }
 
   start() {
     this.renderer.setAnimationLoop(() => {
-      // tell every animated object to tick forward one frame
       this.tick();
 
       // render a frame

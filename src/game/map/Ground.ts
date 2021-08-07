@@ -11,7 +11,7 @@ import {
   BoxGeometry,
   LineDashedMaterial,
 } from 'three';
-import { AStarPathfinder, Node } from '../../utils/aStarPathfinder';
+import { AStarPathfinder, PathNode } from '../../utils/aStarPathfinder';
 // import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
   drawLine,
@@ -54,8 +54,7 @@ export class Ground extends Mesh {
   rows: number;
   cells: Cell[] = [];
   spots: Spot[] = [];
-  path: Node[] = [];
-  interval;
+  path: PathNode[] = [];
   pathfinder: AStarPathfinder;
   constructor() {
     super();
@@ -155,22 +154,19 @@ export class Ground extends Mesh {
   initPathFinder() {
     this.pathfinder = new AStarPathfinder(this.spots, levelStart, levelFinish);
 
-    this.interval = setInterval(() => {
+    const interval = setInterval(() => {
+      //
       if (this.pathfinder.step() !== 0) {
-        clearInterval(this.interval);
+        clearInterval(interval);
 
-        this.path = this.pathfinder
-          .getPathArray()
-          .reverse()
-          .map((n, i) => ({ i, ...n }));
-
+        this.path = this.pathfinder.getPathArray();
         this.createPathLine();
+
+        // emit event notifying path completion
       }
 
-      this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, 'closed')));
-      this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, 'open')));
-      this.add(new PathSpot(this.pathfinder.lastCheckedNode.pos, 'current'));
-    }, 40);
+      // this.drawPathSpots();
+    });
   }
 
   createPathLine() {
@@ -178,13 +174,16 @@ export class Ground extends Mesh {
     const pathGeometry = [];
 
     this.path.forEach(n => {
-      // pathGeometry.push()
       const pathLine = drawLine(n?.previous?.pos || levelStart, n.pos, pathMaterial);
       pathLine.position.y += 10;
 
       this.add(pathLine);
     });
+  }
 
-    console.log(this);
+  drawPathSpots() {
+    this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, 'closed')));
+    this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, 'open')));
+    this.add(new PathSpot(this.pathfinder.lastCheckedNode.pos, 'current'));
   }
 }

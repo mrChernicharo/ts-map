@@ -20,13 +20,10 @@ class Loop {
   }
 
   setUp() {
-    // const [cube, cube2] = [new Cube(-10, 4, 20), new Cube(3, 4, 50)];
-    // this.add(cube);
-    // this.add(cube2);
     const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelFinish)];
     this.add(startFlag);
     this.add(endFlag);
-    setInterval(() => this.add(new Ball('sphere')), 2000);
+    // setInterval(() => this.add(new Ball('sphere')), 2000);
   }
 
   start() {

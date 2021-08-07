@@ -141,8 +141,9 @@ export class Ground extends Mesh {
         clearInterval(this.interval);
       }
 
-      this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, true)));
-      this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, false)));
-    }, 1000);
+      this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, 'closed')));
+      this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, 'open')));
+      this.add(new PathSpot(this.pathfinder.lastCheckedNode.pos, 'current'));
+    }, 100);
   }
 }

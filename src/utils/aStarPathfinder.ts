@@ -23,9 +23,10 @@ export class AStarPathfinder {
 
   nodes: Node[] = [];
   spots: Spot[] = [];
+
   start: Vector3;
   goal: Vector3;
-
+  lastCheckedNode: Node;
   constructor(spots: Spot[], start: Vector3, goal: Vector3) {
     this.start = start;
     this.goal = goal;
@@ -81,7 +82,6 @@ export class AStarPathfinder {
   }
 
   step() {
-    let lastCheckedNode: Node;
     if (this.openSet.length > 0) {
       // Best next option
       let winner = 0;
@@ -98,9 +98,9 @@ export class AStarPathfinder {
         }
       }
       let current = this.openSet[winner];
-      lastCheckedNode = current;
+      this.lastCheckedNode = current;
 
-      console.log({ closed: this.closedSet, open: this.openSet });
+      console.log({ closed: this.closedSet, open: this.openSet, last: this.lastCheckedNode });
 
       // Did I finish?
       if (current.pos.distanceTo(this.goal) < 6) {

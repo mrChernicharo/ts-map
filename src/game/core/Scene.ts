@@ -31,7 +31,7 @@ import { createAxesHelper, createGridHelper } from '../../utils/helpers';
 import { InputManager } from './InputManager';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { Raycaster } from './Raycaster';
-// import pathfinding from 'three-pathfinding';
+import { AStarPathfinder } from '../../utils/aStarPathfinder';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -44,6 +44,7 @@ class Scene extends THREEScene {
   gui: GUI;
   inputManager: InputManager;
   raycaster: Raycaster;
+
   constructor(private domContainer: HTMLDivElement) {
     super();
     new THREEScene();

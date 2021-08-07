@@ -10,7 +10,8 @@ import {
   Material,
   BoxGeometry,
 } from 'three';
-import { aStarPathfinder } from '../../utils/aStarPathfinder';
+import { AStarPathfinder } from '../../utils/aStarPathfinder';
+// import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
   drawLine,
   tileSize,
@@ -24,6 +25,7 @@ import {
   levelStart,
   levelFinish,
 } from '../../utils/constants';
+import { PathSpot } from '../../utils/PathSpot';
 import { Cell } from './Cell';
 
 const points = {
@@ -51,6 +53,8 @@ export class Ground extends Mesh {
   cells: Cell[] = [];
   spots: Spot[] = [];
   path = [];
+  interval;
+  pathfinder: AStarPathfinder;
   constructor() {
     super();
 
@@ -63,7 +67,7 @@ export class Ground extends Mesh {
 
     this.createGrid();
     this.getSpots();
-    this.findPath();
+    this.initPathFinder();
 
     // console.log(this.spots);
   }
@@ -129,8 +133,16 @@ export class Ground extends Mesh {
       });
   }
 
-  findPath() {
-    const path = new aStarPathfinder(this.spots, levelStart, levelFinish);
-    // console.log(path);
+  initPathFinder() {
+    this.pathfinder = new AStarPathfinder(this.spots, levelStart, levelFinish);
+
+    this.interval = setInterval(() => {
+      if (this.pathfinder.step() !== 0) {
+        clearInterval(this.interval);
+      }
+
+      this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, true)));
+      this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, false)));
+    }, 1000);
   }
 }

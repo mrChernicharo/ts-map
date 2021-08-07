@@ -1,7 +1,8 @@
-import { Vector2, Vector3 } from 'three';
+import { Path, Vector2, Vector3 } from 'three';
 import { Cell } from '../game/map/Cell';
 import { Spot } from '../game/map/Ground';
 import { tileSize } from './constants';
+import { PathSpot } from './PathSpot';
 
 interface Node {
   pos: Vector3;
@@ -16,7 +17,7 @@ interface Node {
 
 // const setInitialNode = (pos: Vector3) => ;
 
-export class aStarPathfinder {
+export class AStarPathfinder {
   openSet: Node[] = [];
   closedSet: Node[] = [];
 
@@ -29,13 +30,8 @@ export class aStarPathfinder {
     this.start = start;
     this.goal = goal;
     this.spots = spots;
-    this.openSet = [this.createNode(new Vector3(0, 0, tileSize), start, false)];
+    this.openSet = [this.createNode(new Vector3(0, 0, 0), start, false)];
     this.initNodes();
-    const interval = setInterval(() => {
-      if (this.step() === 1) {
-        clearInterval(interval);
-      }
-    }, 600);
   }
 
   initNodes() {

@@ -1,6 +1,6 @@
 import { CircleGeometry, LineBasicMaterial, Mesh, MeshToonMaterial, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
-import { Bin, BinCode, drawLine, tileSize, ZERO } from '../../utils/constants';
+import { Bin, BinCode, drawLine, levelFinish, levelStart, tileSize, ZERO } from '../../utils/constants';
 
 const points = {
   a: new Vector3(0, 2, 0),

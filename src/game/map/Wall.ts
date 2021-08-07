@@ -1,5 +1,5 @@
 import { Mesh, MeshToonMaterial, Shape, ExtrudeGeometry, BoxGeometry, Vector3, Vector2 } from 'three';
-import { Bin, BinCode, tileSize } from '../../utils/constants';
+import { Bin, BinCode, levelFinish, levelStart, tileSize } from '../../utils/constants';
 import { Cell } from './Cell';
 
 export class Wall extends Mesh {
@@ -38,7 +38,6 @@ export class Wall extends Mesh {
       case '0000':
         break;
       case '1000':
-        // shape.lineTo(halfSide, 0).lineTo(0, halfSide).closePath();
         shape
           .lineTo(halfSide, 0)
           .lineTo(halfSide / 2, halfSide / 2)

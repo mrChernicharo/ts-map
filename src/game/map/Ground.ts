@@ -24,16 +24,10 @@ import {
   ZERO,
   levelStart,
   levelFinish,
+  cellPoints,
 } from '../../utils/constants';
 import { PathSpot } from '../../utils/PathSpot';
 import { Cell } from './Cell';
-
-const points = {
-  a: new Vector3(0, 2, 0),
-  b: new Vector3(tileSize, 2, 0),
-  c: new Vector3(tileSize, 2, tileSize),
-  d: new Vector3(0, 2, tileSize),
-};
 
 export interface Spot {
   index: number;
@@ -44,6 +38,13 @@ export interface Spot {
   vl: number; // vertical line
   name: string;
 }
+
+type Edges = {
+  a: Bin;
+  b: Bin;
+  c: Bin;
+  d: Bin;
+};
 
 const idMaker = idGenerator();
 
@@ -68,15 +69,12 @@ export class Ground extends Mesh {
     this.createGrid();
     this.getSpots();
     this.initPathFinder();
-
-    // console.log(this.spots);
   }
 
   createGrid() {
     for (let r = 0; r < this.rows; r++) {
       for (let c = 0; c < this.cols; c++) {
         let edges: { a: Bin; b: Bin; c: Bin; d: Bin };
-        let points = {};
 
         const index = idMaker.next().value as number;
 
@@ -98,12 +96,13 @@ export class Ground extends Mesh {
     }
   }
 
-  createCell(index: number, edges, r: number, c: number) {
-    const binCode = (edges.a + edges.b + edges.c + edges.d) as BinCode;
+  createCell(index: number, edges: Edges, r: number, c: number) {
     const originX = c * tileSize - GROUND_WIDTH / 2;
     const originY = r * tileSize - GROUND_DEPTH / 2;
 
     const origin = new Vector3(originX, 0, originY);
+
+    const binCode = this.enhanceBinCode(origin, edges);
 
     const cell = new Cell(index, r, c, binCode, origin);
     cell.edges = edges;
@@ -133,6 +132,25 @@ export class Ground extends Mesh {
       });
   }
 
+  enhanceBinCode(origin: Vector3, edges: Edges) {
+    const dists = {
+      a: origin.clone().add(cellPoints.a),
+      b: origin.clone().add(cellPoints.b),
+      c: origin.clone().add(cellPoints.c),
+      d: origin.clone().add(cellPoints.d),
+    };
+
+    // prevents start/finish from being locked by walls:
+    // forces bin '0' if edge is too close from start/finish
+    Object.entries(dists).forEach(([key, distance]) => {
+      if (distance.distanceTo(levelStart) < tileSize * 2 || distance.distanceTo(levelFinish) < tileSize * 2) {
+        edges[key] = '0';
+      }
+    });
+
+    return (edges.a + edges.b + edges.c + edges.d) as BinCode;
+  }
+
   initPathFinder() {
     this.pathfinder = new AStarPathfinder(this.spots, levelStart, levelFinish);
 
@@ -144,6 +162,6 @@ export class Ground extends Mesh {
       this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, 'closed')));
       this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, 'open')));
       this.add(new PathSpot(this.pathfinder.lastCheckedNode.pos, 'current'));
-    }, 100);
+    }, 0);
   }
 }

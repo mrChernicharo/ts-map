@@ -12,11 +12,18 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const tileSize = 50;
 
-export const GROUND_WIDTH = 1000; // must be divisible by tileSize
-export const GROUND_DEPTH = 800;
+export const GROUND_WIDTH = 400; // must be divisible by tileSize
+export const GROUND_DEPTH = 600;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
+
+export const cellPoints = {
+  a: new Vector3(0, 0, 0),
+  b: new Vector3(tileSize, 0, 0),
+  c: new Vector3(tileSize, 0, tileSize),
+  d: new Vector3(0, 0, tileSize),
+};
 
 // prettier-ignore
 export const binCodes: BinCode[] = [
@@ -26,18 +33,18 @@ export const binCodes: BinCode[] = [
   '1011','1101','1110','0111',
 ];
 
-export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) => {
-  const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
-  return new Line(geometry, material);
-};
-
-export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '1', '1', '1', '1', '1']; // 40% chance
+export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '1', '1']; // 40% chance
 
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
 export const randomBin = () => {
   const len = binOptions.length - 1;
   return binOptions[Math.round(Math.random() * len)];
+};
+
+export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) => {
+  const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
+  return new Line(geometry, material);
 };
 
 export function* idGenerator() {

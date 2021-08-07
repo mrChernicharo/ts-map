@@ -10,7 +10,6 @@ interface Node {
   fScore: number;
   gScore: number;
   hScore: number; // Estimated distance to goal (heuristic determined)
-  // getNeighbors?: () => Node[];
   getNeighbors?: (nodes: Node[]) => Node[];
   previous?: Node;
 }
@@ -40,13 +39,9 @@ export class AStarPathfinder {
       const node = this.createNode(localPos, origin, isWall);
       this.nodes.push(node);
     });
-
-    // console.log({ nodes: this.nodes, start: this.start, goal: this.start });
-
-    // this.nodes.forEach(n => console.log(n.getNeighbors(this.nodes)));
   }
 
-  createNode(localPos, origin, isWall) {
+  createNode(localPos: Vector3, origin: Vector3, isWall: boolean) {
     const pos = origin.clone().add(localPos.clone());
 
     const getNeighbors = function (nodes: Node[]) {
@@ -100,7 +95,7 @@ export class AStarPathfinder {
       let current = this.openSet[winner];
       this.lastCheckedNode = current;
 
-      console.log({ closed: this.closedSet, open: this.openSet, last: this.lastCheckedNode });
+      // console.log({ closed: this.closedSet, open: this.openSet, last: this.lastCheckedNode });
 
       // Did I finish?
       if (current.pos.distanceTo(this.goal) < 6) {

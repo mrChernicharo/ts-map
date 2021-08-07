@@ -9,8 +9,9 @@ import {
   BufferGeometry,
   Material,
   BoxGeometry,
+  LineDashedMaterial,
 } from 'three';
-import { AStarPathfinder } from '../../utils/aStarPathfinder';
+import { AStarPathfinder, Node } from '../../utils/aStarPathfinder';
 // import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
   drawLine,
@@ -26,7 +27,7 @@ import {
   levelFinish,
   cellPoints,
 } from '../../utils/constants';
-import { PathSpot } from '../../utils/PathSpot';
+import { PathSpot } from './PathSpot';
 import { Cell } from './Cell';
 
 export interface Spot {
@@ -53,7 +54,7 @@ export class Ground extends Mesh {
   rows: number;
   cells: Cell[] = [];
   spots: Spot[] = [];
-  path = [];
+  path: Node[] = [];
   interval;
   pathfinder: AStarPathfinder;
   constructor() {
@@ -157,11 +158,32 @@ export class Ground extends Mesh {
     this.interval = setInterval(() => {
       if (this.pathfinder.step() !== 0) {
         clearInterval(this.interval);
+
+        this.path = this.pathfinder
+          .getPathArray()
+          .reverse()
+          .map((n, i) => ({ i, ...n }));
+
+        this.createPathLine();
       }
 
       this.pathfinder.closedSet.forEach(node => this.add(new PathSpot(node.pos, 'closed')));
       this.pathfinder.openSet.forEach(node => this.add(new PathSpot(node.pos, 'open')));
       this.add(new PathSpot(this.pathfinder.lastCheckedNode.pos, 'current'));
     }, 0);
+  }
+
+  createPathLine() {
+    const pathMaterial = new LineDashedMaterial({ dashSize: 3, color: 0xff0000 });
+    const pathGeometry = [];
+
+    this.path.forEach(n => {
+      // pathGeometry.push()
+      const pathLine = drawLine(n?.previous?.pos || levelStart, n.pos, pathMaterial);
+
+      this.add(pathLine);
+    });
+
+    console.log(this);
   }
 }

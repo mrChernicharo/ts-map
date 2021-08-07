@@ -2,9 +2,9 @@ import { Path, Vector2, Vector3 } from 'three';
 import { Cell } from '../game/map/Cell';
 import { Spot } from '../game/map/Ground';
 import { tileSize } from './constants';
-import { PathSpot } from './PathSpot';
+import { PathSpot } from '../game/map/PathSpot';
 
-interface Node {
+export interface Node {
   pos: Vector3;
   isWall: boolean;
   fScore: number;
@@ -12,9 +12,8 @@ interface Node {
   hScore: number; // Estimated distance to goal (heuristic determined)
   getNeighbors?: (nodes: Node[]) => Node[];
   previous?: Node;
+  index?: number;
 }
-
-// const setInitialNode = (pos: Vector3) => ;
 
 export class AStarPathfinder {
   openSet: Node[] = [];
@@ -26,6 +25,7 @@ export class AStarPathfinder {
   start: Vector3;
   goal: Vector3;
   lastCheckedNode: Node;
+
   constructor(spots: Spot[], start: Vector3, goal: Vector3) {
     this.start = start;
     this.goal = goal;
@@ -100,6 +100,8 @@ export class AStarPathfinder {
       // Did I finish?
       if (current.pos.distanceTo(this.goal) < 6) {
         console.log('DONE!');
+
+        this.getPathArray();
         return 1;
       }
 
@@ -132,11 +134,31 @@ export class AStarPathfinder {
           neighbor.previous = current;
         }
       }
+
+      // keep going!
       return 0;
-      // Uh oh, no solution
     } else {
+      // Uh oh, no solution
       console.log('no solution');
+
+      this.getPathArray();
       return -1;
     }
+  }
+
+  getPathArray() {
+    // hScore is the distance from the point till the goal
+
+    const path: Node[] = [];
+    let prevNode = this.lastCheckedNode;
+
+    while (prevNode) {
+      path.push(prevNode);
+      prevNode = prevNode.previous;
+    }
+
+    if (!path.length) console.warn('loop step() method first to get the nodes!');
+
+    return path;
   }
 }

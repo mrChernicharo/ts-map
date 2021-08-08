@@ -38,6 +38,8 @@ export class Cell extends Mesh {
     this.drawLines();
     this.appendSpots();
     this.buildWall();
+
+    console.log(this.spots.length);
   }
 
   drawLines() {
@@ -54,10 +56,13 @@ export class Cell extends Mesh {
       lines[line].name = `${line}-line-${this.index}`;
       this.add(lines[line]);
     }
+
+    // console.log(lines.ab.position);
   }
 
   appendSpots() {
     let [dotPoints, binItems] = this.getSpotPoints();
+    console.log(dotPoints);
 
     Object.entries(dotPoints).forEach(([key, point], i) => {
       const hasWall = binItems[i] === '1';
@@ -70,15 +75,19 @@ export class Cell extends Mesh {
         name: `spot-${this.index + key}`,
       };
 
+      console.log(spot.origin);
       this.spots.push(spot);
 
-      const tilePoints = binItems.split('').filter(bin => bin === '1');
+      // WE GOT PROBLEMS IN HERE
+      // // THRER ARE MISSING/MISPLACED TILES CLOSE TO THE LEFT/TOP BORDERS
+      // const tilePoints = binItems.split('').filter(bin => bin === '1');
 
-      tilePoints.forEach((element, i, arr) => {
-        console.log('makeTile', binItems, arr.length);
+      // tilePoints.forEach((element, i, arr) => {
+      //   console.log('makeTile', binItems, arr.length);
 
-        this.appendTile(this.col === 0, this.row === 0);
-      });
+      // });
+
+      this.appendTile(this.origin, point);
     });
   }
 
@@ -89,18 +98,11 @@ export class Cell extends Mesh {
     this.add(wall);
   }
 
-  appendTile(zeroCol = false, zeroRow = false) {
+  appendTile(origin: Vector3, localPos: Vector3) {
+    const { x, y, z } = localPos;
     const tile = new Tile();
-    console.log(tile.position);
+    tile.position.set(x, y + 24, z);
     this.add(tile);
-
-    // if (zeroCol) {
-    //   tile.position.x -= cellSize;
-    // }
-
-    // if (zeroRow) {
-    //   tile.position.z -= cellSize;
-    // }
   }
 
   getSpotPoints(): [{ [key: string]: Vector3 }, string] {

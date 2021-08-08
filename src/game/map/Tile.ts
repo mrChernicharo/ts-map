@@ -14,10 +14,10 @@ export class Tile extends Mesh {
 
     new Mesh(this.geometry, this.material);
 
-    // this.position.set(cellSize / 2, 14, cellSize / 2);
+    // this.position.set(cellSize / 2, 24, cellSize / 2);
     // this.position.set(cellSize / 2, 14, 0);
-    this.position.set(cellSize, 24, cellSize);
-    // this.position.set(0, 14, 0);
+    // this.position.set(cellSize, 24, cellSize);
+    this.position.set(0, 24, 0);
     this.rotateY(-Math.PI / 4);
   }
 }

@@ -20,20 +20,17 @@ export class Enemy extends Mesh {
   }
 
   async init() {
+    this.path = await this.getPath();
     new Mesh(this.geometry, this.material);
 
-    const [x, y, z] = Object.values(levelStart.clone());
+    const [x, y, z] = Object.values(this.path[0].clone());
     this.position.set(x, y, z);
-    this.translateY(12);
 
-    this.path = await this.getPath();
     this.nextPos = this.path[this.nxPathIdx];
-
-    console.log(this.path);
-    console.log({ pos: this.position, next: this.nextPos, levelStart });
   }
 
   async getPath(): Promise<Vector3[]> {
+    console.log('initializing enemy');
     return new Promise((resolve, reject) => {
       let ground: any;
 
@@ -45,27 +42,25 @@ export class Enemy extends Mesh {
           : reject("couldn't get path nodes in time!");
         // }, 0);
         // }, 1000);
-      }, pathFindingDelay);
+      }, pathFindingDelay * 4);
     });
   }
 
   tick(delta) {
     let pos = this.position.clone();
-    let next = this.nextPos?.clone();
+    let nextClone = this.nextPos?.clone();
+
     // const y = pos.y;
 
-    if (next) {
+    if (nextClone) {
+      let next = new Vector3(nextClone.x, nextClone.y + 12, nextClone.z);
       this.velocity = pos.clone().sub(next).normalize();
 
-      // console.log(pos, next, this.velocity);
-      this.position.sub(this.velocity);
-
-      // this.position.y = y;
+      this.position.sub(this.velocity.multiplyScalar(delta * this.speed));
 
       if (this.position.distanceTo(next) < 4) {
         this.nxPathIdx += 1;
         this.nextPos = this.path[this.nxPathIdx];
-        this.translateY(12);
       }
     }
   }

@@ -3,7 +3,7 @@ import { Camera } from './Camera';
 import { Cube } from '../objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../objects/Ball';
-import { levelFinish, levelStart } from '../../utils/constants';
+import { enemyGenerator, levelFinish, levelStart } from '../../utils/constants';
 import { Flag } from '../objects/Flag';
 import { Enemy } from '../objects/Enemy';
 
@@ -12,7 +12,7 @@ interface IUpdatable extends Mesh {
 }
 
 const clock = new Clock();
-let deltaSum = 0;
+const enemyGen = enemyGenerator();
 
 class Loop {
   updatables: IUpdatable[];
@@ -25,7 +25,8 @@ class Loop {
     this.add(startFlag);
     this.add(endFlag);
 
-    const enemy = new Enemy(20);
+    const enemy = new Enemy(40);
+
     this.add(enemy);
   }
 
@@ -56,8 +57,13 @@ class Loop {
 
   tick() {
     const delta = clock.getDelta();
-    // console.log(`The last frame rendered in ${delta * 1000} ms`);
-    // 1 delta ~= 16.5 milliseconds -> 60 deltas/sec
+    const elapsed = clock.getElapsedTime();
+
+    console.log();
+
+    if ((elapsed % 4) + delta >= 4) {
+      enemyGen.next();
+    }
 
     for (const object of this.updatables) {
       //   console.log(delta, this.updatables, object);

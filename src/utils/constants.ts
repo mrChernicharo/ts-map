@@ -1,4 +1,5 @@
 import { BufferGeometry, Line, Material, Vector3 } from 'three';
+import { Enemy } from '../game/objects/Enemy';
 
 //prettier-ignore
 export type BinCode = 
@@ -12,8 +13,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const tileSize = 40;
 
-export const GROUND_WIDTH = 400; // must be divisible by tileSize
-export const GROUND_DEPTH = 800;
+export const GROUND_WIDTH = 1000; // must be divisible by tileSize
+export const GROUND_DEPTH = 1000;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
@@ -55,5 +56,13 @@ export function* idGenerator() {
   while (true) {
     yield id;
     id++;
+  }
+}
+
+export function* enemyGenerator() {
+  for (let i = 0; i < 10; i++) {
+    let enemy = new Enemy(40);
+
+    yield enemy;
   }
 }

@@ -86,7 +86,7 @@ export class Cell extends Mesh {
         const extraTile = new Tile();
         this.add(extraTile);
 
-        extraTile.position.set(cellSize / 2, 24, cellSize / 2);
+        extraTile.position.set(cellSize / 2, 2 + 24, cellSize / 2);
       }
     });
   }

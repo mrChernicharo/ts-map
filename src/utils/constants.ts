@@ -13,8 +13,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const cellSize = 40;
 
-export const GROUND_WIDTH = 400; // must be divisible by cellSize
-export const GROUND_DEPTH = 400;
+export const GROUND_WIDTH = 480; // must be divisible by cellSize
+export const GROUND_DEPTH = 640;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);

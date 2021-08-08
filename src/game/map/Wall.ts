@@ -74,7 +74,6 @@ export class Wall extends Mesh {
         optionalShape.moveTo(0, side).lineTo(0, halfSide).lineTo(halfSide, side).closePath();
         break;
       case '0111':
-        this.material.color = new Color(0x0000ff);
         shape
           .moveTo(halfSide, 0)
           .lineTo(side, 0)
@@ -84,15 +83,12 @@ export class Wall extends Mesh {
           .closePath();
         break;
       case '1011':
-        this.material.color = new Color(0x0000ff);
         shape.lineTo(halfSide, 0).lineTo(side, halfSide).lineTo(side, side).lineTo(0, side).closePath();
         break;
       case '1101':
-        this.material.color = new Color(0x0000ff);
         shape.lineTo(side, 0).lineTo(side, halfSide).lineTo(halfSide, side).lineTo(0, side).closePath();
         break;
       case '1110':
-        this.material.color = new Color(0x0000ff);
         shape
           .lineTo(cellSize, 0)
           .lineTo(cellSize, cellSize)
@@ -101,7 +97,6 @@ export class Wall extends Mesh {
           .closePath();
         break;
       case '1111':
-        this.material.color = new Color(0x0000ff);
         shape.lineTo(cellSize, 0).lineTo(cellSize, cellSize).lineTo(0, cellSize).closePath();
         break;
 

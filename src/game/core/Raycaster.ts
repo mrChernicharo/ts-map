@@ -42,9 +42,15 @@ export class Raycaster extends THREERaycaster {
       // console.log(intersect.object.name);
 
       if (mesh.name.includes('Wall')) {
-        (mesh as any).material.transparent = true;
-        (mesh as any).material.opacity = 0.8;
-        (mesh as any).material.wireframe = true;
+        // (mesh as any).material.transparent = true;
+        // (mesh as any).material.opacity = 0.8;
+        // (mesh as any).material.wireframe = true;
+      }
+
+      if (mesh.name === 'Tile') {
+        (mesh as any).material.transparent = false;
+        (mesh as any).material.opacity = 1;
+        // (mesh as any).material.wireframe = true;
       }
 
       if (mesh.name.includes('circle')) {
@@ -66,9 +72,15 @@ export class Raycaster extends THREERaycaster {
       let mesh = intersect.object as Mesh;
 
       if (mesh.name.includes('Wall')) {
-        (mesh as any).material.transparent = false;
-        (mesh as any).material.opacity = 1;
-        (mesh as any).material.wireframe = false;
+        // (mesh as any).material.transparent = false;
+        // (mesh as any).material.opacity = 1;
+        // (mesh as any).material.wireframe = false;
+      }
+
+      if (mesh.name === 'Tile') {
+        (mesh as any).material.transparent = true;
+        (mesh as any).material.opacity = 0.8;
+        // (mesh as any).material.wireframe = false;
       }
 
       if (mesh.name.includes('circle')) {

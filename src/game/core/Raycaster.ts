@@ -44,6 +44,7 @@ export class Raycaster extends THREERaycaster {
       if (mesh.name.includes('Wall')) {
         (mesh as any).material.transparent = true;
         (mesh as any).material.opacity = 0.8;
+        (mesh as any).material.wireframe = true;
       }
 
       if (mesh.name.includes('circle')) {
@@ -52,6 +53,10 @@ export class Raycaster extends THREERaycaster {
 
       if (mesh.name === 'Ball') {
         mesh.material = new MeshToonMaterial({ color: 0x44ff11 });
+      }
+
+      if (mesh.name.includes('Enemy')) {
+        mesh.material = new MeshToonMaterial({ color: 0x44ff11, wireframe: true });
       }
     });
   }
@@ -63,6 +68,7 @@ export class Raycaster extends THREERaycaster {
       if (mesh.name.includes('Wall')) {
         (mesh as any).material.transparent = false;
         (mesh as any).material.opacity = 1;
+        (mesh as any).material.wireframe = false;
       }
 
       if (mesh.name.includes('circle')) {
@@ -71,6 +77,10 @@ export class Raycaster extends THREERaycaster {
 
       if (mesh.name === 'Ball') {
         mesh.material = new MeshToonMaterial({ color: 'purple' });
+      }
+
+      if (mesh.name.includes('Enemy')) {
+        mesh.material = new MeshToonMaterial({ color: 0xff9d00 });
       }
     });
   }

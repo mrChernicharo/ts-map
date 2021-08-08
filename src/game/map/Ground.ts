@@ -166,7 +166,7 @@ export class Ground extends Mesh {
         // emit event notifying path completion
       }
 
-      this.drawPathSpots();
+      // this.drawPathSpots();
     }, pathIntervalStep);
   }
 

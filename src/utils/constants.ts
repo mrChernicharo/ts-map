@@ -71,7 +71,7 @@ export function* idGenerator() {
 
 export function* enemyGenerator(amount = 2) {
   for (let i = 0; i < amount; i++) {
-    let enemy = new Enemy(random(20, 50));
+    let enemy = new Enemy(random(20, 100));
 
     yield enemy;
   }

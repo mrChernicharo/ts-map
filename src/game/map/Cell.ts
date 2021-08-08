@@ -78,16 +78,16 @@ export class Cell extends Mesh {
       console.log(spot.origin);
       this.spots.push(spot);
 
-      // WE GOT PROBLEMS IN HERE
-      // // THRER ARE MISSING/MISPLACED TILES CLOSE TO THE LEFT/TOP BORDERS
-      // const tilePoints = binItems.split('').filter(bin => bin === '1');
+      if (hasWall) {
+        this.appendTile(point);
+      }
 
-      // tilePoints.forEach((element, i, arr) => {
-      //   console.log('makeTile', binItems, arr.length);
+      if (['0111', '1011', '1101', '1110', '1111', ''].includes(this.binCode)) {
+        const extraTile = new Tile();
+        this.add(extraTile);
 
-      // });
-
-      this.appendTile(this.origin, point);
+        extraTile.position.set(cellSize / 2, 24, cellSize / 2);
+      }
     });
   }
 
@@ -98,7 +98,7 @@ export class Cell extends Mesh {
     this.add(wall);
   }
 
-  appendTile(origin: Vector3, localPos: Vector3) {
+  appendTile(localPos: Vector3) {
     const { x, y, z } = localPos;
     const tile = new Tile();
     tile.position.set(x, y + 24, z);

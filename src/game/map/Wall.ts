@@ -1,5 +1,5 @@
 import { Mesh, MeshToonMaterial, Shape, ExtrudeGeometry, BoxGeometry, Vector3, Vector2 } from 'three';
-import { Bin, BinCode, levelFinish, levelStart, tileSize } from '../../utils/constants';
+import { Bin, BinCode, levelFinish, levelStart, cellSize } from '../../utils/constants';
 import { Cell } from './Cell';
 
 export class Wall extends Mesh {
@@ -15,18 +15,18 @@ export class Wall extends Mesh {
     new Mesh(this.geometry, this.material);
 
     this.rotateX(Math.PI / 2);
-    this.position.y += tileSize / 2 + 2;
+    this.position.y += cellSize / 2 + 2;
   }
 
   getGeometry() {
     let wallGeometry;
     let shape = new Shape();
     let optionalShape = new Shape();
-    const [side, halfSide] = [tileSize, tileSize / 2];
+    const [side, halfSide] = [cellSize, cellSize / 2];
 
     const extrudeSettings = {
       steps: 2,
-      depth: tileSize / 2,
+      depth: cellSize / 2,
       bevelEnabled: false,
       // bevelThickness: 1,
       // bevelSize: 1,
@@ -90,14 +90,14 @@ export class Wall extends Mesh {
         break;
       case '1110':
         shape
-          .lineTo(tileSize, 0)
-          .lineTo(tileSize, tileSize)
+          .lineTo(cellSize, 0)
+          .lineTo(cellSize, cellSize)
           .lineTo(halfSide, side)
           .lineTo(0, halfSide)
           .closePath();
         break;
       case '1111':
-        shape.lineTo(tileSize, 0).lineTo(tileSize, tileSize).lineTo(0, tileSize).closePath();
+        shape.lineTo(cellSize, 0).lineTo(cellSize, cellSize).lineTo(0, cellSize).closePath();
         break;
 
       default:

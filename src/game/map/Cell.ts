@@ -1,13 +1,14 @@
 import { CircleGeometry, LineBasicMaterial, Mesh, MeshToonMaterial, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
-import { Bin, BinCode, drawLine, levelFinish, levelStart, tileSize, ZERO } from '../../utils/constants';
+import { Bin, BinCode, drawLine, levelFinish, levelStart, cellSize, ZERO } from '../../utils/constants';
 import { Spot } from './Ground';
+import { Tile } from './Tile';
 
 const points = {
   a: new Vector3(0, 2, 0),
-  b: new Vector3(tileSize, 2, 0),
-  c: new Vector3(tileSize, 2, tileSize),
-  d: new Vector3(0, 2, tileSize),
+  b: new Vector3(cellSize, 2, 0),
+  c: new Vector3(cellSize, 2, cellSize),
+  d: new Vector3(0, 2, cellSize),
 };
 
 export interface CellEdges {
@@ -71,7 +72,13 @@ export class Cell extends Mesh {
 
       this.spots.push(spot);
 
-      // this.appendCircles();
+      const tilePoints = binItems.split('').filter(bin => bin === '1');
+
+      tilePoints.forEach((element, i, arr) => {
+        console.log('makeTile', binItems, arr.length);
+
+        this.appendTile(this.col === 0, this.row === 0);
+      });
     });
   }
 
@@ -80,6 +87,20 @@ export class Cell extends Mesh {
     wall.name = `${this.index}-Wall`;
 
     this.add(wall);
+  }
+
+  appendTile(zeroCol = false, zeroRow = false) {
+    const tile = new Tile();
+    console.log(tile.position);
+    this.add(tile);
+
+    // if (zeroCol) {
+    //   tile.position.x -= cellSize;
+    // }
+
+    // if (zeroRow) {
+    //   tile.position.z -= cellSize;
+    // }
   }
 
   getSpotPoints(): [{ [key: string]: Vector3 }, string] {

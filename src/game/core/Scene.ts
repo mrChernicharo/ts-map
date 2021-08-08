@@ -17,7 +17,7 @@ import {
   Vector3,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
+import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../../utils/constants';
 import { Cube } from '../objects/Cube';
 import { Ball } from '../objects/Ball';
 import { Flag } from '../objects/Flag';

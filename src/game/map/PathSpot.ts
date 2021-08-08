@@ -6,7 +6,7 @@ const colors = {
   current: 0xff9d00,
   closed: 0x4785d6,
   open: 0x0039d6,
-  // current:
+  // current: 0xff0000,
   // open: 0x00ff00,
   // closed: 0x0056ff,
 };

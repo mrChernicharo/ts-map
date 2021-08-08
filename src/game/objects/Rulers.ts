@@ -1,5 +1,5 @@
 import { FontLoader, LineBasicMaterial, Mesh, MeshBasicMaterial, TextGeometry, Vector3 } from 'three';
-import { drawLine, GROUND_WIDTH, GROUND_DEPTH, tileSize } from '../../utils/constants';
+import { drawLine, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../../utils/constants';
 
 const bottomBorder = GROUND_DEPTH / 2;
 
@@ -52,19 +52,19 @@ export class Rulers extends Mesh {
 
       const xGeometry = new TextGeometry('X', params);
       fontMesh = new Mesh(xGeometry, material(0x00ff00));
-      let [x, y, z] = [tileSize, 0, GROUND_DEPTH / 2 + tileSize * 0.5];
+      let [x, y, z] = [cellSize, 0, GROUND_DEPTH / 2 + cellSize * 0.5];
       fontMesh.position.set(x, y, z);
       this.add(fontMesh);
 
       const yGeometry = new TextGeometry('Y', params);
       fontMesh = new Mesh(yGeometry, material(0x0000ff));
-      [x, y, z] = [0, tileSize, GROUND_DEPTH / 2 + tileSize * 0.5];
+      [x, y, z] = [0, cellSize, GROUND_DEPTH / 2 + cellSize * 0.5];
       fontMesh.position.set(x, y, z);
       this.add(fontMesh);
 
       const zGeometry = new TextGeometry('z', params);
       fontMesh = new Mesh(zGeometry, material(0xff0000));
-      [x, y, z] = [0, 0, GROUND_DEPTH / 2 + tileSize * 1.5];
+      [x, y, z] = [0, 0, GROUND_DEPTH / 2 + cellSize * 1.5];
       fontMesh.position.set(x, y, z);
       this.add(fontMesh);
     });

@@ -1,5 +1,5 @@
 import { AxesHelper, GridHelper, Vector3 } from 'three';
-import { GROUND_WIDTH, tileSize } from './constants';
+import { GROUND_WIDTH, cellSize } from './constants';
 
 function createAxesHelper() {
   const helper = new AxesHelper(3);
@@ -11,7 +11,7 @@ function createAxesHelper() {
 
 function createGridHelper() {
   const helper = new GridHelper(GROUND_WIDTH);
-  helper.position.y = tileSize;
+  helper.position.y = cellSize;
   return helper;
 }
 

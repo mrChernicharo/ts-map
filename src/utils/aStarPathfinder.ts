@@ -1,7 +1,7 @@
 import { Path, Vector2, Vector3 } from 'three';
 import { Cell } from '../game/map/Cell';
 import { Spot } from '../game/map/Ground';
-import { tileSize } from './constants';
+import { cellSize } from './constants';
 import { PathSpot } from '../game/map/PathSpot';
 
 export interface PathNode {
@@ -45,7 +45,7 @@ export class AStarPathfinder {
     const pos = origin.clone().add(localPos.clone());
 
     const getNeighbors = function (nodes: PathNode[]) {
-      const [o, far] = [new Vector2(0, 0), new Vector2(tileSize, tileSize)];
+      const [o, far] = [new Vector2(0, 0), new Vector2(cellSize, cellSize)];
       return nodes.filter(
         n => n.pos.distanceTo(this.pos) <= Math.abs(o.distanceTo(far)) && n.pos.distanceTo(this.pos) !== 0
       );

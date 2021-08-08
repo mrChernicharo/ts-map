@@ -15,7 +15,7 @@ import { AStarPathfinder, PathNode } from '../../utils/aStarPathfinder';
 // import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
   drawLine,
-  tileSize,
+  cellSize,
   GROUND_DEPTH,
   GROUND_WIDTH,
   randomBin,
@@ -53,8 +53,8 @@ export class Ground extends Mesh {
   constructor() {
     super();
 
-    this.cols = GROUND_WIDTH / tileSize;
-    this.rows = GROUND_DEPTH / tileSize;
+    this.cols = GROUND_WIDTH / cellSize;
+    this.rows = GROUND_DEPTH / cellSize;
 
     this.geometry = new BoxGeometry(GROUND_WIDTH, 4, GROUND_DEPTH);
     this.material = new MeshBasicMaterial({ color: '#242424', wireframe: false });
@@ -91,8 +91,8 @@ export class Ground extends Mesh {
   }
 
   createCell(index: number, edges: CellEdges, r: number, c: number) {
-    const originX = c * tileSize - GROUND_WIDTH / 2;
-    const originY = r * tileSize - GROUND_DEPTH / 2;
+    const originX = c * cellSize - GROUND_WIDTH / 2;
+    const originY = r * cellSize - GROUND_DEPTH / 2;
 
     const origin = new Vector3(originX, 0, originY);
 
@@ -107,24 +107,12 @@ export class Ground extends Mesh {
   }
 
   getSpots() {
-    return (
-      this.cells
-        // .map(cell => cell.children.filter(child => child.name.includes('circle')))
-        .map(cell => cell.spots.filter(child => child.name.includes('spot')))
-        .flat()
-        .forEach((spot, i) => {
-          //
-          // const spot: Spot = {
-          //   index: i,
-          //   localPos: mesh.position,
-          //   origin: (mesh as any).origin,
-          //   isWall: (mesh as any).hasWall,
-          //   name: mesh.name,
-          // };
-
-          this.spots.push(spot);
-        })
-    );
+    return this.cells
+      .map(cell => cell.spots.filter(child => child.name.includes('spot')))
+      .flat()
+      .forEach((spot, i) => {
+        this.spots.push(spot);
+      });
   }
 
   enhanceBinCode(origin: Vector3, edges: CellEdges) {
@@ -138,7 +126,7 @@ export class Ground extends Mesh {
     // prevents start/finish from being locked by walls:
     // forces bin '0' if edge is too close from start/finish
     Object.entries(dists).forEach(([key, distance]) => {
-      if (distance.distanceTo(levelStart) < tileSize * 2 || distance.distanceTo(levelFinish) < tileSize * 2) {
+      if (distance.distanceTo(levelStart) < cellSize * 2 || distance.distanceTo(levelFinish) < cellSize * 2) {
         edges[key] = '0';
       }
     });

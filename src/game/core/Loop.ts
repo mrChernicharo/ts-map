@@ -1,9 +1,9 @@
-import { Clock, Mesh, Quaternion, WebGL1Renderer } from 'three';
+import { Clock, Mesh, Quaternion, Vector3, WebGL1Renderer } from 'three';
 import { Camera } from './Camera';
 import { Cube } from '../objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../objects/Ball';
-import { enemyGenerator, levelFinish, levelStart } from '../../utils/constants';
+import { enemyGenerator, levelFinish, levelStart, random } from '../../utils/constants';
 import { Flag } from '../objects/Flag';
 import { Enemy } from '../objects/Enemy';
 
@@ -12,7 +12,8 @@ interface IUpdatable extends Mesh {
 }
 
 const clock = new Clock();
-const enemyGen = enemyGenerator();
+const enemyGen = enemyGenerator(100);
+const enemyInterval = 4;
 
 class Loop {
   updatables: IUpdatable[];
@@ -25,9 +26,9 @@ class Loop {
     this.add(startFlag);
     this.add(endFlag);
 
-    const enemy = new Enemy(40);
+    // const enemy = new Enemy(40);
 
-    this.add(enemy);
+    // this.add(enemy);
   }
 
   start() {
@@ -59,10 +60,16 @@ class Loop {
     const delta = clock.getDelta();
     const elapsed = clock.getElapsedTime();
 
-    console.log();
+    // console.log(random(20));
 
-    if ((elapsed % 4) + delta >= 4) {
-      enemyGen.next();
+    if ((elapsed % enemyInterval) + delta >= enemyInterval) {
+      const enemy = enemyGen.next().value;
+
+      if (enemy) this.add(enemy);
+    }
+
+    if ((elapsed % 10) + delta >= 10) {
+      console.log(this.updatables);
     }
 
     for (const object of this.updatables) {

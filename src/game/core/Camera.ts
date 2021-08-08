@@ -16,8 +16,4 @@ export class Camera extends PerspectiveCamera {
 
     this.lookAt(0, 0, 0);
   }
-
-  init() {
-    return this;
-  }
 }

@@ -74,9 +74,8 @@ class Scene extends THREEScene {
 
     this.camera = new Camera();
 
-    this.inputManager = new InputManager();
-
     this.raycaster = new Raycaster(this.camera, this);
+    this.inputManager = new InputManager(this.camera, this);
 
     this.orbitControls = new OrbitControls(this.camera, this.domContainer);
     this.orbitControls.enableDamping = true;
@@ -104,10 +103,10 @@ class Scene extends THREEScene {
       this.onResize();
     });
 
-    window.addEventListener('keydown', this.inputManager.handleKeyDown);
-    window.addEventListener('keyup', this.inputManager.handleKeyUp);
-    window.addEventListener('mousedown', this.inputManager.handleMouseDown);
-    window.addEventListener('mouseup', this.inputManager.handleMouseUp);
+    window.addEventListener('keydown', e => this.inputManager.handleKeyDown(e));
+    window.addEventListener('keyup', e => this.inputManager.handleKeyUp(e));
+    window.addEventListener('mousedown', e => this.inputManager.handleMouseDown(e));
+    window.addEventListener('mouseup', e => this.inputManager.handleMouseUp(e));
     window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
 
     window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));

@@ -1,21 +1,33 @@
+import { Vector3 } from 'three';
+import { Camera } from './Camera';
+import { Scene } from './Scene';
+
 const logGen = generateLog();
 
 export class InputManager {
   logger: any;
-  constructor() {}
+  camera: Camera;
+  scene: Scene;
+  constructor(camera: Camera, scene: Scene) {
+    this.camera = camera;
+    this.scene = scene;
+    console.log();
+  }
 
   handleKeyDown(event: KeyboardEvent) {
+    let movement = new Vector3(0, 0, 0);
+
     if (event.code === 'KeyW') {
-      console.log('W keydown');
+      movement.z -= 4;
     }
     if (event.code === 'KeyA') {
-      console.log('A keydown');
+      movement.x -= 4;
     }
     if (event.code === 'KeyD') {
-      console.log('D keydown');
+      movement.x += 4;
     }
     if (event.code === 'KeyS') {
-      console.log('S keydown');
+      movement.z += 4;
     }
     if (event.code === 'Space') {
       console.log('Space keydown');
@@ -23,7 +35,11 @@ export class InputManager {
     if (event.code === 'Escape') {
       console.log('Esc keydown');
     }
+
+    // const [x, y, z] = Object.values(movement);
+    this.camera.position.add(movement);
   }
+
   handleKeyUp(event: KeyboardEvent) {
     if (event.code === 'KeyW') {
       console.log('W keyup');
@@ -46,13 +62,13 @@ export class InputManager {
   }
   handleMouseUp(event: MouseEvent) {
     logGen.next();
-
-    // console.log(event);
   }
   handleMouseDown(event: MouseEvent) {
     logGen.next();
   }
   handleMouseWheel(event: WheelEvent) {
+    // console.log(event);
+
     logGen.next();
   }
 }

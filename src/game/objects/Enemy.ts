@@ -13,15 +13,18 @@ export class Enemy extends Mesh {
 
     this.speed = speed;
 
-    this.material = new MeshToonMaterial({ color: 0xff9d00 });
-    this.geometry = new ConeGeometry(8, 20, 16);
-
     this.init();
   }
 
   async init() {
     this.path = await this.getPath();
+
+    this.material = new MeshToonMaterial({ color: 0xff9d00 });
+    this.geometry = new ConeGeometry(8, 20, 16);
+
     new Mesh(this.geometry, this.material);
+
+    this.name = `Enemy-${this.id}`;
 
     const [x, y, z] = Object.values(this.path[0].clone());
     this.position.set(x, y, z);
@@ -42,7 +45,7 @@ export class Enemy extends Mesh {
           : reject("couldn't get path nodes in time!");
         // }, 0);
         // }, 1000);
-      }, pathFindingDelay * 4);
+      }, pathFindingDelay);
     });
   }
 

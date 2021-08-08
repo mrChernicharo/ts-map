@@ -13,8 +13,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const tileSize = 40;
 
-export const GROUND_WIDTH = 1000; // must be divisible by tileSize
-export const GROUND_DEPTH = 1000;
+export const GROUND_WIDTH = 400; // must be divisible by tileSize
+export const GROUND_DEPTH = 400;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
@@ -41,6 +41,16 @@ export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '
 
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
+export const random = (a: number, b?: number) => {
+  if (!b) {
+    return Math.round(Math.random() * a) + 1;
+  }
+
+  if (b) {
+    return Math.round(Math.random() * (b - a) + a);
+  }
+};
+
 export const randomBin = () => {
   const len = binOptions.length - 1;
   return binOptions[Math.round(Math.random() * len)];
@@ -59,9 +69,9 @@ export function* idGenerator() {
   }
 }
 
-export function* enemyGenerator() {
-  for (let i = 0; i < 10; i++) {
-    let enemy = new Enemy(40);
+export function* enemyGenerator(amount = 2) {
+  for (let i = 0; i < amount; i++) {
+    let enemy = new Enemy(random(20, 50));
 
     yield enemy;
   }

@@ -48,6 +48,7 @@ type Edges = {
 };
 
 const idMaker = idGenerator();
+const pathIntervalStep = undefined;
 
 export class Ground extends Mesh {
   cols: number;
@@ -166,7 +167,7 @@ export class Ground extends Mesh {
       }
 
       this.drawPathSpots();
-    });
+    }, pathIntervalStep);
   }
 
   createPathLine() {

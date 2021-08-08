@@ -1,6 +1,7 @@
 import { CircleGeometry, LineBasicMaterial, Mesh, MeshToonMaterial, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
 import { Bin, BinCode, drawLine, levelFinish, levelStart, tileSize, ZERO } from '../../utils/constants';
+import { Spot } from './Ground';
 
 const points = {
   a: new Vector3(0, 2, 0),
@@ -23,6 +24,7 @@ export class Cell extends Mesh {
   row: number;
   col: number;
   edges: CellEdges;
+  spots: Spot[] = [];
   constructor(index: number, row: number, col: number, binCode: BinCode, origin: Vector3) {
     super();
     this.index = index;
@@ -33,7 +35,7 @@ export class Cell extends Mesh {
     this.position.set(origin.x, origin.y, origin.z);
 
     this.drawLines();
-    this.appendEdgeCircle();
+    this.appendSpots();
     this.buildWall();
   }
 
@@ -53,10 +55,36 @@ export class Cell extends Mesh {
     }
   }
 
-  appendEdgeCircle() {
+  appendSpots() {
+    let [dotPoints, binItems] = this.getSpotPoints();
+
+    Object.entries(dotPoints).forEach(([key, point], i) => {
+      const hasWall = binItems[i] === '1';
+
+      const spot: Spot = {
+        index: i,
+        localPos: point,
+        origin: this.origin,
+        isWall: hasWall,
+        name: `spot-${this.index + key}`,
+      };
+
+      this.spots.push(spot);
+
+      // this.appendCircles();
+    });
+  }
+
+  buildWall() {
+    const wall = new Wall(this.binCode);
+    wall.name = `${this.index}-Wall`;
+
+    this.add(wall);
+  }
+
+  getSpotPoints(): [{ [key: string]: Vector3 }, string] {
     let dotPoints: { [key: string]: Vector3 };
     let binItems: string;
-
     if (this.row === 0 && this.col === 0) {
       dotPoints = { ...points };
       binItems = this.binCode;
@@ -74,29 +102,22 @@ export class Cell extends Mesh {
       binItems = this.binCode.substr(2, 1);
     }
 
-    Object.entries(dotPoints).forEach(([key, point], i) => {
-      const hasWall = binItems[i] === '1';
-      const color = hasWall ? 0x000000 : 0xffffff;
+    return [dotPoints, binItems];
+  }
 
-      const circleGeomety = new CircleGeometry(2);
+  appendCircles() {
+    this.spots.forEach(spot => {
+      const color = spot.isWall ? 0x000000 : 0xffffff;
+
+      const circleGeomety = new CircleGeometry(3);
       const circleMaterial = new MeshToonMaterial({ color });
 
       const circle = new Mesh(circleGeomety, circleMaterial);
-      circle.name = `circle-${this.index + key}`;
-      circle['hasWall'] = hasWall;
-      circle['origin'] = this.origin;
+      circle.name = `circle-${this.index}`;
 
-      circle.position.set(point.x, point.y + 1, point.z);
+      circle.position.set(spot.localPos.x, spot.localPos.y + 1, spot.localPos.z);
       circle.rotateX(-Math.PI / 2);
-
       this.add(circle);
     });
-  }
-
-  buildWall() {
-    const wall = new Wall(this.binCode);
-    wall.name = `${this.index}-Wall`;
-
-    this.add(wall);
   }
 }

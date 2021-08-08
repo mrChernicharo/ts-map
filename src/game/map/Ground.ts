@@ -28,24 +28,17 @@ import {
   cellPoints,
 } from '../../utils/constants';
 import { PathSpot } from './PathSpot';
-import { Cell } from './Cell';
+import { Cell, CellEdges } from './Cell';
 
 export interface Spot {
   index: number;
   isWall: boolean;
   origin: Vector3;
   localPos: Vector3;
-  hl: number; // horizontal line
-  vl: number; // vertical line
   name: string;
+  // hl: number; // horizontal line  => // hl: Math.floor(i / (this.cols + 1)),
+  // vl: number; // vertical line  => // vl: i % (this.cols + 1),
 }
-
-type Edges = {
-  a: Bin;
-  b: Bin;
-  c: Bin;
-  d: Bin;
-};
 
 const idMaker = idGenerator();
 const pathIntervalStep = undefined;
@@ -97,7 +90,7 @@ export class Ground extends Mesh {
     }
   }
 
-  createCell(index: number, edges: Edges, r: number, c: number) {
+  createCell(index: number, edges: CellEdges, r: number, c: number) {
     const originX = c * tileSize - GROUND_WIDTH / 2;
     const originY = r * tileSize - GROUND_DEPTH / 2;
 
@@ -114,26 +107,27 @@ export class Ground extends Mesh {
   }
 
   getSpots() {
-    return this.cells
-      .map(cell => cell.children.filter(child => child.name.includes('circle')))
-      .flat()
-      .forEach((mesh, i) => {
-        //
-        const spot: Spot = {
-          index: i,
-          localPos: mesh.position,
-          origin: (mesh as any).origin,
-          isWall: (mesh as any).hasWall,
-          name: mesh.name,
-          hl: Math.floor(i / (this.cols + 1)),
-          vl: i % (this.cols + 1),
-        };
+    return (
+      this.cells
+        // .map(cell => cell.children.filter(child => child.name.includes('circle')))
+        .map(cell => cell.spots.filter(child => child.name.includes('spot')))
+        .flat()
+        .forEach((spot, i) => {
+          //
+          // const spot: Spot = {
+          //   index: i,
+          //   localPos: mesh.position,
+          //   origin: (mesh as any).origin,
+          //   isWall: (mesh as any).hasWall,
+          //   name: mesh.name,
+          // };
 
-        this.spots.push(spot);
-      });
+          this.spots.push(spot);
+        })
+    );
   }
 
-  enhanceBinCode(origin: Vector3, edges: Edges) {
+  enhanceBinCode(origin: Vector3, edges: CellEdges) {
     const dists = {
       a: origin.clone().add(cellPoints.a),
       b: origin.clone().add(cellPoints.b),

@@ -1,11 +1,13 @@
 import { Scene } from './core/Scene';
 import { Loop } from './core/Loop';
 import { GameState } from './core/GameState';
+import { DOMManager } from './templates/DOMManager';
 
 export class Game {
   scene: Scene;
   loop: Loop;
   state: GameState;
+  dom: DOMManager;
 
   constructor(domContainer: HTMLDivElement) {
     this.state = new GameState();

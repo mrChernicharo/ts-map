@@ -33,8 +33,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import { Raycaster } from './Raycaster';
 import { AStarPathfinder } from '../../utils/aStarPathfinder';
 import { GameState } from './GameState';
-
-const modal = document.querySelector('#tower-modal');
+import { DOMManager } from '../templates/DOMManager';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -46,6 +45,7 @@ class Scene extends THREEScene {
   orbitControls: OrbitControls;
   inputManager: InputManager;
   raycaster: Raycaster;
+  domManager: DOMManager;
   gui: GUI;
   constructor(private domContainer: HTMLDivElement, gameState: GameState) {
     super();
@@ -59,8 +59,6 @@ class Scene extends THREEScene {
 
   init() {
     this.initCore();
-
-    // this.add(ground);
 
     this.addObjects();
 
@@ -84,9 +82,9 @@ class Scene extends THREEScene {
     this.orbitControls.enableDamping = true;
     this.orbitControls.maxPolarAngle = Math.PI / 2;
 
-    // this.PointerLockControls = new PointerLockControls(this.camera, this.domContainer);
-
     this.lights = new DirectionalLight('white', 1.8);
+
+    this.domManager = new DOMManager(this.raycaster, this.inputManager);
   }
 
   addObjects() {
@@ -97,6 +95,7 @@ class Scene extends THREEScene {
     const ground = new Ground();
 
     const objects = [ground, this.lights, rulers];
+
     this.add(...objects);
   }
 
@@ -106,23 +105,6 @@ class Scene extends THREEScene {
 
       // perform any custom actions
       this.onResize();
-    });
-
-    window.addEventListener('keydown', e => this.inputManager.handleKeyDown(e));
-    window.addEventListener('keyup', e => this.inputManager.handleKeyUp(e));
-    // window.addEventListener('mousedown', e => this.inputManager.handleMouseDown(e));
-    // window.addEventListener('mouseup', e => this.inputManager.handleMouseUp(e));
-    // window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
-
-    window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
-    window.addEventListener('click', e => {
-      this.closeModal();
-      this.raycaster.handleClick(e);
-    });
-
-    this.raycaster.raycasterEmitter.on('tileClick', e => {
-      console.log('tile clicked');
-      this.showModal();
     });
   }
 
@@ -135,12 +117,7 @@ class Scene extends THREEScene {
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
   }
-  showModal() {
-    modal.classList.add('visible');
-  }
-  closeModal() {
-    modal.classList.remove('visible');
-  }
+
   onResize() {}
 }
 export { Scene };

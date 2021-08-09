@@ -40,12 +40,15 @@ canvas {
   justify-content: center;
   width: 200px;
   height: 200px;
-  bottom: 2rem;
+  /* bottom: 2rem;
+  right: 2rem;   */
+  top: 2rem;
   right: 2rem;
   background: var(--color--bg);
   color: var(--color--txt);
   border-block: 5px solid var(--color--txt);
   opacity: 0;
+  z-index: 1;
 }
 
 #tower-modal.visible {

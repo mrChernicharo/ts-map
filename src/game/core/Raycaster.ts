@@ -56,6 +56,7 @@ export class Raycaster extends THREERaycaster {
   }
 
   handleClick(event: MouseEvent) {
+    console.log(event);
     this.fireClickEvent();
   }
 

@@ -37,7 +37,7 @@ export class Raycaster extends THREERaycaster {
       // console.log(e);
     });
     this.raycasterEmitter.on('tileClick', (e: Tile) => {
-      console.log(e);
+      // console.log(e);
       return e;
     });
     this.raycasterEmitter.on('enemyClick', (e: Enemy) => {
@@ -56,7 +56,7 @@ export class Raycaster extends THREERaycaster {
   }
 
   handleClick(event: MouseEvent) {
-    console.log(event);
+    // console.log(event);
     this.fireClickEvent();
   }
 
@@ -103,10 +103,10 @@ export class Raycaster extends THREERaycaster {
       if (obj.name.includes('Wall')) {
       }
 
-      if (obj.name === 'Tile') {
-        (obj as any).material.transparent = false;
-        (obj as any).material.opacity = 1;
-      }
+      // if (obj.name === 'Tile') {
+      //   (obj as any).material.transparent = false;
+      //   (obj as any).material.opacity = 1;
+      // }
 
       if (obj.name.includes('circle')) {
         obj.material = new MeshToonMaterial({ color: 0x44ff11 });
@@ -121,6 +121,7 @@ export class Raycaster extends THREERaycaster {
       }
     });
   }
+
   _clearIntersectedEfx() {
     this.intersects.forEach(intersect => {
       let obj = intersect.object as Mesh;
@@ -128,10 +129,9 @@ export class Raycaster extends THREERaycaster {
       if (obj.name.includes('Wall')) {
       }
 
-      if (obj.name === 'Tile') {
-        (obj as any).material.transparent = true;
-        (obj as any).material.opacity = 0.8;
-      }
+      // if (obj.name === 'Tile') {
+      //   (obj as any).material = new MeshToonMaterial({ color: 0xac3902, opacity: 0.75, transparent: true });
+      // }
 
       if (obj.name.includes('circle')) {
         obj.material = new MeshToonMaterial({ color: (obj as any).hasWall ? 0x000000 : 0xffffff });
@@ -152,7 +152,8 @@ export class Raycaster extends THREERaycaster {
     let y = -(event.clientY / window.innerHeight) * 2 + 1;
     return new Vector2(x, y);
   }
-}
 
-// const ground = this.scene.children[0];
-// this.intersects = this.intersectObjects([ground], true);
+  // _applySelectedEfx(tile: Object3D) {
+  //   (tile as any).material = new MeshToonMaterial({ color: 0x0023ef });
+  // }
+}

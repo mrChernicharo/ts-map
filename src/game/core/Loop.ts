@@ -49,7 +49,7 @@ class Loop {
     this.scene.add(item);
   }
 
-  remove(id: string) {
+  remove() {
     // const removingEl = this.updatables.find((item) => item.uuid === id);
     // this.updatables = this.updatables.filter((item) => item.uuid === id);
     // this.scene.remove(removingEl);
@@ -68,9 +68,9 @@ class Loop {
       if (enemy) this.add(enemy);
     }
 
-    if ((elapsed % 10) + delta >= 10) {
-      console.log(this.updatables);
-    }
+    // if ((elapsed % 10) + delta >= 10) {
+    //   console.log(this.updatables);
+    // }
 
     for (const object of this.updatables) {
       //   console.log(delta, this.updatables, object);

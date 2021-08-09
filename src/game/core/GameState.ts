@@ -1,5 +1,7 @@
+import { Object3D } from 'three';
+
 export class GameState {
-  hovered: any[] = [];
+  focused: Object3D;
   gold: number;
   castle: number;
   constructor() {
@@ -9,11 +11,11 @@ export class GameState {
     console.log(this);
   }
 
-  setHovered(obj: any) {
-    this.hovered.push({ ...obj });
+  setFocused(obj: Object3D) {
+    this.focused = obj;
   }
 
-  getHovered() {
-    return this.hovered;
+  getFocused() {
+    return this.focused;
   }
 }

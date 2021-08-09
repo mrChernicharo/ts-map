@@ -17,7 +17,7 @@ export class Enemy extends Mesh {
   }
 
   async init() {
-    this.path = await this.getPath();
+    this.path = await this.getPathNodes();
 
     this.material = new MeshToonMaterial({ color: 0xff9d00 });
     this.geometry = new ConeGeometry(8, 20, 16);
@@ -32,8 +32,8 @@ export class Enemy extends Mesh {
     this.nextPos = this.path[this.nxPathIdx];
   }
 
-  async getPath(): Promise<Vector3[]> {
-    console.log('initializing enemy');
+  async getPathNodes(): Promise<Vector3[]> {
+    console.log(`initializing enemy ${this.id}`);
     return new Promise((resolve, reject) => {
       let ground: any;
 

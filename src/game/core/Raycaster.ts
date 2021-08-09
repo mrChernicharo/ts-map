@@ -11,6 +11,8 @@ import {
 import { Camera } from './Camera';
 import { EventEmitter } from 'events';
 import { GameState } from './GameState';
+import { Tile } from '../map/Tile';
+import { Enemy } from '../objects/Enemy';
 
 export class Raycaster extends THREERaycaster {
   camera: Camera;
@@ -28,9 +30,19 @@ export class Raycaster extends THREERaycaster {
 
     this.layers.set(0);
 
-    this.raycasterEmitter.on('tileHover', e => {});
-    this.raycasterEmitter.on('enemyHover', e => {});
-    this.raycasterEmitter.on('tileClick', e => {});
+    this.raycasterEmitter.on('tileHover', (e: Tile) => {
+      // console.log(e);
+    });
+    this.raycasterEmitter.on('enemyHover', (e: Enemy) => {
+      // console.log(e);
+    });
+    this.raycasterEmitter.on('tileClick', (e: Tile) => {
+      console.log(e);
+      return e;
+    });
+    this.raycasterEmitter.on('enemyClick', (e: Enemy) => {
+      console.log(e);
+    });
   }
 
   handleMouseMove(event: MouseEvent) {
@@ -40,12 +52,11 @@ export class Raycaster extends THREERaycaster {
 
     this.monitorIntersects();
 
-    this.fireHoverEvents();
+    this.fireHoverEvent();
   }
 
   handleClick(event: MouseEvent) {
-    console.log(event);
-    this.updateState(this.gameState);
+    this.fireClickEvent();
   }
 
   monitorIntersects() {
@@ -56,23 +67,34 @@ export class Raycaster extends THREERaycaster {
     this._applyIntersectedEfx();
   }
 
-  updateState(state: GameState) {
-    state.hovered = this.intersects.filter(int => int.object.name === 'Tile');
-
-    console.log(state);
-  }
-
-  fireHoverEvents() {
-    const tile = this.intersects.find(intersected => intersected.object.name === 'Tile');
+  fireHoverEvent() {
+    const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
+    const tile = tileIntersection?.object;
     if (tile) {
       this.raycasterEmitter.emit('tileHover', tile);
     }
 
-    const enemy = this.intersects.find(intersected => intersected.object.name.includes('Enemy'));
+    const enemyIntersection = this.intersects.find(intersected => intersected.object.name.includes('Enemy'));
+    const enemy = enemyIntersection?.object;
     if (enemy) {
       this.raycasterEmitter.emit('enemyHover', enemy);
     }
   }
+
+  fireClickEvent() {
+    const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
+    const tile = tileIntersection?.object;
+    if (tile) {
+      this.raycasterEmitter.emit('tileClick', tile);
+    }
+
+    const enemyIntersection = this.intersects.find(intersected => intersected.object.name.includes('Enemy'));
+    const enemy = enemyIntersection?.object;
+    if (enemy) {
+      this.raycasterEmitter.emit('enemyClick', enemy);
+    }
+  }
+
   _applyIntersectedEfx() {
     this.intersects.forEach(intersect => {
       let obj = intersect.object as Mesh;

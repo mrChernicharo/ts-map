@@ -34,6 +34,8 @@ import { Raycaster } from './Raycaster';
 import { AStarPathfinder } from '../../utils/aStarPathfinder';
 import { GameState } from './GameState';
 
+const modal = document.querySelector('#tower-modal');
+
 // class WorldScene
 class Scene extends THREEScene {
   state: GameState;
@@ -89,11 +91,13 @@ class Scene extends THREEScene {
 
   addObjects() {
     // adding test objects
-    // new Polyhedron(this);
+    // const poly = new Polyhedron(this);
 
-    // const rulers = new Rulers();
+    const rulers = new Rulers();
     const ground = new Ground();
-    this.add(ground, this.lights);
+
+    const objects = [ground, this.lights, rulers];
+    this.add(...objects);
   }
 
   setEvents() {
@@ -111,7 +115,15 @@ class Scene extends THREEScene {
     // window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
 
     window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
-    window.addEventListener('click', e => this.raycaster.handleClick(e));
+    window.addEventListener('click', e => {
+      this.closeModal();
+      this.raycaster.handleClick(e);
+    });
+
+    this.raycaster.raycasterEmitter.on('tileClick', e => {
+      console.log('tile clicked');
+      this.showModal();
+    });
   }
 
   setSize(container: Element) {
@@ -123,7 +135,12 @@ class Scene extends THREEScene {
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
   }
-
+  showModal() {
+    modal.classList.add('visible');
+  }
+  closeModal() {
+    modal.classList.remove('visible');
+  }
   onResize() {}
 }
 export { Scene };

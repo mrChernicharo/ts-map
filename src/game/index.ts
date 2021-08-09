@@ -1,14 +1,15 @@
 import { Scene } from './core/Scene';
-import { Cube } from './objects/Cube';
 import { Loop } from './core/Loop';
-import { Ball } from './objects/Ball';
+import { GameState } from './core/GameState';
 
 export class Game {
   scene: Scene;
   loop: Loop;
+  state: GameState;
 
   constructor(domContainer: HTMLDivElement) {
-    this.scene = new Scene(domContainer);
+    this.state = new GameState();
+    this.scene = new Scene(domContainer, this.state);
     this.loop = new Loop(this.scene.camera, this.scene, this.scene.renderer);
 
     domContainer.append(this.scene.renderer.domElement);

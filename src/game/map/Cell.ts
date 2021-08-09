@@ -38,8 +38,6 @@ export class Cell extends Mesh {
     this.drawLines();
     this.appendSpots();
     this.buildWall();
-
-    console.log(this.spots.length);
   }
 
   drawLines() {
@@ -62,7 +60,7 @@ export class Cell extends Mesh {
 
   appendSpots() {
     let [dotPoints, binItems] = this.getSpotPoints();
-    console.log(dotPoints);
+    // console.log(dotPoints);
 
     Object.entries(dotPoints).forEach(([key, point], i) => {
       const hasWall = binItems[i] === '1';
@@ -75,14 +73,13 @@ export class Cell extends Mesh {
         name: `spot-${this.index + key}`,
       };
 
-      console.log(spot.origin);
       this.spots.push(spot);
 
       if (hasWall) {
         this.appendTile(point);
       }
 
-      if (['0111', '1011', '1101', '1110', '1111', ''].includes(this.binCode)) {
+      if (['0111', '1011', '1101', '1110', '1111'].includes(this.binCode)) {
         const extraTile = new Tile();
         this.add(extraTile);
 
@@ -102,6 +99,7 @@ export class Cell extends Mesh {
     const { x, y, z } = localPos;
     const tile = new Tile();
     tile.position.set(x, y + 24, z);
+
     this.add(tile);
   }
 

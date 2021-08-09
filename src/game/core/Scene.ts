@@ -32,22 +32,23 @@ import { InputManager } from './InputManager';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { Raycaster } from './Raycaster';
 import { AStarPathfinder } from '../../utils/aStarPathfinder';
+import { GameState } from './GameState';
 
 // class WorldScene
 class Scene extends THREEScene {
+  state: GameState;
+  loop: Loop;
   renderer: WebGL1Renderer;
+  lights: Light;
   camera: Camera;
   orbitControls: OrbitControls;
-  PointerLockControls: PointerLockControls;
-  loop: Loop;
-  lights: Light;
-  gui: GUI;
   inputManager: InputManager;
   raycaster: Raycaster;
-
-  constructor(private domContainer: HTMLDivElement) {
+  gui: GUI;
+  constructor(private domContainer: HTMLDivElement, gameState: GameState) {
     super();
     new THREEScene();
+    this.state = gameState;
     this.gui = new GUI();
     this.fog = new Fog(0x003300, -1, 5000);
     this.background = new Color(0x00000);
@@ -74,7 +75,7 @@ class Scene extends THREEScene {
 
     this.camera = new Camera();
 
-    this.raycaster = new Raycaster(this.camera, this);
+    this.raycaster = new Raycaster(this.camera, this, this.state);
     this.inputManager = new InputManager(this.camera, this);
 
     this.orbitControls = new OrbitControls(this.camera, this.domContainer);
@@ -105,11 +106,12 @@ class Scene extends THREEScene {
 
     window.addEventListener('keydown', e => this.inputManager.handleKeyDown(e));
     window.addEventListener('keyup', e => this.inputManager.handleKeyUp(e));
-    window.addEventListener('mousedown', e => this.inputManager.handleMouseDown(e));
-    window.addEventListener('mouseup', e => this.inputManager.handleMouseUp(e));
-    window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
+    // window.addEventListener('mousedown', e => this.inputManager.handleMouseDown(e));
+    // window.addEventListener('mouseup', e => this.inputManager.handleMouseUp(e));
+    // window.addEventListener('mousewheel', this.inputManager.handleMouseWheel);
 
     window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
+    window.addEventListener('click', e => this.raycaster.handleClick(e));
   }
 
   setSize(container: Element) {
@@ -122,8 +124,6 @@ class Scene extends THREEScene {
     this.renderer.setPixelRatio(window.devicePixelRatio);
   }
 
-  onResize() {
-    // console.log('resizing');
-  }
+  onResize() {}
 }
 export { Scene };

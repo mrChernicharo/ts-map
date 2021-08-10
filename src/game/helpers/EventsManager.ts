@@ -2,6 +2,9 @@ import { EventEmitter } from 'events';
 import { Vector3 } from 'three';
 import { InputManager } from '../core/InputManager';
 import { Raycaster } from '../core/Raycaster';
+import { Cell } from '../map/Cell';
+import { Spot } from '../map/Ground';
+import { cellSize } from '../utils/constants';
 import { TilesStateManager } from './TilesStateManager';
 
 const modal = document.querySelector('#tower-modal');
@@ -24,7 +27,7 @@ export class EventsManager {
 		this.setRaycasterEvents();
 
 		this.setTowerEvents();
-		console.log(this);
+		// console.log(this);
 	}
 
 	initTilesStateManager() {
@@ -52,11 +55,22 @@ export class EventsManager {
 	closeModal() {
 		modal.classList.remove('visible');
 	}
-	createTower() {
-		const tilePosition = this.tilesStateManager.previousTileClicked.parent.position;
-		console.log('create tower! Porra!', tilePosition);
 
-		this.emitter.emit('createTower', tilePosition);
+	createTower() {
+		// console.log(this.tilesStateManager.previousTileClicked);
+		const currentCell = this.tilesStateManager.previousTileClicked.parent as Cell;
+		const currentSpot: Spot[] = currentCell.spots;
+
+		currentSpot.forEach(s => console.log(s));
+		// console.log(currentSpot);
+
+		// console.log(currentCell);
+		const { position, binCode } = currentCell;
+
+		// console.log(this.tilesStateManager.previousTileClicked);
+		console.log('create tower!', { position, binCode });
+
+		this.emitter.emit('createTower', position, binCode);
 	}
 }
 

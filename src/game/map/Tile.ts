@@ -1,5 +1,5 @@
 import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
-import { random, cellSize } from '../utils/constants';
+import { random, cellSize, BinCode } from '../utils/constants';
 
 export type TileState = 'idle' | 'hovered' | 'selected';
 
@@ -11,8 +11,11 @@ const materials = {
 
 export class Tile extends Mesh {
 	state: TileState;
-	constructor() {
+	binCode: BinCode;
+	constructor(binCode: BinCode) {
 		super();
+
+		this.binCode = binCode;
 
 		this.material = new MeshToonMaterial(materials.idle);
 		this.geometry = new BoxGeometry((cellSize / 2) * Math.sqrt(2), 6, (cellSize / 2) * Math.sqrt(2));

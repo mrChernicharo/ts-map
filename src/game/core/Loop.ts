@@ -38,8 +38,8 @@ class Loop {
 		this.add(startFlag);
 		this.add(endFlag);
 
-		this.eventsManager.emitter.on('createTower', pos => {
-			const tower = new Tower(pos);
+		this.eventsManager.emitter.on('createTower', (pos, binCode) => {
+			const tower = new Tower(pos, binCode);
 			this.add(tower);
 		});
 	}

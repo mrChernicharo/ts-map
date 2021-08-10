@@ -1,6 +1,6 @@
 import { ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
-import { PathNode } from '../../utils/aStarPathfinder';
-import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
+import { PathNode } from '../utils/aStarPathfinder';
+import { levelStart, pathFindingDelay, cellSize } from '../utils/constants';
 
 export class Enemy extends Mesh {
   speed: number;

@@ -1,5 +1,5 @@
 import { Mesh, MeshToonMaterial, Shape, ExtrudeGeometry, BoxGeometry, Vector3, Vector2, Color } from 'three';
-import { Bin, BinCode, levelFinish, levelStart, cellSize } from '../../utils/constants';
+import { Bin, BinCode, levelFinish, levelStart, cellSize } from '../utils/constants';
 import { Cell } from './Cell';
 
 export class Wall extends Mesh {

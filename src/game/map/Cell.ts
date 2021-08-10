@@ -1,6 +1,6 @@
 import { CircleGeometry, LineBasicMaterial, Mesh, MeshToonMaterial, Vector2, Vector3 } from 'three';
 import { Wall } from './Wall';
-import { Bin, BinCode, drawLine, levelFinish, levelStart, cellSize, ZERO } from '../../utils/constants';
+import { Bin, BinCode, drawLine, levelFinish, levelStart, cellSize, ZERO } from '../utils/constants';
 import { Spot } from './Ground';
 import { Tile } from './Tile';
 

@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -31,7 +31,7 @@ body {
 
 canvas {
   margin: 0 auto;
-}
+} */
 
 #tower-modal {
   position: absolute;

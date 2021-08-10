@@ -1,8 +1,8 @@
 import { Path, Vector2, Vector3 } from 'three';
-import { Cell } from '../game/map/Cell';
-import { Spot } from '../game/map/Ground';
+import { Cell } from '../map/Cell';
+import { Spot } from '../map/Ground';
 import { cellSize } from './constants';
-import { PathSpot } from '../game/map/PathSpot';
+import { PathSpot } from '../map/PathSpot';
 
 export interface PathNode {
   pos: Vector3;

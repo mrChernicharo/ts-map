@@ -1,5 +1,9 @@
+import { EventEmitter } from 'stream';
 import { Raycaster } from '../core/Raycaster';
 import { Tile } from '../map/Tile';
+
+const modal = document.querySelector('#tower-modal');
+const modalSection = document.querySelector('#tower-modal section');
 
 export class TilesStateManager {
   raycaster: Raycaster;
@@ -28,7 +32,7 @@ export class TilesStateManager {
 
       this.previousTileClicked = tile;
 
-      return;
+      return this.showModal(tile);
     }
 
     if (tile.state === 'selected') {
@@ -53,5 +57,13 @@ export class TilesStateManager {
 
   clearTileHover() {
     if (this.previousTileHovered?.state !== 'selected') this.previousTileHovered?.setState('idle');
+  }
+
+  showModal(tile: Tile) {
+    modal.classList.add('visible');
+
+    const tileInfo = `${tile.name} ${tile.id}`;
+
+    modalSection.innerHTML = tileInfo;
   }
 }

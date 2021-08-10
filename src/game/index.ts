@@ -2,6 +2,7 @@ import { GameState } from './core/GameState';
 import { Loop } from './core/Loop';
 import { Scene } from './core/Scene';
 import { EventsManager } from './helpers/EventsManager';
+import { Title } from './templates/title';
 
 export class Game {
   scene: Scene;

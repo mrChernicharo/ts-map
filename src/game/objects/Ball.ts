@@ -1,5 +1,5 @@
 import { Mesh, MeshToonMaterial, SphereGeometry, Vector3 } from 'three';
-import { levelFinish, levelStart } from '../../utils/constants';
+import { levelFinish, levelStart } from '../utils/constants';
 
 export class Ball extends Mesh {
   type: string;

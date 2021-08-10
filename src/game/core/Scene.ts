@@ -17,7 +17,7 @@ import {
   Vector3,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../../utils/constants';
+import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
 import { Cube } from '../objects/Cube';
 import { Ball } from '../objects/Ball';
 import { Flag } from '../objects/Flag';
@@ -27,13 +27,14 @@ import { Camera } from './Camera';
 import { GUI } from './GUI';
 import { Loop } from './Loop';
 import { Polyhedron } from '../objects/Meshes';
-import { createAxesHelper, createGridHelper } from '../../utils/helpers';
+import { createAxesHelper, createGridHelper } from '../utils/helpers';
 import { InputManager } from './InputManager';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { Raycaster } from './Raycaster';
-import { AStarPathfinder } from '../../utils/aStarPathfinder';
+import { AStarPathfinder } from '../utils/aStarPathfinder';
 import { GameState } from './GameState';
 import { EventsManager } from '../helpers/EventsManager';
+import { Title } from '../templates/title';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -54,6 +55,7 @@ class Scene extends THREEScene {
     this.gui = new GUI();
     this.fog = new Fog(0x003300, -1, 5000);
     this.background = new Color(0x00000);
+
     this.init();
   }
 

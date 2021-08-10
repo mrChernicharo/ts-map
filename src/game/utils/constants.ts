@@ -1,5 +1,5 @@
 import { BufferGeometry, Line, Material, Vector3 } from 'three';
-import { Enemy } from '../game/objects/Enemy';
+import { Enemy } from '../objects/Enemy';
 
 //prettier-ignore
 export type BinCode = 

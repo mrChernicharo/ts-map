@@ -1,5 +1,5 @@
 import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
-import { random, cellSize } from '../../utils/constants';
+import { random, cellSize } from '../utils/constants';
 
 export type TileState = 'idle' | 'hovered' | 'selected';
 

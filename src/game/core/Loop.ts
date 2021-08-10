@@ -3,7 +3,7 @@ import { Camera } from './Camera';
 import { Cube } from '../objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../objects/Ball';
-import { enemyGenerator, levelFinish, levelStart, random } from '../../utils/constants';
+import { enemyGenerator, levelFinish, levelStart, random } from '../utils/constants';
 import { Flag } from '../objects/Flag';
 import { Enemy } from '../objects/Enemy';
 

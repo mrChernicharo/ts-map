@@ -33,7 +33,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import { Raycaster } from './Raycaster';
 import { AStarPathfinder } from '../../utils/aStarPathfinder';
 import { GameState } from './GameState';
-import { DOMManager } from '../templates/DOMManager';
+import { EventsManager } from '../helpers/EventsManager';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -45,7 +45,7 @@ class Scene extends THREEScene {
   orbitControls: OrbitControls;
   inputManager: InputManager;
   raycaster: Raycaster;
-  domManager: DOMManager;
+  EventsManager: EventsManager;
   gui: GUI;
   constructor(private domContainer: HTMLDivElement, gameState: GameState) {
     super();
@@ -84,7 +84,7 @@ class Scene extends THREEScene {
 
     this.lights = new DirectionalLight('white', 1.8);
 
-    this.domManager = new DOMManager(this.raycaster, this.inputManager);
+    this.EventsManager = new EventsManager(this.raycaster, this.inputManager);
   }
 
   addObjects() {

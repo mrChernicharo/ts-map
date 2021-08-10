@@ -73,6 +73,8 @@ export class Raycaster extends THREERaycaster {
     const tile = tileIntersection?.object;
     if (tile) {
       this.raycasterEmitter.emit('tileHover', tile);
+    } else {
+      this.raycasterEmitter.emit('idleHover');
     }
 
     const enemyIntersection = this.intersects.find(intersected => intersected.object.name.includes('Enemy'));
@@ -87,6 +89,8 @@ export class Raycaster extends THREERaycaster {
     const tile = tileIntersection?.object;
     if (tile) {
       this.raycasterEmitter.emit('tileClick', tile);
+    } else {
+      this.raycasterEmitter.emit('idleClick');
     }
 
     const enemyIntersection = this.intersects.find(intersected => intersected.object.name.includes('Enemy'));
@@ -99,14 +103,6 @@ export class Raycaster extends THREERaycaster {
   _applyIntersectedEfx() {
     this.intersects.forEach(intersect => {
       let obj = intersect.object as Mesh;
-
-      if (obj.name.includes('Wall')) {
-      }
-
-      // if (obj.name === 'Tile') {
-      //   (obj as any).material.transparent = false;
-      //   (obj as any).material.opacity = 1;
-      // }
 
       if (obj.name.includes('circle')) {
         obj.material = new MeshToonMaterial({ color: 0x44ff11 });
@@ -125,13 +121,6 @@ export class Raycaster extends THREERaycaster {
   _clearIntersectedEfx() {
     this.intersects.forEach(intersect => {
       let obj = intersect.object as Mesh;
-
-      if (obj.name.includes('Wall')) {
-      }
-
-      // if (obj.name === 'Tile') {
-      //   (obj as any).material = new MeshToonMaterial({ color: 0xac3902, opacity: 0.75, transparent: true });
-      // }
 
       if (obj.name.includes('circle')) {
         obj.material = new MeshToonMaterial({ color: (obj as any).hasWall ? 0x000000 : 0xffffff });
@@ -152,8 +141,4 @@ export class Raycaster extends THREERaycaster {
     let y = -(event.clientY / window.innerHeight) * 2 + 1;
     return new Vector2(x, y);
   }
-
-  // _applySelectedEfx(tile: Object3D) {
-  //   (tile as any).material = new MeshToonMaterial({ color: 0x0023ef });
-  // }
 }

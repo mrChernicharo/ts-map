@@ -1,5 +1,6 @@
 import { BufferGeometry, Line, Material, Vector3 } from 'three';
 import { Enemy } from '../objects/Enemy';
+import { Tower } from '../objects/Tower';
 
 //prettier-ignore
 export type BinCode = 
@@ -23,10 +24,10 @@ export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2
 export const pathFindingDelay = GROUND_WIDTH * GROUND_DEPTH * 0.0024;
 
 export const cellPoints = {
-  a: new Vector3(0, 0, 0),
-  b: new Vector3(cellSize, 0, 0),
-  c: new Vector3(cellSize, 0, cellSize),
-  d: new Vector3(0, 0, cellSize),
+	a: new Vector3(0, 0, 0),
+	b: new Vector3(cellSize, 0, 0),
+	c: new Vector3(cellSize, 0, cellSize),
+	d: new Vector3(0, 0, cellSize),
 };
 
 // prettier-ignore
@@ -42,37 +43,41 @@ export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
 export const random = (a: number, b?: number) => {
-  if (!b) {
-    return Math.round(Math.random() * a) + 1;
-  }
+	if (!b) {
+		return Math.round(Math.random() * a) + 1;
+	}
 
-  if (b) {
-    return Math.round(Math.random() * (b - a) + a);
-  }
+	if (b) {
+		return Math.round(Math.random() * (b - a) + a);
+	}
 };
 
 export const randomBin = () => {
-  const len = binOptions.length - 1;
-  return binOptions[Math.round(Math.random() * len)];
+	const len = binOptions.length - 1;
+	return binOptions[Math.round(Math.random() * len)];
 };
 
 export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) => {
-  const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
-  return new Line(geometry, material);
+	const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
+	return new Line(geometry, material);
 };
 
 export function* idGenerator() {
-  let id = 0;
-  while (true) {
-    yield id;
-    id++;
-  }
+	let id = 0;
+	while (true) {
+		yield id;
+		id++;
+	}
 }
 
 export function* enemyGenerator(amount = 2) {
-  for (let i = 0; i < amount; i++) {
-    let enemy = new Enemy(random(20, 100));
+	for (let i = 0; i < amount; i++) {
+		let enemy = new Enemy(random(20, 100));
 
-    yield enemy;
-  }
+		yield enemy;
+	}
+}
+
+export function towerGenerator() {
+	return new Tower();
 }

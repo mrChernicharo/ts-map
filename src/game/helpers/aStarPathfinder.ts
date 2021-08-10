@@ -1,7 +1,7 @@
 import { Path, Vector2, Vector3 } from 'three';
 import { Cell } from '../map/Cell';
 import { Spot } from '../map/Ground';
-import { cellSize } from './constants';
+import { cellSize } from '../utils/constants';
 import { PathSpot } from '../map/PathSpot';
 
 export interface PathNode {

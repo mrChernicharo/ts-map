@@ -11,7 +11,7 @@ import {
   BoxGeometry,
   LineDashedMaterial,
 } from 'three';
-import { AStarPathfinder, PathNode } from '../utils/aStarPathfinder';
+import { AStarPathfinder, PathNode } from '../helpers/aStarPathfinder';
 // import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
   drawLine,

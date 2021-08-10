@@ -57,20 +57,22 @@ export class EventsManager {
 	}
 
 	createTower() {
-		// console.log(this.tilesStateManager.previousTileClicked);
+		const currentTile = this.tilesStateManager.previousTileClicked;
 		const currentCell = this.tilesStateManager.previousTileClicked.parent as Cell;
 		const currentSpot: Spot[] = currentCell.spots;
+		let spots = [];
 
-		currentSpot.forEach(s => console.log(s));
-		// console.log(currentSpot);
+		currentSpot.forEach(s => {
+			// console.log(s);
+			spots.push(s.origin.clone().add(s.localPos));
+		});
 
-		// console.log(currentCell);
 		const { position, binCode } = currentCell;
+		console.log(spots);
 
-		// console.log(this.tilesStateManager.previousTileClicked);
-		console.log('create tower!', { position, binCode });
+		console.log('create tower!', { position, currentTile });
 
-		this.emitter.emit('createTower', position, binCode);
+		this.emitter.emit('createTower', position, currentTile);
 	}
 }
 

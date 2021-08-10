@@ -31,7 +31,7 @@ export class TilesStateManager {
 			if (this.previousTileClicked !== tile) this.previousTileClicked?.setState('idle');
 
 			this.previousTileClicked = tile;
-			console.log(this.previousTileClicked);
+			// console.log(this.previousTileClicked.position);
 
 			return this.showModal(tile);
 		}
@@ -63,7 +63,9 @@ export class TilesStateManager {
 	showModal(tile: Tile) {
 		modal.classList.add('visible');
 
-		const tileInfo = `${tile.name} ${tile.id}`;
+		const tileInfo = `${tile.name} ${tile.id} ${tile.binCode} ${tile.isExtra ? 'extra' : ''} ${
+			tile.isCentral ? 'central' : ''
+		}`;
 
 		modalSection.innerHTML = tileInfo;
 	}

@@ -62,21 +62,20 @@ export class Cell extends Mesh {
 		let [dotPoints, binItems] = this.getSpotPoints();
 		// console.log(dotPoints);
 
-		console.log(dotPoints);
-		const points = Object.keys(dotPoints);
-		if (points.length === 4) {
-			console.log('first cell');
-		}
-		if (points.length === 2 && points[0] === 'b') {
-			console.log('top cell');
-		}
-		if (points.length === 2 && points[0] === 'c') {
-			console.log('left cell');
-		} else {
-			console.log('other cell');
-		}
+		// console.log(dotPoints);
+		// const points = Object.keys(dotPoints);
+		// if (points.length === 4) {
+		// 	console.log('first cell');
+		// }
+		// if (points.length === 2 && points[0] === 'b') {
+		// 	console.log('top cell');
+		// }
+		// if (points.length === 2 && points[0] === 'c') {
+		// 	console.log('left cell');
+		// } else {
+		// 	console.log('other cell');
+		// }
 
-		// console.log(points);
 		Object.entries(dotPoints).forEach(([key, point], i) => {
 			const hasWall = binItems[i] === '1';
 
@@ -89,13 +88,23 @@ export class Cell extends Mesh {
 			};
 
 			this.spots.push(spot);
+			const newTile = new Tile(this.binCode, false, false);
+			const { x, y, z } = point;
+			newTile.position.set(x, y + 24, z);
 
 			if (hasWall) {
-				this.appendTile(point);
+				this.add(newTile);
 			}
+			// if (this.binCode === '1111') {
+			// }
 
 			if (key === 'c' && ['0111', '1011', '1101', '1110', '1111'].includes(this.binCode)) {
-				const extraTile = new Tile(this.binCode);
+				let extraTile;
+
+				if (['0111', '1011', '1101', '1110'].includes(this.binCode)) {
+					extraTile = new Tile(this.binCode, true, true);
+				}
+				if (this.binCode === '1111') extraTile = new Tile(this.binCode, true, false);
 				this.add(extraTile);
 
 				extraTile.position.set(cellSize / 2, 2 + 24, cellSize / 2);
@@ -110,13 +119,13 @@ export class Cell extends Mesh {
 		this.add(wall);
 	}
 
-	appendTile(localPos: Vector3) {
-		const { x, y, z } = localPos;
-		const tile = new Tile(this.binCode);
-		tile.position.set(x, y + 24, z);
+	// appendTile(localPos: Vector3) {
+	// 	const { x, y, z } = localPos;
+	// 	const tile = new Tile(this.binCode);
+	// 	tile.position.set(x, y + 24, z);
 
-		this.add(tile);
-	}
+	// 	this.add(tile);
+	// }
 
 	getSpotPoints(): [{ [key: string]: Vector3 }, string] {
 		let dotPoints: { [key: string]: Vector3 };

@@ -12,10 +12,14 @@ const materials = {
 export class Tile extends Mesh {
 	state: TileState;
 	binCode: BinCode;
-	constructor(binCode: BinCode) {
+	isCentral: boolean;
+	isExtra: boolean;
+	constructor(binCode: BinCode, isExtra = false, isCentral = false) {
 		super();
 
 		this.binCode = binCode;
+		this.isExtra = isExtra;
+		this.isCentral = isCentral;
 
 		this.material = new MeshToonMaterial(materials.idle);
 		this.geometry = new BoxGeometry((cellSize / 2) * Math.sqrt(2), 6, (cellSize / 2) * Math.sqrt(2));

@@ -18,13 +18,13 @@ import {
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
-import { Cube } from '../helpers/Cube';
-import { Ball } from '../helpers/Ball';
-import { Flag } from '../helpers/Flag';
-import { Rulers } from '../helpers/Rulers';
+import { Cube } from '../helpers/objects/Cube';
+import { Ball } from '../helpers/objects/Ball';
+import { Flag } from '../helpers/objects/Flag';
+import { Rulers } from '../helpers/objects/Rulers';
 import { Camera } from './Camera';
-import { GUI } from './GUI';
-import { Polyhedron } from '../helpers/Meshes';
+import { GUI } from '../helpers/GUI';
+import { Polyhedron } from '../helpers/objects/Meshes';
 import { createAxesHelper, createGridHelper } from '../utils/helpers';
 import { InputManager } from '../managers/InputManager';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
@@ -42,8 +42,8 @@ class Scene extends THREEScene {
 	lights: Light;
 	camera: Camera;
 	orbitControls: OrbitControls;
-	inputManager: InputManager;
-	raycaster: Raycaster;
+	// inputManager: InputManager;
+	// raycaster: Raycaster;
 	EventsManager: EventsManager;
 	gui: GUI;
 	constructor(private domContainer: HTMLDivElement, gameState: GameState) {
@@ -73,8 +73,8 @@ class Scene extends THREEScene {
 
 		this.camera = new Camera();
 
-		this.raycaster = new Raycaster(this.camera, this, this.state);
-		this.inputManager = new InputManager(this.camera, this);
+		// this.raycaster = new Raycaster(this.camera, this, this.state);
+		// this.inputManager = new InputManager(this.camera, this);
 
 		this.orbitControls = new OrbitControls(this.camera, this.domContainer);
 		this.orbitControls.enableDamping = true;
@@ -82,7 +82,7 @@ class Scene extends THREEScene {
 
 		this.lights = new DirectionalLight('white', 1.8);
 
-		this.EventsManager = new EventsManager(this.raycaster, this.inputManager);
+		this.EventsManager = new EventsManager(this);
 	}
 
 	addObjects() {

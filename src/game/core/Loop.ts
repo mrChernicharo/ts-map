@@ -1,10 +1,17 @@
 import { Clock, Mesh, Quaternion, Vector3, WebGL1Renderer } from 'three';
 import { Camera } from './Camera';
-import { Cube } from '../helpers/Cube';
+import { Cube } from '../helpers/objects/Cube';
 import { Scene } from './Scene';
-import { Ball } from '../helpers/Ball';
-import { towerGenerator, enemyGenerator, levelFinish, levelStart, random } from '../utils/constants';
-import { Flag } from '../helpers/Flag';
+import { Ball } from '../helpers/objects/Ball';
+import {
+	towerGenerator,
+	enemyGenerator,
+	levelFinish,
+	levelStart,
+	random,
+	CREATE_TOWER,
+} from '../utils/constants';
+import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
 import { EventsManager } from '../managers/EventsManager';
 import { Tower } from '../objects/Tower/Tower';
@@ -14,7 +21,7 @@ interface IUpdatable extends Mesh {
 }
 
 const clock = new Clock();
-const enemyGen = enemyGenerator(100);
+const enemyGen = enemyGenerator();
 const towerGen = towerGenerator;
 const enemyInterval = 4;
 
@@ -38,11 +45,9 @@ class Loop {
 		this.add(startFlag);
 		this.add(endFlag);
 
-		this.eventsManager.emitter.on('createTower', (pos, position) => {
-			const types = ['A', 'B'];
-			const towerType = types[random(0, 1)];
+		this.eventsManager.emitter.on(CREATE_TOWER, (position, currentTile, towerType) => {
+			const tower = new Tower(position, currentTile, towerType);
 
-			const tower = new Tower(pos, position, towerType);
 			this.add(tower);
 		});
 	}

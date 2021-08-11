@@ -13,13 +13,14 @@ import { EventEmitter } from 'events';
 import { GameState } from './GameState';
 import { Tile } from '../map/Tile/Tile';
 import { Enemy } from '../objects/Enemy/Enemy';
+import { ENEMY_CLICK, ENEMY_HOVER, IDLE_CLICK, IDLE_HOVER, TILE_CLICK, TILE_HOVER } from '../utils/constants';
 
 export class Raycaster extends THREERaycaster {
 	camera: Camera;
 	scene: Scene;
 	intersects: Intersection[];
 	raycasterEmitter: EventEmitter;
-	constructor(camera: Camera, scene: Scene, private gameState: GameState) {
+	constructor(camera: Camera, scene: Scene) {
 		super();
 
 		this.camera = camera;
@@ -29,11 +30,6 @@ export class Raycaster extends THREERaycaster {
 		this.raycasterEmitter = new EventEmitter();
 
 		this.layers.set(0);
-
-		this.raycasterEmitter.on('tileHover', (e: Tile) => {});
-		this.raycasterEmitter.on('enemyHover', (e: Enemy) => {});
-		this.raycasterEmitter.on('tileClick', (e: Tile) => e);
-		this.raycasterEmitter.on('enemyClick', (e: Enemy) => e);
 	}
 
 	handleMouseMove(event: MouseEvent) {
@@ -41,17 +37,20 @@ export class Raycaster extends THREERaycaster {
 
 		this.setFromCamera(mouse, this.camera);
 
-		this.monitorIntersects();
+		this._monitorIntersects();
 
-		this.fireHoverEvent();
+		this.fireTileHoverEvent();
+		// this.fireHoverEvents();
 	}
 
 	handleClick(event: MouseEvent) {
 		// console.log(event);
-		this.fireClickEvent();
+		// this.fireClickEvent();
+		this.fireEnemyClickEvent();
+		this.fireTileClickEvent();
 	}
 
-	monitorIntersects() {
+	_monitorIntersects() {
 		this._clearIntersectedEfx();
 
 		this.intersects = this.intersectObjects(this.scene.children, true);
@@ -59,13 +58,13 @@ export class Raycaster extends THREERaycaster {
 		this._applyIntersectedEfx();
 	}
 
-	fireHoverEvent() {
+	fireTileHoverEvent() {
 		const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
 		const tile = tileIntersection?.object;
 		if (tile) {
-			this.raycasterEmitter.emit('tileHover', tile);
+			this.raycasterEmitter.emit(TILE_HOVER, tile);
 		} else {
-			this.raycasterEmitter.emit('idleHover');
+			this.raycasterEmitter.emit(IDLE_HOVER);
 		}
 
 		const enemyIntersection = this.intersects.find(intersected =>
@@ -73,25 +72,27 @@ export class Raycaster extends THREERaycaster {
 		);
 		const enemy = enemyIntersection?.object;
 		if (enemy) {
-			this.raycasterEmitter.emit('enemyHover', enemy);
+			this.raycasterEmitter.emit(ENEMY_HOVER, enemy);
 		}
 	}
 
-	fireClickEvent() {
-		const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
-		const tile = tileIntersection?.object;
-		if (tile) {
-			this.raycasterEmitter.emit('tileClick', tile);
-		} else {
-			this.raycasterEmitter.emit('idleClick');
-		}
-
+	fireEnemyClickEvent() {
 		const enemyIntersection = this.intersects.find(intersected =>
 			intersected.object.name.includes('Enemy')
 		);
 		const enemy = enemyIntersection?.object;
 		if (enemy) {
-			this.raycasterEmitter.emit('enemyClick', enemy);
+			this.raycasterEmitter.emit(ENEMY_CLICK, enemy);
+		}
+	}
+
+	fireTileClickEvent() {
+		const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
+		const tile = tileIntersection?.object;
+		if (tile) {
+			this.raycasterEmitter.emit(TILE_CLICK, tile);
+		} else {
+			this.raycasterEmitter.emit(IDLE_CLICK);
 		}
 	}
 

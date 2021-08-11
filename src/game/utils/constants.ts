@@ -42,6 +42,14 @@ export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '
 
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
+export const CREATE_TOWER = 'createTower';
+export const IDLE_CLICK = 'idleClick';
+export const IDLE_HOVER = 'idleHover';
+export const TILE_HOVER = 'tileHover';
+export const TILE_CLICK = 'tileClick';
+export const ENEMY_HOVER = 'enemyHover';
+export const ENEMY_CLICK = 'enemyClick';
+
 export const random = (a: number, b?: number) => {
 	if (!b) {
 		return Math.round(Math.random() * a) + 1;
@@ -70,7 +78,7 @@ export function* idGenerator() {
 	}
 }
 
-export function* enemyGenerator(amount = 2) {
+export function* enemyGenerator(amount = 6) {
 	for (let i = 0; i < amount; i++) {
 		let enemy = new Enemy(random(20, 100));
 

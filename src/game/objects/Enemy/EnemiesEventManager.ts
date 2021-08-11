@@ -1,5 +1,8 @@
 import { EventEmitter } from 'stream';
+import { MeshToonMaterial } from 'three';
 import { Raycaster } from '../../core/Raycaster';
+import { ENEMY_CLICK, ENEMY_HOVER, random } from '../../utils/constants';
+import { Tower } from '../Tower/Tower';
 import { Enemy } from './Enemy';
 
 export class EnemiesEventManager {
@@ -15,22 +18,29 @@ export class EnemiesEventManager {
 	}
 
 	setEvents() {
-		this.raycaster.raycasterEmitter.on('enemyClick', (enemy: Enemy) => this.handleEnemyClick(enemy));
-		this.raycaster.raycasterEmitter.on('enemyHover', (enemy: Enemy) => this.handleEnemyHover(enemy));
-		this.raycaster.raycasterEmitter.on('idleClick', () => this.clearEnemySelection());
-		this.raycaster.raycasterEmitter.on('idleHover', () => this.clearEnemyHover());
+		this.raycaster.raycasterEmitter.on(ENEMY_CLICK, (enemy: Enemy) => this.handleEnemyClick(enemy));
+		this.raycaster.raycasterEmitter.on(ENEMY_HOVER, (enemy: Enemy) => this.handleEnemyHover(enemy));
 	}
 
 	handleEnemyClick(enemy: Enemy) {
-		// console.log({ enemy, prev: this.previousEnemyClicked });
+		// console.log({ enemy, prev: this.previousEnemyClicked });// test that it works
 		this.previousEnemyClicked = enemy;
 	}
 
 	handleEnemyHover(enemy: Enemy) {
+		// enemy.material = new MeshToonMaterial({ color: 0x0000ff }); // test that it works!
 		this.previousEnemyHovered = enemy;
 	}
 
 	clearEnemySelection() {}
 
 	clearEnemyHover() {}
+
+	// createTower(position, currentTile) {
+	// 	const types = ['A', 'B'];
+	// 	const towerType = types[random(0, 1)];
+
+	// 	const tower = new Tower(position, currentTile, towerType);
+	// 	return tower;
+	// }
 }

@@ -3,34 +3,39 @@ import { Vector3 } from 'three';
 import { InputManager } from './InputManager';
 import { Raycaster } from '../core/Raycaster';
 import { Cell } from '../map/Land/Cell';
-import { cellSize } from '../utils/constants';
+import { cellSize, CREATE_TOWER, random, towerGenerator } from '../utils/constants';
 import { TilesEventManager } from '../map/Tile/TilesEventManager';
 import { EnemiesEventManager } from '../objects/Enemy/EnemiesEventManager';
+import { Scene } from '../core/Scene';
+import { Tower } from '../objects/Tower/Tower';
 
 const towerCreateButton = document.querySelector('#tower-modal button');
 
 export class EventsManager {
+	scene: Scene;
 	inputManager: InputManager;
 	raycaster: Raycaster;
 	emitter: EventEmitter;
 	TilesEventManager: TilesEventManager;
 	EnemiesEventManager: EnemiesEventManager;
-	constructor(raycaster: Raycaster, inputManager: InputManager) {
-		this.raycaster = raycaster;
-		this.inputManager = inputManager;
+	constructor(scene: Scene) {
+		this.scene = scene;
+
 		this.emitter = new EventEmitter();
 
-		this.initTilesEventManager();
-
-		this.setWindowEvents();
-		this.setRaycasterEvents();
+		this._initEventManager();
 
 		// console.log(this);
 	}
 
-	initTilesEventManager() {
+	_initEventManager() {
+		this.raycaster = new Raycaster(this.scene.camera, this.scene);
+		this.inputManager = new InputManager(this.scene.camera, this.scene);
 		this.TilesEventManager = new TilesEventManager(this.raycaster);
 		this.EnemiesEventManager = new EnemiesEventManager(this.raycaster);
+
+		this.setWindowEvents();
+		this.setRaycasterEvents();
 	}
 
 	setWindowEvents() {
@@ -54,8 +59,10 @@ export class EventsManager {
 		const currentCell = this.TilesEventManager.previousTileClicked.parent as Cell;
 
 		const { position } = currentCell;
+		const types = ['A', 'B'];
+		const towerType = types[random(0, 1)];
 
-		this.emitter.emit('createTower', position, currentTile);
+		this.emitter.emit(CREATE_TOWER, position, currentTile, towerType);
 	}
 }
 

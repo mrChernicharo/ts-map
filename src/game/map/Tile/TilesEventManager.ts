@@ -1,5 +1,6 @@
 import { EventEmitter } from 'stream';
 import { Raycaster } from '../../core/Raycaster';
+import { IDLE_CLICK, TILE_CLICK, TILE_HOVER, IDLE_HOVER } from '../../utils/constants';
 import { Tile } from './Tile';
 
 const modal = document.querySelector('#tower-modal');
@@ -19,10 +20,10 @@ export class TilesEventManager {
 	}
 
 	setEvents() {
-		this.raycaster.raycasterEmitter.on('tileClick', (tile: Tile) => this.handleTileClick(tile));
-		this.raycaster.raycasterEmitter.on('tileHover', (tile: Tile) => this.handleTileHover(tile));
-		this.raycaster.raycasterEmitter.on('idleClick', () => this.clearTileSelection());
-		this.raycaster.raycasterEmitter.on('idleHover', () => this.clearTileHover());
+		this.raycaster.raycasterEmitter.on(TILE_CLICK, (tile: Tile) => this.handleTileClick(tile));
+		this.raycaster.raycasterEmitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
+		this.raycaster.raycasterEmitter.on(IDLE_CLICK, () => this.clearTileSelection());
+		this.raycaster.raycasterEmitter.on(IDLE_HOVER, () => this.clearTileHover());
 	}
 
 	handleTileClick(tile: Tile) {

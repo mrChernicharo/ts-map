@@ -1,8 +1,10 @@
 import { ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
 import { PathNode } from '../../helpers/aStarPathfinder';
-import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
+import { levelStart, pathFindingDelay, cellSize, enemyGenerator } from '../../utils/constants';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
+const enemyGen = enemyGenerator();
+
 export class Enemy extends Mesh {
 	speed: number;
 	path: Vector3[];
@@ -50,8 +52,9 @@ export class Enemy extends Mesh {
 	}
 
 	setState(str) {}
-
-	tick(delta: number) {
+	changeColor(color) {}
+	takeDamage() {}
+	move(delta: number) {
 		let pos = this.position.clone();
 		let nextClone = this.nextPos?.clone();
 
@@ -66,5 +69,9 @@ export class Enemy extends Mesh {
 				this.nextPos = this.path[this.nxPathIdx];
 			}
 		}
+	}
+
+	tick(delta: number) {
+		this.move(delta);
 	}
 }

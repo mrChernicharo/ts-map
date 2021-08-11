@@ -6,18 +6,32 @@ import { BinCode, cellSize } from '../../utils/constants';
 
 export type TowerType = 'A' | 'B';
 
+const ranges = {
+	A: 100,
+	B: 60,
+	C: 140,
+	undefined: 90,
+};
+const rangeCircles = {
+	A: 0x0056ed,
+	B: 0xcd56ed,
+	C: 0x00cd62,
+	undefined: 0xffffff,
+};
+
 export class Tower extends Mesh {
 	pos: Vector3;
 	tile: Tile;
 	towerType: TowerType;
 	range: number;
+	fireRate: number;
+	damage: number;
 	enemiesinRange: [] = [];
 	constructor(pos: Vector3, tile: Tile, towerType) {
 		super();
 		this.pos = pos;
 		this.tile = tile;
 		this.towerType = towerType;
-		this.range = this._setRange();
 		this._init();
 	}
 
@@ -25,20 +39,26 @@ export class Tower extends Mesh {
 		this.material = new MeshToonMaterial({ color: 0x454545 });
 		this.geometry = new CylinderGeometry(8, 10, 30, 20);
 		this.name = 'Tower';
+		// this.range = this._setRange();
+		this.range = ranges[this.towerType];
 
 		new Mesh(this.geometry, this.material);
 
 		this._correctPosition();
 
-		this._createTowerRange();
+		this._createTowerRangeCircle();
 
 		console.log(this);
 	}
 
 	tick(delta) {}
 
-	_createTowerRange() {
-		const material = new MeshToonMaterial({ color: 0x0056ed, opacity: 0.3, transparent: true });
+	_createTowerRangeCircle() {
+		const material = new MeshToonMaterial({
+			color: rangeCircles[this.towerType],
+			opacity: 0.3,
+			transparent: true,
+		});
 		const geometry = new CircleGeometry(this.range, 20);
 
 		const rangeMesh = new Mesh(geometry, material);

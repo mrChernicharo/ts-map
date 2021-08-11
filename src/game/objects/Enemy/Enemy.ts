@@ -12,12 +12,12 @@ export class Enemy extends Mesh {
 	velocity: Vector3;
 	nxPathIdx = 1; // nextPathIndex
 	state: EnemyState;
-	isAlive: boolean;
+	hp: number;
 	constructor(speed: number) {
 		super();
 
 		this.speed = speed;
-		this.isAlive = true;
+		this.hp = 100;
 
 		this._init();
 	}
@@ -55,10 +55,18 @@ export class Enemy extends Mesh {
 
 	setState(str) {}
 	changeColor(color) {}
-	takeDamage() {}
-	die() {
-		this.isAlive = false;
+
+	takeDamage(damage: number) {
+		this.hp -= damage;
 	}
+	die() {
+		this.hp -= 100;
+	}
+
+	isAlive() {
+		return this.hp > 0;
+	}
+
 	move(delta: number) {
 		let pos = this.position.clone();
 		let nextClone = this.nextPos?.clone();
@@ -77,8 +85,6 @@ export class Enemy extends Mesh {
 	}
 
 	tick(delta: number) {
-		if (this.isAlive) {
-			this.move(delta);
-		}
+		this.move(delta);
 	}
 }

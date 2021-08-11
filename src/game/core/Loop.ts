@@ -69,7 +69,7 @@ class Loop {
 	remove(item) {
 		this.updatables = this.updatables.filter(u => u.uuid !== item.uuid);
 		this.scene.remove(item);
-		// delete this.updatables.find(u => u.uuid !== item.uuid);
+
 		console.log(this.updatables);
 	}
 
@@ -97,18 +97,21 @@ class Loop {
 					const distance = tower.position.distanceTo(enemy.position);
 					const inRange = tower.range - distance > -10;
 
+					if (inRange) {
+						// tower.attack(enemy)
+					}
+
 					console.log({
 						tower: tower.id + '.' + tower.towerType,
-						// enemy: enemy.name + enemy.id,
-						// distance,
-						// range: tower.range,
+						distance,
 						inRange,
 					});
 				}
 			}
+			// console.log('----------------------------');
 		}
 
-		const deadEnemies = this.getEnemies().filter(enemy => !enemy.isAlive);
+		const deadEnemies = this.getEnemies().filter(enemy => !enemy.isAlive());
 		// console.log(deadEnemies);
 
 		// const deadEnemies = enemies.filter(enemy => !enemy.isAlive);

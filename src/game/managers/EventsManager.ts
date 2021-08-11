@@ -59,8 +59,8 @@ export class EventsManager {
 
 		const { position } = currentCell;
 
-		const towerTypes = ['A', 'B'];
-		const towerType = towerTypes[random(0, 1)];
+		const towerTypes = ['A', 'B', 'C'];
+		const towerType = towerTypes[random(0, 2)];
 
 		this.emitter.emit(CREATE_TOWER, position, currentTile, towerType);
 	}

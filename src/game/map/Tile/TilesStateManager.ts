@@ -1,6 +1,6 @@
 import { EventEmitter } from 'stream';
-import { Raycaster } from '../core/Raycaster';
-import { Tile } from '../map/Tile';
+import { Raycaster } from '../../core/Raycaster';
+import { Tile } from './Tile';
 
 const modal = document.querySelector('#tower-modal');
 const modalSection = document.querySelector('#tower-modal section');
@@ -67,6 +67,7 @@ export class TilesStateManager {
 
 		modalSection.innerHTML = tileInfo;
 	}
+
 	closeModal() {
 		modal.classList.remove('visible');
 	}

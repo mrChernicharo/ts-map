@@ -11,7 +11,7 @@ import {
 	BoxGeometry,
 	LineDashedMaterial,
 } from 'three';
-import { AStarPathfinder, PathNode } from '../helpers/aStarPathfinder';
+import { AStarPathfinder, PathNode } from '../../helpers/aStarPathfinder';
 // import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
 	drawLine,
@@ -26,7 +26,7 @@ import {
 	levelStart,
 	levelFinish,
 	cellPoints,
-} from '../utils/constants';
+} from '../../utils/constants';
 import { PathSpot } from './PathSpot';
 import { Cell, CellEdges } from './Cell';
 

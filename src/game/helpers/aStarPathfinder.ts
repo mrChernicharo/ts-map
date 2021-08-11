@@ -1,164 +1,165 @@
 import { Path, Vector2, Vector3 } from 'three';
-import { Cell } from '../map/Cell';
-import { Spot } from '../map/Ground';
+import { Cell } from '../map/Land/Cell';
+import { Spot } from '../map/Land/Ground';
 import { cellSize } from '../utils/constants';
-import { PathSpot } from '../map/PathSpot';
 
 export interface PathNode {
-  pos: Vector3;
-  isWall: boolean;
-  fScore: number;
-  gScore: number;
-  hScore: number; // Estimated distance to goal (heuristic determined)
-  getNeighbors?: (nodes: PathNode[]) => PathNode[];
-  previous?: PathNode;
-  index?: number;
+	pos: Vector3;
+	isWall: boolean;
+	fScore: number;
+	gScore: number;
+	hScore: number; // Estimated distance to goal (heuristic determined)
+	getNeighbors?: (nodes: PathNode[]) => PathNode[];
+	previous?: PathNode;
+	index?: number;
 }
 
 export class AStarPathfinder {
-  openSet: PathNode[] = [];
-  closedSet: PathNode[] = [];
+	openSet: PathNode[] = [];
+	closedSet: PathNode[] = [];
 
-  nodes: PathNode[] = [];
-  spots: Spot[] = [];
+	nodes: PathNode[] = [];
+	spots: Spot[] = [];
 
-  start: Vector3;
-  goal: Vector3;
-  lastCheckedNode: PathNode;
+	start: Vector3;
+	goal: Vector3;
+	lastCheckedNode: PathNode;
 
-  constructor(spots: Spot[], start: Vector3, goal: Vector3) {
-    this.start = start;
-    this.goal = goal;
-    this.spots = spots;
-    this.openSet = [this.createNode(new Vector3(0, 0, 0), start, false)];
-    this.initNodes();
-  }
+	constructor(spots: Spot[], start: Vector3, goal: Vector3) {
+		this.start = start;
+		this.goal = goal;
+		this.spots = spots;
+		this.openSet = [this.createNode(new Vector3(0, 0, 0), start, false)];
+		this.initNodes();
+	}
 
-  initNodes() {
-    this.spots.forEach(({ localPos, origin, isWall }) => {
-      const node = this.createNode(localPos, origin, isWall);
-      this.nodes.push(node);
-    });
-  }
+	initNodes() {
+		this.spots.forEach(({ localPos, origin, isWall }) => {
+			const node = this.createNode(localPos, origin, isWall);
+			this.nodes.push(node);
+		});
+	}
 
-  createNode(localPos: Vector3, origin: Vector3, isWall: boolean) {
-    const pos = origin.clone().add(localPos.clone());
+	createNode(localPos: Vector3, origin: Vector3, isWall: boolean) {
+		const pos = origin.clone().add(localPos.clone());
 
-    const getNeighbors = function (nodes: PathNode[]) {
-      const [o, far] = [new Vector2(0, 0), new Vector2(cellSize, cellSize)];
-      return nodes.filter(
-        n => n.pos.distanceTo(this.pos) <= Math.abs(o.distanceTo(far)) && n.pos.distanceTo(this.pos) !== 0
-      );
-    };
+		const getNeighbors = function (nodes: PathNode[]) {
+			const [o, far] = [new Vector2(0, 0), new Vector2(cellSize, cellSize)];
+			return nodes.filter(
+				n =>
+					n.pos.distanceTo(this.pos) <= Math.abs(o.distanceTo(far)) &&
+					n.pos.distanceTo(this.pos) !== 0
+			);
+		};
 
-    const node: PathNode = {
-      fScore: 0,
-      gScore: 0,
-      hScore: 0,
-      pos,
-      isWall,
-      getNeighbors,
-    };
+		const node: PathNode = {
+			fScore: 0,
+			gScore: 0,
+			hScore: 0,
+			pos,
+			isWall,
+			getNeighbors,
+		};
 
-    return node;
-  }
+		return node;
+	}
 
-  heuristic(a: Vector3, b: Vector3) {
-    return a.distanceTo(b);
-  }
+	heuristic(a: Vector3, b: Vector3) {
+		return a.distanceTo(b);
+	}
 
-  removeFromArray(arr: any[], elt: any) {
-    // Could use indexOf here instead to be more efficient
-    for (let i = arr.length - 1; i >= 0; i--) {
-      if (arr[i] == elt) {
-        arr.splice(i, 1);
-      }
-    }
-  }
+	removeFromArray(arr: any[], elt: any) {
+		// Could use indexOf here instead to be more efficient
+		for (let i = arr.length - 1; i >= 0; i--) {
+			if (arr[i] == elt) {
+				arr.splice(i, 1);
+			}
+		}
+	}
 
-  step() {
-    if (this.openSet.length > 0) {
-      // Best next option
-      let winner = 0;
-      for (let i = 1; i < this.openSet.length; i++) {
-        if (this.openSet[i].fScore < this.openSet[winner].fScore) {
-          winner = i;
-        }
-        //if we have a tie according to the standard heuristic
-        if (this.openSet[i].fScore == this.openSet[winner].fScore) {
-          //Prefer to explore options with longer known paths (closer to goal)
-          if (this.openSet[i].gScore > this.openSet[winner].gScore) {
-            winner = i;
-          }
-        }
-      }
-      let current = this.openSet[winner];
-      this.lastCheckedNode = current;
+	step() {
+		if (this.openSet.length > 0) {
+			// Best next option
+			let winner = 0;
+			for (let i = 1; i < this.openSet.length; i++) {
+				if (this.openSet[i].fScore < this.openSet[winner].fScore) {
+					winner = i;
+				}
+				//if we have a tie according to the standard heuristic
+				if (this.openSet[i].fScore == this.openSet[winner].fScore) {
+					//Prefer to explore options with longer known paths (closer to goal)
+					if (this.openSet[i].gScore > this.openSet[winner].gScore) {
+						winner = i;
+					}
+				}
+			}
+			let current = this.openSet[winner];
+			this.lastCheckedNode = current;
 
-      // console.log({ closed: this.closedSet, open: this.openSet, last: this.lastCheckedNode });
+			// console.log({ closed: this.closedSet, open: this.openSet, last: this.lastCheckedNode });
 
-      // Did I finish?
-      if (current.pos.distanceTo(this.goal) < 6) {
-        console.log('DONE! 😎');
+			// Did I finish?
+			if (current.pos.distanceTo(this.goal) < 6) {
+				console.log('DONE! 😎');
 
-        this.getPathArray();
-        return 1;
-      }
+				this.getPathArray();
+				return 1;
+			}
 
-      // Best option moves from openSet to closedSet
-      this.removeFromArray(this.openSet, current);
-      this.closedSet.push(current);
+			// Best option moves from openSet to closedSet
+			this.removeFromArray(this.openSet, current);
+			this.closedSet.push(current);
 
-      // Check all the neighbors
-      let neighbors = current.getNeighbors(this.nodes);
+			// Check all the neighbors
+			let neighbors = current.getNeighbors(this.nodes);
 
-      for (let i = 0; i < neighbors.length; i++) {
-        let neighbor = neighbors[i];
+			for (let i = 0; i < neighbors.length; i++) {
+				let neighbor = neighbors[i];
 
-        // Valid next spot?
-        if (!this.closedSet.includes(neighbor) && !neighbor.isWall) {
-          // Is this a better path than before?
-          let tempG = current.gScore + this.heuristic(neighbor.pos, current.pos);
+				// Valid next spot?
+				if (!this.closedSet.includes(neighbor) && !neighbor.isWall) {
+					// Is this a better path than before?
+					let tempG = current.gScore + this.heuristic(neighbor.pos, current.pos);
 
-          // Is this a better path than before?
-          if (!this.openSet.includes(neighbor)) {
-            this.openSet.push(neighbor);
-          } else if (tempG >= neighbor.gScore) {
-            // No, it's not a better path
-            continue;
-          }
+					// Is this a better path than before?
+					if (!this.openSet.includes(neighbor)) {
+						this.openSet.push(neighbor);
+					} else if (tempG >= neighbor.gScore) {
+						// No, it's not a better path
+						continue;
+					}
 
-          neighbor.gScore = tempG;
-          neighbor.hScore = this.heuristic(neighbor.pos, this.goal);
-          neighbor.fScore = neighbor.gScore + neighbor.hScore;
-          neighbor.previous = current;
-        }
-      }
+					neighbor.gScore = tempG;
+					neighbor.hScore = this.heuristic(neighbor.pos, this.goal);
+					neighbor.fScore = neighbor.gScore + neighbor.hScore;
+					neighbor.previous = current;
+				}
+			}
 
-      // keep going!
-      return 0;
-    } else {
-      // Uh oh, no solution
-      console.log('NO SOLUTION! 😅');
+			// keep going!
+			return 0;
+		} else {
+			// Uh oh, no solution
+			console.log('NO SOLUTION! 😅');
 
-      this.getPathArray();
-      return -1;
-    }
-  }
+			this.getPathArray();
+			return -1;
+		}
+	}
 
-  getPathArray() {
-    // hScore is the distance from the point till the goal
+	getPathArray() {
+		// hScore is the distance from the point till the goal
 
-    const path: PathNode[] = [];
-    let prevNode = this.lastCheckedNode;
+		const path: PathNode[] = [];
+		let prevNode = this.lastCheckedNode;
 
-    while (prevNode) {
-      path.push(prevNode);
-      prevNode = prevNode.previous;
-    }
+		while (prevNode) {
+			path.push(prevNode);
+			prevNode = prevNode.previous;
+		}
 
-    if (!path.length) console.warn('loop step() method first to get the nodes!');
+		if (!path.length) console.warn('loop step() method first to get the nodes!');
 
-    return path.reverse().map((node, i) => ({ i, ...node }));
-  }
+		return path.reverse().map((node, i) => ({ i, ...node }));
+	}
 }

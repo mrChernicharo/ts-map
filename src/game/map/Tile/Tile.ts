@@ -1,5 +1,5 @@
 import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
-import { random, cellSize, BinCode } from '../utils/constants';
+import { random, cellSize, BinCode } from '../../utils/constants';
 
 export type TileState = 'idle' | 'hovered' | 'selected';
 export type BuildPoint = 'a' | 'b' | 'c' | 'd' | 'center';

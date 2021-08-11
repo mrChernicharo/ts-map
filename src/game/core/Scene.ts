@@ -18,22 +18,22 @@ import {
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
-import { Cube } from '../objects/Cube';
-import { Ball } from '../objects/Ball';
-import { Flag } from '../objects/Flag';
-import { Ground } from '../map/Ground';
-import { Rulers } from '../objects/Rulers';
+import { Cube } from '../helpers/Cube';
+import { Ball } from '../helpers/Ball';
+import { Flag } from '../helpers/Flag';
+import { Rulers } from '../helpers/Rulers';
 import { Camera } from './Camera';
 import { GUI } from './GUI';
-import { Polyhedron } from '../objects/Meshes';
+import { Polyhedron } from '../helpers/Meshes';
 import { createAxesHelper, createGridHelper } from '../utils/helpers';
-import { InputManager } from './InputManager';
+import { InputManager } from '../managers/InputManager';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 import { Raycaster } from './Raycaster';
 import { AStarPathfinder } from '../helpers/aStarPathfinder';
 import { GameState } from './GameState';
-import { EventsManager } from '../helpers/EventsManager';
+import { EventsManager } from '../managers/EventsManager';
 import { Title } from '../templates/title';
+import { Ground } from '../map/Land/Ground';
 
 // class WorldScene
 class Scene extends THREEScene {

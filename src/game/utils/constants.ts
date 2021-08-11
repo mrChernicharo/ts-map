@@ -1,6 +1,6 @@
 import { BufferGeometry, Line, Material, Vector3 } from 'three';
-import { Enemy } from '../objects/Enemy';
-import { Tower } from '../objects/Tower';
+import { Enemy } from '../objects/Enemy/Enemy';
+import { Tower } from '../objects/Tower/Tower';
 
 //prettier-ignore
 export type BinCode = 

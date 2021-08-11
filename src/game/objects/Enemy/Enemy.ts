@@ -1,30 +1,31 @@
 import { ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
-import { PathNode } from '../helpers/aStarPathfinder';
-import { levelStart, pathFindingDelay, cellSize } from '../utils/constants';
+import { PathNode } from '../../helpers/aStarPathfinder';
+import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
 
+export type EnemyState = 'idle' | 'hovered' | 'selected';
 export class Enemy extends Mesh {
 	speed: number;
 	path: Vector3[];
 	nextPos: Vector3;
 	velocity: Vector3;
 	nxPathIdx = 1; // nextPathIndex
-	constructor(speed) {
+	state: EnemyState;
+	constructor(speed: number) {
 		super();
 
 		this.speed = speed;
 
-		this.init();
+		this._init();
 	}
 
-	async init() {
-		this.path = await this.getPathNodes();
+	async _init() {
+		this.path = await this._getPathNodes();
 
 		this.material = new MeshToonMaterial({ color: 0xff9d00 });
 		this.geometry = new ConeGeometry(8, 20, 16);
+		this.name = `Enemy-${this.id}`;
 
 		new Mesh(this.geometry, this.material);
-
-		this.name = `Enemy-${this.id}`;
 
 		const [x, y, z] = Object.values(this.path[0].clone());
 		this.position.set(x, y, z);
@@ -32,8 +33,7 @@ export class Enemy extends Mesh {
 		this.nextPos = this.path[this.nxPathIdx];
 	}
 
-	async getPathNodes(): Promise<Vector3[]> {
-		// console.log(`initializing enemy ${this.id}`);
+	async _getPathNodes(): Promise<Vector3[]> {
 		return new Promise((resolve, reject) => {
 			let ground: any;
 
@@ -49,11 +49,11 @@ export class Enemy extends Mesh {
 		});
 	}
 
-	tick(delta) {
+	setState(str) {}
+
+	tick(delta: number) {
 		let pos = this.position.clone();
 		let nextClone = this.nextPos?.clone();
-
-		// const y = pos.y;
 
 		if (nextClone) {
 			let next = new Vector3(nextClone.x, nextClone.y + 12, nextClone.z);

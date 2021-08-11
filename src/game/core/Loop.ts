@@ -1,13 +1,13 @@
 import { Clock, Mesh, Quaternion, Vector3, WebGL1Renderer } from 'three';
 import { Camera } from './Camera';
-import { Cube } from '../objects/Cube';
+import { Cube } from '../helpers/Cube';
 import { Scene } from './Scene';
-import { Ball } from '../objects/Ball';
+import { Ball } from '../helpers/Ball';
 import { towerGenerator, enemyGenerator, levelFinish, levelStart, random } from '../utils/constants';
-import { Flag } from '../objects/Flag';
-import { Enemy } from '../objects/Enemy';
-import { EventsManager } from '../helpers/EventsManager';
-import { Tower } from '../objects/Tower';
+import { Flag } from '../helpers/Flag';
+import { Enemy } from '../objects/Enemy/Enemy';
+import { EventsManager } from '../managers/EventsManager';
+import { Tower } from '../objects/Tower/Tower';
 
 interface IUpdatable extends Mesh {
 	tick: (delta: number) => void;
@@ -30,7 +30,7 @@ class Loop {
 		this.renderer = renderer;
 		this.eventsManager = eventsManager;
 		this.updatables = [];
-		console.log(this);
+		// console.log(this);
 	}
 
 	setUp() {
@@ -62,12 +62,7 @@ class Loop {
 		this.scene.add(item);
 	}
 
-	remove() {
-		// const removingEl = this.updatables.find((item) => item.uuid === id);
-		// this.updatables = this.updatables.filter((item) => item.uuid === id);
-		// this.scene.remove(removingEl);
-		// console.log({ updatables: this.updatables, removingEl, id });
-	}
+	remove() {}
 
 	tick() {
 		const delta = clock.getDelta();

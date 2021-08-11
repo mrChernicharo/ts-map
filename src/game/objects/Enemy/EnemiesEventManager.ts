@@ -1,23 +1,27 @@
-import { EventEmitter } from 'stream';
-import { MeshToonMaterial } from 'three';
+import { EventEmitter } from 'events';
 import { Raycaster } from '../../core/dependecies/Raycaster';
 import { ENEMY_CLICK, ENEMY_HOVER, random } from '../../utils/constants';
-import { Tower } from '../Tower/Tower';
 import { Enemy } from './Enemy';
 
 export class EnemiesEventManager {
 	raycaster: Raycaster;
 	previousEnemyClicked: Enemy;
 	previousEnemyHovered: Enemy;
+	emitter: EventEmitter;
 	constructor(raycaster: Raycaster) {
 		this.raycaster = raycaster;
-		this.previousEnemyClicked = null;
-		this.previousEnemyHovered = null;
-
-		this.setEvents();
+		this._init();
 	}
 
-	setEvents() {
+	_init() {
+		this.previousEnemyClicked = null;
+		this.previousEnemyHovered = null;
+		this.emitter = new EventEmitter();
+
+		this._setEvents();
+	}
+
+	_setEvents() {
 		this.raycaster.emitter.on(ENEMY_CLICK, (enemy: Enemy) => this.handleEnemyClick(enemy));
 		this.raycaster.emitter.on(ENEMY_HOVER, (enemy: Enemy) => this.handleEnemyHover(enemy));
 	}
@@ -36,12 +40,4 @@ export class EnemiesEventManager {
 	clearEnemySelection() {}
 
 	clearEnemyHover() {}
-
-	// createTower(position, currentTile) {
-	// 	const types = ['A', 'B'];
-	// 	const towerType = types[random(0, 1)];
-
-	// 	const tower = new Tower(position, currentTile, towerType);
-	// 	return tower;
-	// }
 }

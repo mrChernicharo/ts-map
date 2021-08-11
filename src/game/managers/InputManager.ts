@@ -11,7 +11,6 @@ export class InputManager {
 	constructor(camera: Camera, scene: Scene) {
 		this.camera = camera;
 		this.scene = scene;
-		console.log();
 	}
 
 	handleKeyDown(event: KeyboardEvent) {
@@ -68,7 +67,6 @@ export class InputManager {
 	}
 	handleMouseWheel(event: WheelEvent) {
 		// console.log(event);
-
 		logGen.next();
 	}
 }

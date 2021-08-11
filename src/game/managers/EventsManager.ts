@@ -31,12 +31,10 @@ export class EventsManager {
 
 		this.emitter = new EventEmitter();
 
-		this._initEventManager();
-
-		// console.log(this);
+		this._init();
 	}
 
-	_initEventManager() {
+	_init() {
 		this.raycaster = new Raycaster(this.scene.camera, this.scene);
 		this.inputManager = new InputManager(this.scene.camera, this.scene);
 		this.TilesEventManager = new TilesEventManager(this.raycaster);
@@ -50,7 +48,6 @@ export class EventsManager {
 	setWindowEvents() {
 		window.addEventListener('keydown', e => this.inputManager.handleKeyDown(e));
 		window.addEventListener('keyup', e => this.inputManager.handleKeyUp(e));
-		// towerCreateButton.addEventListener('click', () => this.createTower());
 	}
 
 	setRaycasterEvents() {

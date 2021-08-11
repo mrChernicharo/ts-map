@@ -17,7 +17,6 @@ export class Game {
 
 		domContainer.append(this.scene.renderer.domElement);
 		this.scene.setSize(domContainer);
-		this.loop.setUp();
 	}
 
 	start() {

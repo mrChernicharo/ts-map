@@ -1,5 +1,6 @@
 import { ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
 import { PathNode } from '../../helpers/aStarPathfinder';
+import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize, enemyGenerator } from '../../utils/constants';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
@@ -17,7 +18,6 @@ export class Enemy extends Mesh {
 		super();
 
 		this.speed = speed;
-		this.hp = 100;
 
 		this._init();
 	}
@@ -28,6 +28,7 @@ export class Enemy extends Mesh {
 		this.material = new MeshToonMaterial({ color: 0xff9d00 });
 		this.geometry = new ConeGeometry(8, 20, 16);
 		this.name = `Enemy-${this.id}`;
+		this.hp = 100;
 
 		new Mesh(this.geometry, this.material);
 
@@ -39,10 +40,8 @@ export class Enemy extends Mesh {
 
 	async _getPathNodes(): Promise<Vector3[]> {
 		return new Promise((resolve, reject) => {
-			let ground: any;
-
 			setTimeout(() => {
-				ground = this.parent.children.find(item => item.name === 'Ground');
+				const ground = this.parent.children.find(item => item.name === 'Ground') as Ground;
 
 				ground.path.length
 					? resolve(ground.path.map((node: PathNode) => node.pos))

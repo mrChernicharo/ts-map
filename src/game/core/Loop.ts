@@ -39,10 +39,10 @@ class Loop {
 		this.renderer = renderer;
 		this.eventsManager = eventsManager;
 		this.updatables = [];
-		// console.log(this);
+		this._init();
 	}
 
-	setUp() {
+	_init() {
 		this.setEvents();
 
 		const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelFinish)];
@@ -54,8 +54,7 @@ class Loop {
 		this.renderer.setAnimationLoop(() => {
 			this.tick();
 
-			// render a frame
-			this.renderer.render(this.scene, this.camera);
+			this.renderer.render(this.scene, this.camera); // render a frame
 		});
 	}
 
@@ -68,19 +67,15 @@ class Loop {
 		this.scene.add(item);
 	}
 
-	remove(item) {
+	remove(item: any) {
 		this.updatables = this.updatables.filter(u => u.uuid !== item.uuid);
 		this.scene.remove(item);
-
-		console.log(this.updatables);
+		// console.log(this.updatables);
 	}
 
 	setEvents() {
-		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => {
-			this.add(tower);
-		});
-
-		this.eventsManager.emitter.on(TOWER_SOLD, tower => this.remove(tower));
+		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => this.add(tower));
+		this.eventsManager.emitter.on(TOWER_SOLD, (tower: Tower) => this.remove(tower));
 	}
 
 	tick() {
@@ -121,7 +116,6 @@ class Loop {
 			const enemy = enemyGen.next().value;
 
 			if (enemy) this.add(enemy);
-			// console.log(this.updatables);
 		}
 	}
 

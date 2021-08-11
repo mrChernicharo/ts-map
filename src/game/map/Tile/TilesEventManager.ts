@@ -24,32 +24,29 @@ export class TilesEventManager {
 	emitter: EventEmitter;
 	constructor(raycaster: Raycaster) {
 		this.raycaster = raycaster;
+		this._init();
+
+		this._setEvents();
+	}
+	_init() {
 		this.previousTileClicked = null;
 		this.previousTileHovered = null;
 		this.emitter = new EventEmitter();
-
-		this.setEvents();
 	}
 
-	setEvents() {
+	_setEvents() {
 		this.raycaster.emitter.on(TILE_CLICK, (tile: Tile) => this.handleTileClick(tile));
 		this.raycaster.emitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
 		this.raycaster.emitter.on(IDLE_CLICK, () => this.clearTileSelection());
 		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
-		towerCreateButton.addEventListener('click', (e: PointerEvent) => {
-			const buttonAction = (e.target as HTMLButtonElement).textContent;
-
-			buttonAction === 'Build Tower' ? this.createTower() : this.sellTower();
-		});
+		towerCreateButton.addEventListener('click', (e: PointerEvent) => this.handleModalButtonClick(e));
 	}
 
 	handleTileClick(tile: Tile) {
 		if (tile.state === 'hovered' || tile.state === 'idle') {
 			tile.setState('selected');
 
-			if (tile.tower) {
-				tile.tower.highlight();
-			}
+			if (tile.tower) tile.tower.highlight();
 
 			if (this.previousTileClicked !== tile) this.previousTileClicked?.setState('idle');
 
@@ -72,6 +69,12 @@ export class TilesEventManager {
 			this.previousTileHovered?.setState('idle');
 
 		this.previousTileHovered = tile;
+	}
+
+	handleModalButtonClick(e: PointerEvent) {
+		const buttonAction = (e.target as HTMLButtonElement).textContent;
+
+		buttonAction === 'Build Tower' ? this.createTower() : this.sellTower();
 	}
 
 	clearTileSelection() {

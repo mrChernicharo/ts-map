@@ -4,6 +4,7 @@ import { Tile } from './Tile';
 
 const modal = document.querySelector('#tower-modal');
 const modalSection = document.querySelector('#tower-modal section');
+const towerCreateButton = document.querySelector('#tower-modal button');
 
 export class TilesEventManager {
 	raycaster: Raycaster;

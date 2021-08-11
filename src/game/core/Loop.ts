@@ -38,8 +38,11 @@ class Loop {
 		this.add(startFlag);
 		this.add(endFlag);
 
-		this.eventsManager.emitter.on('createTower', (pos, binCode) => {
-			const tower = new Tower(pos, binCode);
+		this.eventsManager.emitter.on('createTower', (pos, position) => {
+			const types = ['A', 'B'];
+			const towerType = types[random(0, 1)];
+
+			const tower = new Tower(pos, position, towerType);
 			this.add(tower);
 		});
 	}
@@ -67,22 +70,51 @@ class Loop {
 	tick() {
 		const delta = clock.getDelta();
 		const elapsed = clock.getElapsedTime();
+		const enemies = this.getEnemies();
+		const towers = this.getTowers();
 
 		// console.log(random(20));
 
-		if ((elapsed % enemyInterval) + delta >= enemyInterval) {
-			const enemy = enemyGen.next().value;
-
-			if (enemy) this.add(enemy);
-		}
-
-		// if ((elapsed % 10) + delta >= 10) {
-		//   console.log(this.updatables);
-		// }
+		this.spawnEnemies(delta, elapsed);
 
 		for (const object of this.updatables) {
 			object.tick(delta);
 		}
+
+		if ((elapsed % 3) + delta >= 3) {
+			for (const tower of towers) {
+				for (const enemy of enemies) {
+					const distance = tower.position.distanceTo(enemy.position);
+					const inRange = tower.range - distance > -10;
+					console.log({
+						tower: tower.towerType,
+						// enemy: enemy.name + enemy.id,
+						// distance,
+						// range: tower.range,
+						inRange,
+					});
+				}
+			}
+		}
+	}
+
+	spawnEnemies(delta: number, elapsed: number) {
+		if ((elapsed % enemyInterval) + delta >= enemyInterval) {
+			const enemy = enemyGen.next().value;
+
+			if (enemy) this.add(enemy);
+			console.log(this.updatables);
+		}
+	}
+
+	getEnemies() {
+		const enemies = this.updatables.filter(item => item.name.includes('Enemy'));
+		return enemies as Enemy[];
+	}
+
+	getTowers() {
+		const towers = this.updatables.filter(item => item.name.includes('Tower'));
+		return towers as Tower[];
 	}
 }
 

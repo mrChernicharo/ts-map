@@ -1,6 +1,8 @@
-import { EventEmitter } from 'stream';
+import { EventEmitter } from 'events';
 import { Raycaster } from '../../core/Raycaster';
-import { IDLE_CLICK, TILE_CLICK, TILE_HOVER, IDLE_HOVER } from '../../utils/constants';
+import { Tower } from '../../objects/Tower/Tower';
+import { IDLE_CLICK, TILE_CLICK, TILE_HOVER, IDLE_HOVER, random, TOWER_CREATED } from '../../utils/constants';
+import { Cell } from '../Land/Cell';
 import { Tile } from './Tile';
 
 const modal = document.querySelector('#tower-modal');
@@ -11,19 +13,22 @@ export class TilesEventManager {
 	raycaster: Raycaster;
 	previousTileClicked: Tile;
 	previousTileHovered: Tile;
+	emitter: EventEmitter;
 	constructor(raycaster: Raycaster) {
 		this.raycaster = raycaster;
 		this.previousTileClicked = null;
 		this.previousTileHovered = null;
+		this.emitter = new EventEmitter();
 
 		this.setEvents();
 	}
 
 	setEvents() {
-		this.raycaster.raycasterEmitter.on(TILE_CLICK, (tile: Tile) => this.handleTileClick(tile));
-		this.raycaster.raycasterEmitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
-		this.raycaster.raycasterEmitter.on(IDLE_CLICK, () => this.clearTileSelection());
-		this.raycaster.raycasterEmitter.on(IDLE_HOVER, () => this.clearTileHover());
+		this.raycaster.emitter.on(TILE_CLICK, (tile: Tile) => this.handleTileClick(tile));
+		this.raycaster.emitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
+		this.raycaster.emitter.on(IDLE_CLICK, () => this.clearTileSelection());
+		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
+		towerCreateButton.addEventListener('click', () => this.createTower());
 	}
 
 	handleTileClick(tile: Tile) {
@@ -60,6 +65,20 @@ export class TilesEventManager {
 
 	clearTileHover() {
 		if (this.previousTileHovered?.state !== 'selected') this.previousTileHovered?.setState('idle');
+	}
+
+	createTower() {
+		const currentTile = this.previousTileClicked;
+		const currentCell = this.previousTileClicked.parent as Cell;
+
+		const { position } = currentCell;
+
+		const towerTypes = ['A', 'B', 'C'];
+		const towerType = towerTypes[random(0, 2)];
+
+		const tower = new Tower(position, currentTile, towerType);
+
+		this.emitter.emit(TOWER_CREATED, tower);
 	}
 
 	showModal(tile: Tile) {

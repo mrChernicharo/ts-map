@@ -19,7 +19,7 @@ export class Raycaster extends THREERaycaster {
 	camera: Camera;
 	scene: Scene;
 	intersects: Intersection[];
-	raycasterEmitter: EventEmitter;
+	emitter: EventEmitter;
 	constructor(camera: Camera, scene: Scene) {
 		super();
 
@@ -27,7 +27,7 @@ export class Raycaster extends THREERaycaster {
 		this.scene = scene;
 
 		this.intersects = [];
-		this.raycasterEmitter = new EventEmitter();
+		this.emitter = new EventEmitter();
 
 		this.layers.set(0);
 	}
@@ -62,9 +62,9 @@ export class Raycaster extends THREERaycaster {
 		const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
 		const tile = tileIntersection?.object;
 		if (tile) {
-			this.raycasterEmitter.emit(TILE_HOVER, tile);
+			this.emitter.emit(TILE_HOVER, tile);
 		} else {
-			this.raycasterEmitter.emit(IDLE_HOVER);
+			this.emitter.emit(IDLE_HOVER);
 		}
 
 		const enemyIntersection = this.intersects.find(intersected =>
@@ -72,7 +72,7 @@ export class Raycaster extends THREERaycaster {
 		);
 		const enemy = enemyIntersection?.object;
 		if (enemy) {
-			this.raycasterEmitter.emit(ENEMY_HOVER, enemy);
+			this.emitter.emit(ENEMY_HOVER, enemy);
 		}
 	}
 
@@ -82,7 +82,7 @@ export class Raycaster extends THREERaycaster {
 		);
 		const enemy = enemyIntersection?.object;
 		if (enemy) {
-			this.raycasterEmitter.emit(ENEMY_CLICK, enemy);
+			this.emitter.emit(ENEMY_CLICK, enemy);
 		}
 	}
 
@@ -90,9 +90,9 @@ export class Raycaster extends THREERaycaster {
 		const tileIntersection = this.intersects.find(intersected => intersected.object.name === 'Tile');
 		const tile = tileIntersection?.object;
 		if (tile) {
-			this.raycasterEmitter.emit(TILE_CLICK, tile);
+			this.emitter.emit(TILE_CLICK, tile);
 		} else {
-			this.raycasterEmitter.emit(IDLE_CLICK);
+			this.emitter.emit(IDLE_CLICK);
 		}
 	}
 

@@ -18,8 +18,8 @@ export class EnemiesEventManager {
 	}
 
 	setEvents() {
-		this.raycaster.raycasterEmitter.on(ENEMY_CLICK, (enemy: Enemy) => this.handleEnemyClick(enemy));
-		this.raycaster.raycasterEmitter.on(ENEMY_HOVER, (enemy: Enemy) => this.handleEnemyHover(enemy));
+		this.raycaster.emitter.on(ENEMY_CLICK, (enemy: Enemy) => this.handleEnemyClick(enemy));
+		this.raycaster.emitter.on(ENEMY_HOVER, (enemy: Enemy) => this.handleEnemyHover(enemy));
 	}
 
 	handleEnemyClick(enemy: Enemy) {

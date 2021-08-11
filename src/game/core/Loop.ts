@@ -10,6 +10,7 @@ import {
 	levelStart,
 	random,
 	CREATE_TOWER,
+	TOWER_CREATED,
 } from '../utils/constants';
 import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
@@ -74,9 +75,7 @@ class Loop {
 	}
 
 	setEvents() {
-		this.eventsManager.emitter.on(CREATE_TOWER, (position, currentTile, towerType) => {
-			const tower = new Tower(position, currentTile, towerType);
-
+		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => {
 			this.add(tower);
 		});
 	}

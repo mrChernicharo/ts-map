@@ -1,38 +1,10 @@
-import {
-	Scene as THREEScene,
-	Color,
-	Fog,
-	WebGL1Renderer,
-	Light,
-	DirectionalLight,
-	FontLoader,
-	TextGeometry,
-	MeshBasicMaterial,
-	Mesh,
-	PolyhedronGeometry,
-	MeshLambertMaterial,
-	MeshToonMaterial,
-	MeshPhongMaterial,
-	Vector2,
-	Vector3,
-} from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { Scene as THREEScene, Color, Fog, WebGL1Renderer, Light, DirectionalLight } from 'three';
+import { OrbitControls } from './OrbitControls';
 import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
-import { Cube } from '../helpers/objects/Cube';
-import { Ball } from '../helpers/objects/Ball';
-import { Flag } from '../helpers/objects/Flag';
-import { Rulers } from '../helpers/objects/Rulers';
 import { Camera } from './Camera';
 import { GUI } from '../helpers/GUI';
-import { Polyhedron } from '../helpers/objects/Meshes';
-import { createAxesHelper, createGridHelper } from '../utils/helpers';
-import { InputManager } from '../managers/InputManager';
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
-import { Raycaster } from './Raycaster';
-import { AStarPathfinder } from '../helpers/aStarPathfinder';
 import { GameState } from './GameState';
 import { EventsManager } from '../managers/EventsManager';
-import { Title } from '../templates/title';
 import { Ground } from '../map/Land/Ground';
 
 // class WorldScene
@@ -52,11 +24,11 @@ class Scene extends THREEScene {
 		this.fog = new Fog(0x003300, -1, 5000);
 		this.background = new Color(0x00000);
 
-		this.init();
+		this._init();
 	}
 
-	init() {
-		this.initCore();
+	_init() {
+		this._initCore();
 
 		this.addObjects();
 
@@ -65,15 +37,13 @@ class Scene extends THREEScene {
 		return this;
 	}
 
-	initCore() {
+	_initCore() {
 		this.renderer = new WebGL1Renderer({ antialias: true });
 		this.renderer.physicallyCorrectLights = true;
 
 		this.camera = new Camera();
 
 		this.orbitControls = new OrbitControls(this.camera, this.domContainer);
-		this.orbitControls.enableDamping = true;
-		this.orbitControls.maxPolarAngle = Math.PI / 2;
 
 		this.lights = new DirectionalLight('white', 1.8);
 
@@ -82,12 +52,10 @@ class Scene extends THREEScene {
 
 	addObjects() {
 		// adding test objects
-		// const poly = new Polyhedron(this);
 
-		const rulers = new Rulers();
 		const ground = new Ground();
 
-		const objects = [ground, this.lights, rulers];
+		const objects = [ground, this.lights];
 
 		this.add(...objects);
 	}
@@ -96,14 +64,13 @@ class Scene extends THREEScene {
 		window.addEventListener('resize', () => {
 			this.setSize(this.domContainer);
 
-			// perform any custom actions
 			this.onResize();
 		});
 	}
 
 	setSize(container: Element) {
 		this.camera.aspect = container.clientWidth / container.clientHeight;
-		// update the camera's frustum
+		// update the camera's frustum. Without this, objects got squished/streched
 		this.camera.updateProjectionMatrix();
 
 		this.renderer.setSize(container.clientWidth, container.clientHeight);
@@ -111,6 +78,8 @@ class Scene extends THREEScene {
 		this.renderer.setPixelRatio(window.devicePixelRatio);
 	}
 
-	onResize() {}
+	onResize() {
+		console.log('resized viewport!');
+	}
 }
 export { Scene };

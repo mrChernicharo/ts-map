@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import { CircleGeometry, CylinderGeometry, Mesh, MeshToonMaterial, Vector3 } from 'three';
 import { Cell } from '../../map/Land/Cell';
 import { Tile } from '../../map/Tile/Tile';
-import { BinCode, cellSize } from '../../utils/constants';
+import { BinCode, cellSize, TOWER_CREATED } from '../../utils/constants';
 
 export type TowerType = 'A' | 'B';
 
@@ -27,6 +27,7 @@ export class Tower extends Mesh {
 	fireRate: number;
 	damage: number;
 	enemiesinRange: [] = [];
+	emitter: EventEmitter;
 	constructor(pos: Vector3, tile: Tile, towerType) {
 		super();
 		this.pos = pos;
@@ -39,8 +40,8 @@ export class Tower extends Mesh {
 		this.material = new MeshToonMaterial({ color: 0x454545 });
 		this.geometry = new CylinderGeometry(8, 10, 30, 20);
 		this.name = 'Tower';
-		// this.range = this._setRange();
 		this.range = ranges[this.towerType];
+		this.emitter = new EventEmitter();
 
 		new Mesh(this.geometry, this.material);
 
@@ -48,7 +49,7 @@ export class Tower extends Mesh {
 
 		this._createTowerRangeCircle();
 
-		console.log(this);
+		// console.log(this);
 	}
 
 	tick(delta) {}
@@ -87,21 +88,5 @@ export class Tower extends Mesh {
 		if (this.tile.buildPoint === 'center') {
 			this.position.set(x + cellSize / 2, y + 42, z + cellSize / 2);
 		}
-	}
-
-	_setRange() {
-		let range: number;
-		switch (this.towerType) {
-			case 'A':
-				range = 120;
-				break;
-			case 'B':
-				range = 60;
-				break;
-			default:
-				range = 90;
-		}
-
-		return range;
 	}
 }

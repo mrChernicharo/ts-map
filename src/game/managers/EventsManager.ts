@@ -4,8 +4,8 @@ import { InputManager } from './InputManager';
 import { Raycaster } from '../core/Raycaster';
 import { Cell } from '../map/Land/Cell';
 import { cellSize } from '../utils/constants';
-import { TilesStateManager } from '../map/Tile/TilesStateManager';
-import { EnemiesStateManager } from '../objects/Enemy/EnemiesStateManager';
+import { TilesEventManager } from '../map/Tile/TilesEventManager';
+import { EnemiesEventManager } from '../objects/Enemy/EnemiesEventManager';
 
 const towerCreateButton = document.querySelector('#tower-modal button');
 
@@ -13,25 +13,24 @@ export class EventsManager {
 	inputManager: InputManager;
 	raycaster: Raycaster;
 	emitter: EventEmitter;
-	tilesStateManager: TilesStateManager;
-	enemiesStateManager: EnemiesStateManager;
+	TilesEventManager: TilesEventManager;
+	EnemiesEventManager: EnemiesEventManager;
 	constructor(raycaster: Raycaster, inputManager: InputManager) {
 		this.raycaster = raycaster;
 		this.inputManager = inputManager;
 		this.emitter = new EventEmitter();
 
-		this.initTilesStateManager();
+		this.initTilesEventManager();
 
 		this.setWindowEvents();
 		this.setRaycasterEvents();
 
-		this.setTowerEvents();
 		// console.log(this);
 	}
 
-	initTilesStateManager() {
-		this.tilesStateManager = new TilesStateManager(this.raycaster);
-		this.enemiesStateManager = new EnemiesStateManager(this.raycaster);
+	initTilesEventManager() {
+		this.TilesEventManager = new TilesEventManager(this.raycaster);
+		this.EnemiesEventManager = new EnemiesEventManager(this.raycaster);
 	}
 
 	setWindowEvents() {
@@ -43,18 +42,16 @@ export class EventsManager {
 		window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
 
 		window.addEventListener('mousedown', e => {
-			this.tilesStateManager.closeModal();
+			this.TilesEventManager.closeModal();
 			this.raycaster.handleClick(e);
 		});
-	}
 
-	setTowerEvents() {
 		towerCreateButton.addEventListener('click', () => this.createTower());
 	}
 
 	createTower() {
-		const currentTile = this.tilesStateManager.previousTileClicked;
-		const currentCell = this.tilesStateManager.previousTileClicked.parent as Cell;
+		const currentTile = this.TilesEventManager.previousTileClicked;
+		const currentCell = this.TilesEventManager.previousTileClicked.parent as Cell;
 
 		const { position } = currentCell;
 

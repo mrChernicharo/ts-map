@@ -2,7 +2,7 @@ import { EventEmitter } from 'stream';
 import { Raycaster } from '../../core/Raycaster';
 import { Enemy } from './Enemy';
 
-export class EnemiesStateManager {
+export class EnemiesEventManager {
 	raycaster: Raycaster;
 	previousEnemyClicked: Enemy;
 	previousEnemyHovered: Enemy;

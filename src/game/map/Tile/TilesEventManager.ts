@@ -5,7 +5,7 @@ import { Tile } from './Tile';
 const modal = document.querySelector('#tower-modal');
 const modalSection = document.querySelector('#tower-modal section');
 
-export class TilesStateManager {
+export class TilesEventManager {
 	raycaster: Raycaster;
 	previousTileClicked: Tile;
 	previousTileHovered: Tile;

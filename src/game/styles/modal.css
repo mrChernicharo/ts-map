@@ -1,76 +1,44 @@
-/* * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  --color--bg: #0d2f50;
-  --color--border: #05192d;
-  --color--highlight: #134d6f;
-  --color--txt: #cdcdcd;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--color--bg);
-  color: var(--color--txt);
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  width: 100%;
-
-  height: 100vh;
-  overflow: hidden;
-}
-
-#scene-container {
-  width: 100%;
-  height: 100%;
-}
-
-canvas {
-  margin: 0 auto;
-} */
-
 #tower-modal {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 200px;
-  height: 200px;
-  /* bottom: 2rem;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 200px;
+	height: 140px;
+	/* bottom: 2rem;
   right: 2rem;   */
-  top: 2rem;
-  right: 2rem;
-  background: var(--color--bg);
-  color: var(--color--txt);
-  border-block: 5px solid var(--color--txt);
-  opacity: 0;
-  z-index: 1;
+	top: 2rem;
+	right: 2rem;
+	background: var(--color--bg);
+	color: var(--color--txt);
+	border-block: 5px solid var(--color--txt);
+	opacity: 0;
+	z-index: 1;
 }
 
 #tower-modal.visible {
-  transition: 0.4s;
-  opacity: 1;
+	transition: 0.4s;
+	opacity: 1;
 }
 
 #tower-modal section {
-  border: 1px solid var(--color--border);
-  height: 120px;
+	border: 1px solid var(--color--border);
+	height: 120px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 #tower-modal button {
-  background: var(--color--highlight);
-  color: var(--color--txt);
-  border: transparent;
-  border-radius: 15px;
-  font-size: 1rem;
-  line-height: 1.75rem;
-  margin: 1rem;
+	background: var(--color--highlight);
+	color: var(--color--txt);
+	border: transparent;
+	border-radius: 15px;
+	font-size: 1rem;
+	line-height: 1.75rem;
+	margin: 1rem;
 }
 
 #tower-modal button:hover {
-  opacity: 0.8;
-  transition: 0.4s;
+	opacity: 0.8;
+	transition: 0.4s;
 }

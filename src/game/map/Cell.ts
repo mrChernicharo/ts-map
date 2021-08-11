@@ -60,21 +60,7 @@ export class Cell extends Mesh {
 	}
 
 	appendSpots() {
-		let tileType;
-
 		let [dotPoints, binItems] = this.getSpotPoints();
-		// console.log(dotPoints);
-
-		const points = Object.keys(dotPoints);
-		if (points.length === 4) {
-			tileType = 'TL';
-		} else if (points.length === 2 && points[0] === 'b') {
-			tileType = 'T';
-		} else if (points.length === 2 && points[0] === 'c') {
-			tileType = 'L';
-		} else {
-			tileType = '_';
-		}
 
 		Object.entries(dotPoints).forEach(([key, point], i) => {
 			const hasWall = binItems[i] === '1';
@@ -90,46 +76,39 @@ export class Cell extends Mesh {
 			};
 
 			this.spots.push(spot);
-			const newTile = new Tile(this.binCode, false, false, tileType, index, buildPoint);
-			const { x, y, z } = point;
-			newTile.position.set(x, y + 24, z);
 
-			if (hasWall) {
-				this.add(newTile);
-			}
-			// if (this.binCode === '1111') {
-			// }
-
-			if (key === 'c' && ['0111', '1011', '1101', '1110', '1111'].includes(this.binCode)) {
-				let extraTile;
-				buildPoint = 'center';
-
-				if (['0111', '1011', '1101', '1110'].includes(this.binCode)) {
-					extraTile = new Tile(this.binCode, true, true, tileType, index, buildPoint);
-				}
-				if (this.binCode === '1111')
-					extraTile = new Tile(this.binCode, true, false, tileType, index, buildPoint);
-				this.add(extraTile);
-
-				extraTile.position.set(cellSize / 2, 2 + 24, cellSize / 2);
-			}
+			this.buildTiles(key, point, hasWall, buildPoint);
 		});
 	}
 
+	buildTiles(key, point, hasWall, buildPoint) {
+		const newTile = new Tile(buildPoint);
+		const { x, y, z } = point;
+		newTile.position.set(x, y + 24, z);
+
+		if (hasWall) {
+			this.add(newTile);
+		}
+
+		if (key === 'c' && ['0111', '1011', '1101', '1110', '1111'].includes(this.binCode)) {
+			let extraTile: Tile;
+			buildPoint = 'center';
+
+			if (['0111', '1011', '1101', '1110'].includes(this.binCode)) {
+				extraTile = new Tile(buildPoint);
+			}
+			if (this.binCode === '1111') extraTile = new Tile(buildPoint);
+			this.add(extraTile);
+
+			extraTile.position.set(cellSize / 2, 2 + 24, cellSize / 2);
+		}
+	}
 	buildWall() {
 		const wall = new Wall(this.binCode);
 		wall.name = `${this.index}-Wall`;
 
 		this.add(wall);
 	}
-
-	// appendTile(localPos: Vector3) {
-	// 	const { x, y, z } = localPos;
-	// 	const tile = new Tile(this.binCode);
-	// 	tile.position.set(x, y + 24, z);
-
-	// 	this.add(tile);
-	// }
 
 	getSpotPoints(): [{ [key: string]: Vector3 }, string] {
 		let dotPoints: { [key: string]: Vector3 };

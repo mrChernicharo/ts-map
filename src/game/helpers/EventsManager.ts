@@ -7,8 +7,6 @@ import { Spot } from '../map/Ground';
 import { cellSize } from '../utils/constants';
 import { TilesStateManager } from './TilesStateManager';
 
-const modal = document.querySelector('#tower-modal');
-const modalSection = document.querySelector('#tower-modal section');
 const towerCreateButton = document.querySelector('#tower-modal button');
 
 export class EventsManager {
@@ -43,7 +41,7 @@ export class EventsManager {
 		window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
 
 		window.addEventListener('mousedown', e => {
-			this.closeModal();
+			this.tilesStateManager.closeModal();
 			this.raycaster.handleClick(e);
 		});
 	}
@@ -52,25 +50,11 @@ export class EventsManager {
 		towerCreateButton.addEventListener('click', () => this.createTower());
 	}
 
-	closeModal() {
-		modal.classList.remove('visible');
-	}
-
 	createTower() {
 		const currentTile = this.tilesStateManager.previousTileClicked;
 		const currentCell = this.tilesStateManager.previousTileClicked.parent as Cell;
-		const currentSpot: Spot[] = currentCell.spots;
-		let spots = [];
 
-		currentSpot.forEach(s => {
-			// console.log(s);
-			spots.push(s.origin.clone().add(s.localPos));
-		});
-
-		const { position, binCode } = currentCell;
-		console.log(spots);
-
-		console.log('create tower!', { position, currentTile });
+		const { position } = currentCell;
 
 		this.emitter.emit('createTower', position, currentTile);
 	}

@@ -11,26 +11,9 @@ const materials = {
 
 export class Tile extends Mesh {
 	state: TileState;
-	binCode: BinCode;
-	isCentral: boolean;
-	isExtra: boolean;
-	posType: string;
-	index: number;
 	buildPoint: BuildPoint;
-	constructor(
-		binCode: BinCode,
-		isExtra = false,
-		isCentral = false,
-		posType: string,
-		index: number,
-		buildPoint: BuildPoint
-	) {
+	constructor(buildPoint: BuildPoint) {
 		super();
-		this.index = index;
-		this.binCode = binCode;
-		this.isExtra = isExtra;
-		this.isCentral = isCentral;
-		this.posType = posType;
 		this.buildPoint = buildPoint;
 
 		this.material = new MeshToonMaterial(materials.idle);

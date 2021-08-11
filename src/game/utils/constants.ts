@@ -50,6 +50,7 @@ export const TILE_CLICK = 'tileClick';
 export const ENEMY_HOVER = 'enemyHover';
 export const ENEMY_CLICK = 'enemyClick';
 export const TOWER_CREATED = 'towerCreated';
+export const TOWER_SOLD = 'towerSold';
 export const ADD_TO_LOOP = 'addToLoop';
 
 export const random = (a: number, b?: number) => {

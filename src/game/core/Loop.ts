@@ -11,6 +11,7 @@ import {
 	random,
 	CREATE_TOWER,
 	TOWER_CREATED,
+	TOWER_SOLD,
 } from '../utils/constants';
 import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
@@ -78,6 +79,8 @@ class Loop {
 		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => {
 			this.add(tower);
 		});
+
+		this.eventsManager.emitter.on(TOWER_SOLD, tower => this.remove(tower));
 	}
 
 	tick() {

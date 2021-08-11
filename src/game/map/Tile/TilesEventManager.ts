@@ -1,7 +1,15 @@
 import { EventEmitter } from 'events';
 import { Raycaster } from '../../core/dependecies/Raycaster';
 import { Tower } from '../../objects/Tower/Tower';
-import { IDLE_CLICK, TILE_CLICK, TILE_HOVER, IDLE_HOVER, random, TOWER_CREATED } from '../../utils/constants';
+import {
+	IDLE_CLICK,
+	TILE_CLICK,
+	TILE_HOVER,
+	IDLE_HOVER,
+	random,
+	TOWER_CREATED,
+	TOWER_SOLD,
+} from '../../utils/constants';
 import { Cell } from '../Land/Cell';
 import { Tile } from './Tile';
 
@@ -28,7 +36,11 @@ export class TilesEventManager {
 		this.raycaster.emitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
 		this.raycaster.emitter.on(IDLE_CLICK, () => this.clearTileSelection());
 		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
-		towerCreateButton.addEventListener('click', () => this.createTower());
+		towerCreateButton.addEventListener('click', (e: PointerEvent) => {
+			const buttonAction = (e.target as HTMLButtonElement).textContent;
+
+			buttonAction === 'Build Tower' ? this.createTower() : this.sellTower();
+		});
 	}
 
 	handleTileClick(tile: Tile) {
@@ -89,6 +101,14 @@ export class TilesEventManager {
 		tile.addTower(tower);
 
 		this.emitter.emit(TOWER_CREATED, tower);
+	}
+
+	sellTower() {
+		const tile = this.previousTileClicked;
+
+		this.emitter.emit(TOWER_SOLD, tile.tower);
+
+		tile.tower = null;
 	}
 
 	showModal(tile: Tile) {

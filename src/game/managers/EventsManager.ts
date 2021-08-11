@@ -10,6 +10,7 @@ import {
 	random,
 	towerGenerator,
 	TOWER_CREATED,
+	TOWER_SOLD,
 } from '../utils/constants';
 import { TilesEventManager } from '../map/Tile/TilesEventManager';
 import { EnemiesEventManager } from '../objects/Enemy/EnemiesEventManager';
@@ -65,6 +66,8 @@ export class EventsManager {
 		this.TilesEventManager.emitter.on(TOWER_CREATED, (tower: Tower) =>
 			this.emitter.emit(TOWER_CREATED, tower)
 		);
+
+		this.TilesEventManager.emitter.on(TOWER_SOLD, (tower: Tower) => this.emitter.emit(TOWER_SOLD, tower));
 	}
 }
 

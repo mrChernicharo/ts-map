@@ -2,7 +2,7 @@ import { CircleGeometry, LineBasicMaterial, Mesh, MeshToonMaterial, Vector2, Vec
 import { Wall } from './Wall';
 import { Bin, BinCode, drawLine, levelFinish, levelStart, cellSize, ZERO } from '../utils/constants';
 import { Spot } from './Ground';
-import { Tile } from './Tile';
+import { BuildPoint, Tile } from './Tile';
 
 const points = {
 	a: new Vector3(0, 2, 0),
@@ -17,6 +17,7 @@ export interface CellEdges {
 	c: Bin;
 	d: Bin;
 }
+let index = 0;
 
 export class Cell extends Mesh {
 	index: number;
@@ -59,28 +60,29 @@ export class Cell extends Mesh {
 	}
 
 	appendSpots() {
+		let tileType;
+
 		let [dotPoints, binItems] = this.getSpotPoints();
 		// console.log(dotPoints);
 
-		// console.log(dotPoints);
-		// const points = Object.keys(dotPoints);
-		// if (points.length === 4) {
-		// 	console.log('first cell');
-		// }
-		// if (points.length === 2 && points[0] === 'b') {
-		// 	console.log('top cell');
-		// }
-		// if (points.length === 2 && points[0] === 'c') {
-		// 	console.log('left cell');
-		// } else {
-		// 	console.log('other cell');
-		// }
+		const points = Object.keys(dotPoints);
+		if (points.length === 4) {
+			tileType = 'TL';
+		} else if (points.length === 2 && points[0] === 'b') {
+			tileType = 'T';
+		} else if (points.length === 2 && points[0] === 'c') {
+			tileType = 'L';
+		} else {
+			tileType = '_';
+		}
 
 		Object.entries(dotPoints).forEach(([key, point], i) => {
 			const hasWall = binItems[i] === '1';
 
+			let buildPoint = key as BuildPoint;
+
 			const spot: Spot = {
-				index: i,
+				index: index++,
 				localPos: point,
 				origin: this.origin,
 				isWall: hasWall,
@@ -88,7 +90,7 @@ export class Cell extends Mesh {
 			};
 
 			this.spots.push(spot);
-			const newTile = new Tile(this.binCode, false, false);
+			const newTile = new Tile(this.binCode, false, false, tileType, index, buildPoint);
 			const { x, y, z } = point;
 			newTile.position.set(x, y + 24, z);
 
@@ -100,11 +102,13 @@ export class Cell extends Mesh {
 
 			if (key === 'c' && ['0111', '1011', '1101', '1110', '1111'].includes(this.binCode)) {
 				let extraTile;
+				buildPoint = 'center';
 
 				if (['0111', '1011', '1101', '1110'].includes(this.binCode)) {
-					extraTile = new Tile(this.binCode, true, true);
+					extraTile = new Tile(this.binCode, true, true, tileType, index, buildPoint);
 				}
-				if (this.binCode === '1111') extraTile = new Tile(this.binCode, true, false);
+				if (this.binCode === '1111')
+					extraTile = new Tile(this.binCode, true, false, tileType, index, buildPoint);
 				this.add(extraTile);
 
 				extraTile.position.set(cellSize / 2, 2 + 24, cellSize / 2);

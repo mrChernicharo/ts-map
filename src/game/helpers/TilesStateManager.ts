@@ -63,9 +63,8 @@ export class TilesStateManager {
 	showModal(tile: Tile) {
 		modal.classList.add('visible');
 
-		const tileInfo = `${tile.name} ${tile.id} ${tile.binCode} ${tile.isExtra ? 'extra' : ''} ${
-			tile.isCentral ? 'central' : ''
-		}`;
+		const tileInfo = `${tile.name} ${tile.index} ${tile.binCode} ${tile.isExtra ? 'extra' : ''} 
+		${tile.isCentral ? 'central' : ''} ${tile.buildPoint}`;
 
 		modalSection.innerHTML = tileInfo;
 	}

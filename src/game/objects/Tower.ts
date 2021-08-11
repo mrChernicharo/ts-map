@@ -21,14 +21,40 @@ export class Tower extends Mesh {
 		new Mesh(this.geometry, this.material);
 
 		let { x, y, z } = this.pos;
+		// let { x, y, z } = this.tile.position;
+
+		if (this.tile.buildPoint === 'a') {
+			this.position.set(x, y + 42, z);
+		}
+
+		if (this.tile.buildPoint === 'b') {
+			this.position.set(x + cellSize, y + 42, z);
+		}
+		if (this.tile.buildPoint === 'c') {
+			this.position.set(x + cellSize, y + 42, z + cellSize);
+		}
+		if (this.tile.buildPoint === 'd') {
+			this.position.set(x, y + 42, z + cellSize);
+		}
+		if (this.tile.buildPoint === 'center') {
+			this.position.set(x + cellSize / 2, y + 42, z + cellSize / 2);
+		}
 
 		// tentativa de consertar parte do bug...
 
-		if (this.tile.isExtra) {
-			x -= cellSize / 2;
-			z -= cellSize / 2;
-		}
-		this.position.set(x + cellSize, y + 42, z + cellSize);
+		// if (this.tile.isExtra) {
+		// 	x -= cellSize / 2;
+		// 	z -= cellSize / 2;
+		// }
+
+		// if (this.tile.posType === 'L') {
+		// 	x -= cellSize;
+		// }
+
+		// if (this.tile.posType === 'T') {
+		// 	z -= cellSize;
+		// }
+		// this.position.set(x, y + 42, z);
 	}
 
 	tick(delta) {}

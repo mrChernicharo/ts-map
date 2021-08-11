@@ -14,11 +14,12 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const cellSize = 40;
 
-export const GROUND_WIDTH = 280; //
-export const GROUND_DEPTH = 320;
+export const GROUND_WIDTH = 200; //
+export const GROUND_DEPTH = 200;
 
-if (GROUND_DEPTH % cellSize !== 0 || GROUND_WIDTH % cellSize !== 0)
+if (GROUND_DEPTH % cellSize !== 0 || GROUND_WIDTH % cellSize !== 0) {
 	throw new Error('depth and width must be divisible by cellSize');
+}
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);

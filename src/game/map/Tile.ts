@@ -2,7 +2,7 @@ import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
 import { random, cellSize, BinCode } from '../utils/constants';
 
 export type TileState = 'idle' | 'hovered' | 'selected';
-
+export type BuildPoint = 'a' | 'b' | 'c' | 'd' | 'center';
 const materials = {
 	idle: { color: 0xac3902, opacity: 1, transparent: true },
 	hovered: { color: 0xac3902, opacity: 0.75, transparent: true },
@@ -14,12 +14,24 @@ export class Tile extends Mesh {
 	binCode: BinCode;
 	isCentral: boolean;
 	isExtra: boolean;
-	constructor(binCode: BinCode, isExtra = false, isCentral = false) {
+	posType: string;
+	index: number;
+	buildPoint: BuildPoint;
+	constructor(
+		binCode: BinCode,
+		isExtra = false,
+		isCentral = false,
+		posType: string,
+		index: number,
+		buildPoint: BuildPoint
+	) {
 		super();
-
+		this.index = index;
 		this.binCode = binCode;
 		this.isExtra = isExtra;
 		this.isCentral = isCentral;
+		this.posType = posType;
+		this.buildPoint = buildPoint;
 
 		this.material = new MeshToonMaterial(materials.idle);
 		this.geometry = new BoxGeometry((cellSize / 2) * Math.sqrt(2), 6, (cellSize / 2) * Math.sqrt(2));

@@ -41,6 +41,7 @@ export class EventsManager {
 	setWindowEvents() {
 		window.addEventListener('keydown', e => this.inputManager.handleKeyDown(e));
 		window.addEventListener('keyup', e => this.inputManager.handleKeyUp(e));
+		towerCreateButton.addEventListener('click', () => this.createTower());
 	}
 
 	setRaycasterEvents() {
@@ -50,8 +51,6 @@ export class EventsManager {
 			this.TilesEventManager.closeModal();
 			this.raycaster.handleClick(e);
 		});
-
-		towerCreateButton.addEventListener('click', () => this.createTower());
 	}
 
 	createTower() {
@@ -59,8 +58,9 @@ export class EventsManager {
 		const currentCell = this.TilesEventManager.previousTileClicked.parent as Cell;
 
 		const { position } = currentCell;
-		const types = ['A', 'B'];
-		const towerType = types[random(0, 1)];
+
+		const towerTypes = ['A', 'B'];
+		const towerType = towerTypes[random(0, 1)];
 
 		this.emitter.emit(CREATE_TOWER, position, currentTile, towerType);
 	}

@@ -22,7 +22,7 @@ interface IUpdatable extends Mesh {
 
 const clock = new Clock();
 const enemyGen = enemyGenerator();
-const towerGen = towerGenerator;
+// const towerGen = towerGenerator;
 const enemyInterval = 4;
 
 class Loop {
@@ -41,15 +41,11 @@ class Loop {
 	}
 
 	setUp() {
+		this.setEvents();
+
 		const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelFinish)];
 		this.add(startFlag);
 		this.add(endFlag);
-
-		this.eventsManager.emitter.on(CREATE_TOWER, (position, currentTile, towerType) => {
-			const tower = new Tower(position, currentTile, towerType);
-
-			this.add(tower);
-		});
 	}
 
 	start() {
@@ -70,15 +66,24 @@ class Loop {
 		this.scene.add(item);
 	}
 
-	remove() {}
+	remove(item) {
+		this.updatables = this.updatables.filter(u => u.uuid !== item.uuid);
+		this.scene.remove(item);
+		// delete this.updatables.find(u => u.uuid !== item.uuid);
+		console.log(this.updatables);
+	}
+
+	setEvents() {
+		this.eventsManager.emitter.on(CREATE_TOWER, (position, currentTile, towerType) => {
+			const tower = new Tower(position, currentTile, towerType);
+
+			this.add(tower);
+		});
+	}
 
 	tick() {
 		const delta = clock.getDelta();
 		const elapsed = clock.getElapsedTime();
-		const enemies = this.getEnemies();
-		const towers = this.getTowers();
-
-		// console.log(random(20));
 
 		this.spawnEnemies(delta, elapsed);
 
@@ -87,12 +92,13 @@ class Loop {
 		}
 
 		if ((elapsed % 3) + delta >= 3) {
-			for (const tower of towers) {
-				for (const enemy of enemies) {
+			for (const tower of this.getTowers()) {
+				for (const enemy of this.getEnemies()) {
 					const distance = tower.position.distanceTo(enemy.position);
 					const inRange = tower.range - distance > -10;
+
 					console.log({
-						tower: tower.towerType,
+						tower: tower.id + '.' + tower.towerType,
 						// enemy: enemy.name + enemy.id,
 						// distance,
 						// range: tower.range,
@@ -101,6 +107,12 @@ class Loop {
 				}
 			}
 		}
+
+		const deadEnemies = this.getEnemies().filter(enemy => !enemy.isAlive);
+		// console.log(deadEnemies);
+
+		// const deadEnemies = enemies.filter(enemy => !enemy.isAlive);
+		deadEnemies.forEach(enemy => this.remove(enemy));
 	}
 
 	spawnEnemies(delta: number, elapsed: number) {
@@ -108,7 +120,7 @@ class Loop {
 			const enemy = enemyGen.next().value;
 
 			if (enemy) this.add(enemy);
-			console.log(this.updatables);
+			// console.log(this.updatables);
 		}
 	}
 

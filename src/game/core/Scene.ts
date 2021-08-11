@@ -42,8 +42,6 @@ class Scene extends THREEScene {
 	lights: Light;
 	camera: Camera;
 	orbitControls: OrbitControls;
-	// inputManager: InputManager;
-	// raycaster: Raycaster;
 	EventsManager: EventsManager;
 	gui: GUI;
 	constructor(private domContainer: HTMLDivElement, gameState: GameState) {
@@ -72,9 +70,6 @@ class Scene extends THREEScene {
 		this.renderer.physicallyCorrectLights = true;
 
 		this.camera = new Camera();
-
-		// this.raycaster = new Raycaster(this.camera, this, this.state);
-		// this.inputManager = new InputManager(this.camera, this);
 
 		this.orbitControls = new OrbitControls(this.camera, this.domContainer);
 		this.orbitControls.enableDamping = true;

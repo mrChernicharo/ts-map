@@ -24,6 +24,7 @@ export class EnemiesEventManager {
 
 	handleEnemyClick(enemy: Enemy) {
 		// console.log({ enemy, prev: this.previousEnemyClicked });// test that it works
+		enemy.die();
 		this.previousEnemyClicked = enemy;
 	}
 

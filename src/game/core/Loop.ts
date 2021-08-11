@@ -1,5 +1,5 @@
 import { Clock, Mesh, Quaternion, Vector3, WebGL1Renderer } from 'three';
-import { Camera } from './Camera';
+import { Camera } from './dependecies/Camera';
 import { Cube } from '../helpers/objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../helpers/objects/Ball';
@@ -110,11 +110,7 @@ class Loop {
 			// console.log('----------------------------');
 		}
 
-		const deadEnemies = this.getEnemies().filter(enemy => !enemy.isAlive());
-		// console.log(deadEnemies);
-
-		// const deadEnemies = enemies.filter(enemy => !enemy.isAlive);
-		deadEnemies.forEach(enemy => this.remove(enemy));
+		this.removeDeadEnemies();
 	}
 
 	spawnEnemies(delta: number, elapsed: number) {
@@ -124,6 +120,12 @@ class Loop {
 			if (enemy) this.add(enemy);
 			// console.log(this.updatables);
 		}
+	}
+
+	removeDeadEnemies() {
+		this.getEnemies()
+			.filter(enemy => !enemy.isAlive())
+			.forEach(enemy => this.remove(enemy));
 	}
 
 	getEnemies() {

@@ -1,6 +1,6 @@
 import { EventEmitter } from 'stream';
 import { MeshToonMaterial } from 'three';
-import { Raycaster } from '../../core/Raycaster';
+import { Raycaster } from '../../core/dependecies/Raycaster';
 import { ENEMY_CLICK, ENEMY_HOVER, random } from '../../utils/constants';
 import { Tower } from '../Tower/Tower';
 import { Enemy } from './Enemy';

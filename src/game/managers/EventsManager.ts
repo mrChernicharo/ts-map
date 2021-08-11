@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { Vector3 } from 'three';
 import { InputManager } from './InputManager';
-import { Raycaster } from '../core/Raycaster';
+import { Raycaster } from '../core/dependecies/Raycaster';
 import { Cell } from '../map/Land/Cell';
 import {
 	ADD_TO_LOOP,

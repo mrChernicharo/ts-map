@@ -1,5 +1,5 @@
 import { Vector3 } from 'three';
-import { Camera } from '../core/Camera';
+import { Camera } from '../core/dependecies/Camera';
 import { Scene } from '../core/Scene';
 
 const logGen = generateLog();

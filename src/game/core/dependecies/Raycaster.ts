@@ -11,9 +11,16 @@ import {
 import { Camera } from './Camera';
 import { EventEmitter } from 'events';
 import { GameState } from './GameState';
-import { Tile } from '../map/Tile/Tile';
-import { Enemy } from '../objects/Enemy/Enemy';
-import { ENEMY_CLICK, ENEMY_HOVER, IDLE_CLICK, IDLE_HOVER, TILE_CLICK, TILE_HOVER } from '../utils/constants';
+import { Tile } from '../../map/Tile/Tile';
+import { Enemy } from '../../objects/Enemy/Enemy';
+import {
+	ENEMY_CLICK,
+	ENEMY_HOVER,
+	IDLE_CLICK,
+	IDLE_HOVER,
+	TILE_CLICK,
+	TILE_HOVER,
+} from '../../utils/constants';
 
 export class Raycaster extends THREERaycaster {
 	camera: Camera;

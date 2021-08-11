@@ -1,4 +1,5 @@
 import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
+import { Tower } from '../../objects/Tower/Tower';
 import { random, cellSize, BinCode } from '../../utils/constants';
 
 export type TileState = 'idle' | 'hovered' | 'selected';
@@ -12,10 +13,14 @@ const materials = {
 export class Tile extends Mesh {
 	state: TileState;
 	buildPoint: BuildPoint;
+	tower: Tower;
 	constructor(buildPoint: BuildPoint) {
 		super();
 		this.buildPoint = buildPoint;
 
+		this._init();
+	}
+	_init() {
 		this.material = new MeshToonMaterial(materials.idle);
 		this.geometry = new BoxGeometry((cellSize / 2) * Math.sqrt(2), 6, (cellSize / 2) * Math.sqrt(2));
 
@@ -23,6 +28,7 @@ export class Tile extends Mesh {
 
 		this.name = 'Tile';
 		this.state = 'idle';
+		this.tower = null;
 
 		this.position.set(0, 24, 0);
 		this.rotateY(-Math.PI / 4);
@@ -42,5 +48,10 @@ export class Tile extends Mesh {
 				this.material = new MeshToonMaterial(materials.selected);
 				break;
 		}
+	}
+
+	addTower(tower: Tower) {
+		console.log(tower);
+		this.tower = tower;
 	}
 }

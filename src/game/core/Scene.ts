@@ -1,9 +1,9 @@
 import { Scene as THREEScene, Color, Fog, WebGL1Renderer, Light, DirectionalLight } from 'three';
-import { OrbitControls } from './OrbitControls';
+import { OrbitControls } from './dependecies/OrbitControls';
 import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
-import { Camera } from './Camera';
+import { Camera } from './dependecies/Camera';
 import { GUI } from '../helpers/GUI';
-import { GameState } from './GameState';
+import { GameState } from './dependecies/GameState';
 import { EventsManager } from '../managers/EventsManager';
 import { Ground } from '../map/Land/Ground';
 

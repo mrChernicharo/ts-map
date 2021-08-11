@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { Raycaster } from '../../core/Raycaster';
+import { Raycaster } from '../../core/dependecies/Raycaster';
 import { Tower } from '../../objects/Tower/Tower';
 import { IDLE_CLICK, TILE_CLICK, TILE_HOVER, IDLE_HOVER, random, TOWER_CREATED } from '../../utils/constants';
 import { Cell } from '../Land/Cell';
@@ -35,10 +35,13 @@ export class TilesEventManager {
 		if (tile.state === 'hovered' || tile.state === 'idle') {
 			tile.setState('selected');
 
+			if (tile.tower) {
+				tile.tower.highlight();
+			}
+
 			if (this.previousTileClicked !== tile) this.previousTileClicked?.setState('idle');
 
 			this.previousTileClicked = tile;
-			// console.log(this.previousTileClicked.position);
 
 			return this.showModal(tile);
 		}
@@ -60,7 +63,12 @@ export class TilesEventManager {
 	}
 
 	clearTileSelection() {
-		this.previousTileClicked?.setState('idle');
+		const tile = this.previousTileClicked;
+
+		if (tile) {
+			tile.setState('idle');
+			tile.tower?.removeHighlight();
+		}
 	}
 
 	clearTileHover() {
@@ -68,7 +76,7 @@ export class TilesEventManager {
 	}
 
 	createTower() {
-		const currentTile = this.previousTileClicked;
+		const tile = this.previousTileClicked;
 		const currentCell = this.previousTileClicked.parent as Cell;
 
 		const { position } = currentCell;
@@ -76,7 +84,9 @@ export class TilesEventManager {
 		const towerTypes = ['A', 'B', 'C'];
 		const towerType = towerTypes[random(0, 2)];
 
-		const tower = new Tower(position, currentTile, towerType);
+		const tower = new Tower(position, tile, towerType);
+
+		tile.addTower(tower);
 
 		this.emitter.emit(TOWER_CREATED, tower);
 	}
@@ -85,8 +95,10 @@ export class TilesEventManager {
 		modal.classList.add('visible');
 
 		const tileInfo = `${tile.name}  ${tile.buildPoint}`;
+		const buttonContent = tile.tower?.selected ? 'Sell Tower' : 'Build Tower';
 
 		modalSection.innerHTML = tileInfo;
+		towerCreateButton.innerHTML = buttonContent;
 	}
 
 	closeModal() {

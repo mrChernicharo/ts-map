@@ -1,4 +1,4 @@
-import { GameState } from './core/GameState';
+import { GameState } from './core/dependecies/GameState';
 import { Loop } from './core/Loop';
 import { Scene } from './core/Scene';
 import { EventsManager } from './managers/EventsManager';

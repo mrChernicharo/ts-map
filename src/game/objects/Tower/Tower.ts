@@ -26,6 +26,7 @@ export class Tower extends Mesh {
 	range: number;
 	fireRate: number;
 	damage: number;
+	selected: boolean;
 	enemiesinRange: [] = [];
 	emitter: EventEmitter;
 	constructor(pos: Vector3, tile: Tile, towerType) {
@@ -40,6 +41,7 @@ export class Tower extends Mesh {
 		this.material = new MeshToonMaterial({ color: 0x454545 });
 		this.geometry = new CylinderGeometry(8, 10, 30, 20);
 		this.name = 'Tower';
+		this.selected = false;
 		this.range = ranges[this.towerType];
 		this.emitter = new EventEmitter();
 
@@ -53,6 +55,22 @@ export class Tower extends Mesh {
 	}
 
 	tick(delta) {}
+
+	highlight() {
+		const mat = this.material as any;
+		mat.opacity = 0.5;
+		mat.transparent = true;
+
+		this.selected = true;
+	}
+
+	removeHighlight() {
+		const mat = this.material as any;
+		mat.opacity = 1;
+		mat.transparent = false;
+
+		this.selected = false;
+	}
 
 	_createTowerRangeCircle() {
 		const material = new MeshToonMaterial({

@@ -4,12 +4,13 @@
 	top: 3rem;
 	right: 2rem;
 
-	border-block: 5px solid var(--color--txt);
+	/* border-block: 5px solid var(--color--txt); */
 	opacity: 0;
 	z-index: 1;
 }
 
 #tower-modal ul {
+	/* border: 1px solid #343434; */
 	list-style: none;
 	display: flex;
 }
@@ -20,7 +21,11 @@
 }
 
 #tower-modal ul li button {
-	background-color: black;
+	background-color: blue;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #tower-modal ul li button img {
@@ -31,20 +36,33 @@
 #tower-modal ul li ul.tower-feats {
 	/* border: 1px solid red; */
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
+	border: 1px solid #343434;
 }
 
-#tower-modal ul li ul.tower-feats li {
-	border: 1px solid #343434;
-	align-items: center;
+#tower-modal ul li ul.tower-feats li:not(:last-child) {
+	min-width: 32px;
+	justify-content: center;
+	height: 10px;
 }
 
 #tower-modal ul li ul.tower-feats li span:first-child {
-	font-size: 10px;
+	font-size: 11px;
 }
 
 #tower-modal ul li ul.tower-feats li span:last-child {
-	font-size: 11px;
+	font-size: 8px;
+}
+
+#tower-modal ul li ul.tower-feats li:last-child {
+	border-top: 1px solid #343434;
+	grid-column: 1/4;
+	justify-content: center;
+	align-items: baseline;
+}
+#tower-modal ul li ul.tower-feats li:last-child span {
+	font-size: 14px;
+	font-weight: bold;
 }
 
 #tower-modal button:hover {

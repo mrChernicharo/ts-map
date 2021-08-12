@@ -6,9 +6,9 @@ import { towerModels } from '../utils/towers';
 const modal = document.querySelector('#tower-modal');
 // const modalSection = document.querySelector('#tower-modal section');
 const towerFeats = {
+	range: '📐',
 	damage: '🗡',
 	fireRate: '⏱',
-	range: '📐',
 	price: '💰',
 };
 
@@ -47,7 +47,7 @@ export class TowerModal {
 			const ul = document.createElement('ul');
 			ul.classList.add('tower-feats');
 
-			const towerKeys = Object.keys(towerFeats);
+			const towerKeys = ['damage', 'fireRate', 'range', 'price'];
 
 			Object.entries(towerModels[model])
 				.filter(([key, value]) => towerKeys.includes(key))
@@ -56,8 +56,8 @@ export class TowerModal {
 					const kspan = document.createElement('span');
 					const vspan = document.createElement('span');
 
-					kspan.textContent = towerFeats[key];
-					vspan.textContent = String(value);
+					kspan.textContent = String(value);
+					vspan.textContent = towerFeats[key];
 
 					li.appendChild(kspan);
 					li.appendChild(vspan);

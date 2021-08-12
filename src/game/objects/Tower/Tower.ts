@@ -24,7 +24,7 @@ const models = {
 		height: 25,
 		range: 80,
 		rangeRadiusColor: 0xed1067,
-		color: 0x454545,
+		color: 0x232323,
 		fireRate: 25,
 		damage: 12,
 	},

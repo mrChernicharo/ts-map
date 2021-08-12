@@ -1,4 +1,4 @@
-import { ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
+import { Color, ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
 import { PathNode } from '../../helpers/aStarPathfinder';
 import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
@@ -6,6 +6,11 @@ import { enemyGenerator } from '../../utils/functions';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
 const enemyGen = enemyGenerator();
+
+const colors = {
+	normal: 0xff9d00,
+	takingDamage: 0xff0000,
+};
 
 export class Enemy extends Mesh {
 	speed: number;
@@ -26,7 +31,7 @@ export class Enemy extends Mesh {
 	async _init() {
 		this.path = await this._getPathNodes();
 
-		this.material = new MeshToonMaterial({ color: 0xff9d00 });
+		this.material = new MeshToonMaterial({ color: colors.normal });
 		this.geometry = new ConeGeometry(8, 20, 16);
 		this.name = `Enemy-${this.id}`;
 		this.hp = 160;
@@ -54,10 +59,14 @@ export class Enemy extends Mesh {
 	}
 
 	setState(str) {}
-	changeColor(color) {}
+	changeColor(color: number) {
+		this.material = new MeshToonMaterial({ color });
+	}
 
 	takeDamage(damage: number) {
 		this.hp -= damage;
+		this.changeColor(colors.takingDamage);
+		setTimeout(() => this.changeColor(colors.normal), 100);
 	}
 	die() {
 		this.hp -= 100;

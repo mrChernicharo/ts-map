@@ -2,7 +2,8 @@ import EventEmitter from 'events';
 import { CircleGeometry, CylinderGeometry, Mesh, MeshToonMaterial, Vector3 } from 'three';
 import { Cell } from '../../map/Land/Cell';
 import { Tile } from '../../map/Tile/Tile';
-import { BinCode, cellSize, TOWER_CREATED } from '../../utils/constants';
+import { BinCode, cellSize, INFLICT_DAMAGE, TOWER_CREATED } from '../../utils/constants';
+import { Enemy } from '../Enemy/Enemy';
 
 export type TowerType = 'A' | 'B';
 
@@ -18,13 +19,27 @@ const rangeCircles = {
 	C: 0x00cd62,
 	undefined: 0xffffff,
 };
+const cooldown = {
+	A: 0.8,
+	B: 0.5,
+	C: 2,
+	undefined: 2,
+};
+const damages = {
+	A: 40,
+	B: 50,
+	C: 60,
+	undefined: 40,
+};
 
+let stopLoggin = false;
 export class Tower extends Mesh {
 	pos: Vector3;
 	tile: Tile;
 	towerType: TowerType;
 	range: number;
-	fireRate: number;
+	fireRate: number; // shots per minute
+	cooldownTime: number; // cooldown time until next shot
 	damage: number;
 	selected: boolean;
 	enemiesinRange: [] = [];
@@ -43,6 +58,9 @@ export class Tower extends Mesh {
 		this.name = 'Tower';
 		this.selected = false;
 		this.range = ranges[this.towerType];
+		this.cooldownTime = 1;
+		this.damage = damages[this.towerType];
+
 		this.emitter = new EventEmitter();
 
 		new Mesh(this.geometry, this.material);
@@ -54,7 +72,26 @@ export class Tower extends Mesh {
 		// console.log(this);
 	}
 
-	tick(delta) {}
+	tick(delta) {
+		if (this.cooldownTime >= 0) {
+			this.cooldownTime -= delta;
+		} else if (this.cooldownTime < 0 && !stopLoggin) {
+			console.log('ready to shoot');
+			stopLoggin = true;
+		}
+	}
+
+	attack(enemy: Enemy) {
+		console.log(enemy);
+
+		this.cooldownTime = cooldown[this.towerType];
+		stopLoggin = false;
+
+		// this.emitter.emit(INFLICT_DAMAGE, enemy);
+		enemy.takeDamage(this.damage);
+
+		console.log(`attack!!! ${this.towerType + ':' + this.id} -> ${enemy.id + ':' + enemy.hp}`);
+	}
 
 	highlight() {
 		const mat = this.material as any;

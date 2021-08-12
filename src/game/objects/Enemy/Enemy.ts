@@ -1,7 +1,8 @@
 import { ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
 import { PathNode } from '../../helpers/aStarPathfinder';
 import { Ground } from '../../map/Land/Ground';
-import { levelStart, pathFindingDelay, cellSize, enemyGenerator } from '../../utils/constants';
+import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
+import { enemyGenerator } from '../../utils/functions';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
 const enemyGen = enemyGenerator();

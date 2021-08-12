@@ -3,16 +3,8 @@ import { Camera } from './dependecies/Camera';
 import { Cube } from '../helpers/objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../helpers/objects/Ball';
-import {
-	towerGenerator,
-	enemyGenerator,
-	levelFinish,
-	levelStart,
-	random,
-	CREATE_TOWER,
-	TOWER_CREATED,
-	TOWER_SOLD,
-} from '../utils/constants';
+import { levelFinish, levelStart, CREATE_TOWER, TOWER_CREATED, TOWER_SOLD } from '../utils/constants';
+import { enemyGenerator } from '../utils/functions';
 import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
 import { EventsManager } from '../managers/EventsManager';
@@ -84,10 +76,6 @@ class Loop {
 
 		this.spawnEnemies(delta, elapsed);
 
-		for (const object of this.updatables) {
-			object.tick(delta);
-		}
-
 		if ((elapsed % 3) + delta >= 3) {
 			for (const tower of this.getTowers()) {
 				for (const enemy of this.getEnemies()) {
@@ -95,20 +83,27 @@ class Loop {
 					const inRange = tower.range - distance > -10;
 
 					if (inRange) {
-						// tower.attack(enemy)
+						if (tower.cooldownTime < 0.1) {
+							console.log('attack');
+							tower.attack(enemy);
+						}
 					}
 
-					console.log({
-						tower: tower.id + '.' + tower.towerType,
-						distance,
-						inRange,
-					});
+					// console.log({
+					// 	tower: tower.id + '.' + tower.towerType,
+					// 	distance,
+					// 	inRange,
+					// });
 				}
 			}
 			// console.log('----------------------------');
 		}
 
 		this.removeDeadEnemies();
+
+		for (const object of this.updatables) {
+			object.tick(delta);
+		}
 	}
 
 	spawnEnemies(delta: number, elapsed: number) {

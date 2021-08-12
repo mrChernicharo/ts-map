@@ -3,15 +3,8 @@ import { Vector3 } from 'three';
 import { InputManager } from './InputManager';
 import { Raycaster } from '../core/dependecies/Raycaster';
 import { Cell } from '../map/Land/Cell';
-import {
-	ADD_TO_LOOP,
-	cellSize,
-	CREATE_TOWER,
-	random,
-	towerGenerator,
-	TOWER_CREATED,
-	TOWER_SOLD,
-} from '../utils/constants';
+import { ADD_TO_LOOP, cellSize, CREATE_TOWER, TOWER_CREATED, TOWER_SOLD } from '../utils/constants';
+import { random, towerGenerator } from '../utils/functions';
 import { TilesEventManager } from '../map/Tile/TilesEventManager';
 import { EnemiesEventManager } from '../objects/Enemy/EnemiesEventManager';
 import { Scene } from '../core/Scene';

@@ -6,10 +6,11 @@ import {
 	TILE_CLICK,
 	TILE_HOVER,
 	IDLE_HOVER,
-	random,
 	TOWER_CREATED,
 	TOWER_SOLD,
 } from '../../utils/constants';
+import { random } from '../../utils/functions';
+
 import { Cell } from '../Land/Cell';
 import { Tile } from './Tile';
 

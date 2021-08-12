@@ -14,19 +14,17 @@ import {
 import { AStarPathfinder, PathNode } from '../../helpers/aStarPathfinder';
 // import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
-	drawLine,
 	cellSize,
 	GROUND_DEPTH,
 	GROUND_WIDTH,
-	randomBin,
 	Bin,
-	idGenerator,
 	BinCode,
 	ZERO,
 	levelStart,
 	levelFinish,
 	cellPoints,
 } from '../../utils/constants';
+import { drawLine, randomBin, idGenerator } from '../../utils/functions';
 import { PathSpot } from './PathSpot';
 import { Cell, CellEdges } from './Cell';
 

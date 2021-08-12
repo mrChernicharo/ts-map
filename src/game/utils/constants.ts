@@ -14,8 +14,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const cellSize = 40; //depth and width must be divisible by cellSize
 
-export const GROUND_WIDTH = 400;
-export const GROUND_DEPTH = 200;
+export const GROUND_WIDTH = 600;
+export const GROUND_DEPTH = 320;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
@@ -52,43 +52,4 @@ export const ENEMY_CLICK = 'enemyClick';
 export const TOWER_CREATED = 'towerCreated';
 export const TOWER_SOLD = 'towerSold';
 export const ADD_TO_LOOP = 'addToLoop';
-
-export const random = (a: number, b?: number) => {
-	if (!b) {
-		return Math.round(Math.random() * a) + 1;
-	}
-
-	if (b) {
-		return Math.round(Math.random() * (b - a) + a);
-	}
-};
-
-export const randomBin = () => {
-	const len = binOptions.length - 1;
-	return binOptions[Math.round(Math.random() * len)];
-};
-
-export const drawLine = (pointA: Vector3, pointB: Vector3, material: Material) => {
-	const geometry = new BufferGeometry().setFromPoints([pointA, pointB]);
-	return new Line(geometry, material);
-};
-
-export function* idGenerator() {
-	let id = 0;
-	while (true) {
-		yield id;
-		id++;
-	}
-}
-
-export function* enemyGenerator(amount = 6) {
-	for (let i = 0; i < amount; i++) {
-		let enemy = new Enemy(random(20, 100));
-
-		yield enemy;
-	}
-}
-
-export function towerGenerator() {
-	// return new Tower();
-}
+export const INFLICT_DAMAGE = 'inflictDamage';

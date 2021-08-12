@@ -30,9 +30,9 @@ export function* idGenerator() {
 	}
 }
 
-export function* enemyGenerator(amount = 16) {
+export function* enemyGenerator(amount = 100) {
 	for (let i = 0; i < amount; i++) {
-		let enemy = new Enemy(random(10, 30));
+		let enemy = new Enemy(random(20, 40));
 
 		yield enemy;
 	}

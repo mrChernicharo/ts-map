@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { Raycaster } from '../../core/dependecies/Raycaster';
-import { Tower } from '../../objects/Tower/Tower';
+import { Tower, TowerType } from '../../objects/Tower/Tower';
 import {
 	IDLE_CLICK,
 	TILE_CLICK,
@@ -97,7 +97,7 @@ export class TilesEventManager {
 
 		const { position } = currentCell;
 
-		const towerTypes = ['A', 'B', 'C'];
+		const towerTypes: TowerType[] = ['A', 'B', 'C'];
 		const towerType = towerTypes[random(0, 2)];
 
 		const tower = new Tower(position, tile, towerType);

@@ -17,7 +17,7 @@ interface IUpdatable extends Mesh {
 const clock = new Clock();
 const enemyGen = enemyGenerator();
 // const towerGen = towerGenerator;
-const enemyInterval = 4;
+const enemyInterval = 1.2;
 
 class Loop {
 	updatables: IUpdatable[];
@@ -76,28 +76,28 @@ class Loop {
 
 		this.spawnEnemies(delta, elapsed);
 
-		if ((elapsed % 3) + delta >= 3) {
-			for (const tower of this.getTowers()) {
-				for (const enemy of this.getEnemies()) {
-					const distance = tower.position.distanceTo(enemy.position);
-					const inRange = tower.range - distance > -10;
+		// if ((elapsed % 3) + delta >= 3) {
+		for (const tower of this.getTowers()) {
+			for (const enemy of this.getEnemies()) {
+				const distance = tower.position.distanceTo(enemy.position);
+				const inRange = tower.range - distance > -10;
 
-					if (inRange) {
-						if (tower.cooldownTime < 0.1) {
-							console.log('attack');
-							tower.attack(enemy);
-						}
+				if (inRange) {
+					if (tower.cooldownTime < 0.1) {
+						console.log('attack');
+						tower.attack(enemy);
 					}
-
-					// console.log({
-					// 	tower: tower.id + '.' + tower.towerType,
-					// 	distance,
-					// 	inRange,
-					// });
 				}
+
+				// console.log({
+				// 	tower: tower.id + '.' + tower.towerType,
+				// 	distance,
+				// 	inRange,
+				// });
 			}
-			// console.log('----------------------------');
 		}
+		// console.log('----------------------------');
+		// }
 
 		this.removeDeadEnemies();
 

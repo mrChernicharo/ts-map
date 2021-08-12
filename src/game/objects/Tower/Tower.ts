@@ -5,31 +5,39 @@ import { Tile } from '../../map/Tile/Tile';
 import { BinCode, cellSize, INFLICT_DAMAGE, TOWER_CREATED } from '../../utils/constants';
 import { Enemy } from '../Enemy/Enemy';
 
-export type TowerType = 'A' | 'B';
+export type TowerType = 'A' | 'B' | 'C';
 
-const ranges = {
-	A: 100,
-	B: 60,
-	C: 140,
-	undefined: 90,
-};
-const rangeCircles = {
-	A: 0x0056ed,
-	B: 0xcd56ed,
-	C: 0x00cd62,
-	undefined: 0xffffff,
-};
-const cooldown = {
-	A: 0.8,
-	B: 0.5,
-	C: 2,
-	undefined: 2,
-};
-const damages = {
-	A: 40,
-	B: 50,
-	C: 60,
-	undefined: 40,
+const models = {
+	A: {
+		topRadius: 8,
+		bottomRadius: 9,
+		height: 40,
+		range: 95,
+		rangeRadiusColor: 0x0056ed,
+		color: 0x8a8a8a,
+		fireRate: 30, // 1 shot each 2s
+		damage: 10,
+	},
+	B: {
+		topRadius: 10,
+		bottomRadius: 12,
+		height: 25,
+		range: 80,
+		rangeRadiusColor: 0xed1067,
+		color: 0x454545,
+		fireRate: 25,
+		damage: 12,
+	},
+	C: {
+		topRadius: 6,
+		bottomRadius: 7,
+		height: 50,
+		range: 110,
+		rangeRadiusColor: 0x00ab34,
+		color: 0xdedede,
+		fireRate: 20, // 1 shot each 3s
+		damage: 14,
+	},
 };
 
 let stopLoggin = false;
@@ -44,7 +52,7 @@ export class Tower extends Mesh {
 	selected: boolean;
 	enemiesinRange: [] = [];
 	emitter: EventEmitter;
-	constructor(pos: Vector3, tile: Tile, towerType) {
+	constructor(pos: Vector3, tile: Tile, towerType: TowerType) {
 		super();
 		this.pos = pos;
 		this.tile = tile;
@@ -53,13 +61,18 @@ export class Tower extends Mesh {
 	}
 
 	_init() {
-		this.material = new MeshToonMaterial({ color: 0x454545 });
-		this.geometry = new CylinderGeometry(8, 10, 30, 20);
+		this.material = new MeshToonMaterial({ color: models[this.towerType].color });
+		this.geometry = new CylinderGeometry(
+			models[this.towerType].topRadius,
+			models[this.towerType].bottomRadius,
+			models[this.towerType].height,
+			20
+		);
 		this.name = 'Tower';
 		this.selected = false;
-		this.range = ranges[this.towerType];
+		this.range = models[this.towerType].range;
 		this.cooldownTime = 1;
-		this.damage = damages[this.towerType];
+		this.damage = models[this.towerType].damage;
 
 		this.emitter = new EventEmitter();
 
@@ -84,7 +97,7 @@ export class Tower extends Mesh {
 	attack(enemy: Enemy) {
 		console.log(enemy);
 
-		this.cooldownTime = cooldown[this.towerType];
+		this.cooldownTime = models[this.towerType].fireRate / 60;
 		stopLoggin = false;
 
 		// this.emitter.emit(INFLICT_DAMAGE, enemy);
@@ -111,7 +124,7 @@ export class Tower extends Mesh {
 
 	_createTowerRangeCircle() {
 		const material = new MeshToonMaterial({
-			color: rangeCircles[this.towerType],
+			color: models[this.towerType].rangeRadiusColor,
 			opacity: 0.3,
 			transparent: true,
 		});

@@ -29,7 +29,7 @@ export class Enemy extends Mesh {
 		this.material = new MeshToonMaterial({ color: 0xff9d00 });
 		this.geometry = new ConeGeometry(8, 20, 16);
 		this.name = `Enemy-${this.id}`;
-		this.hp = 100;
+		this.hp = 160;
 
 		new Mesh(this.geometry, this.material);
 

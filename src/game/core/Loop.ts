@@ -84,7 +84,7 @@ class Loop {
 
 				if (inRange) {
 					if (tower.cooldownTime < 0.1) {
-						console.log('attack');
+						// console.log('attack');
 						tower.attack(enemy);
 					}
 				}

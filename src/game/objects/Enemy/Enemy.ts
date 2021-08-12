@@ -3,13 +3,14 @@ import { PathNode } from '../../helpers/aStarPathfinder';
 import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
 import { enemyGenerator } from '../../utils/functions';
+import { Tower } from '../Tower/Tower';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
 const enemyGen = enemyGenerator();
 
 const colors = {
 	normal: 0xff9d00,
-	takingDamage: 0xff0000,
+	takingDamage: { shotGun: 0xff0000, machineGun: 0xffee00, rifle: 0x00ff00 },
 };
 
 export class Enemy extends Mesh {
@@ -63,9 +64,9 @@ export class Enemy extends Mesh {
 		this.material = new MeshToonMaterial({ color });
 	}
 
-	takeDamage(damage: number) {
+	takeDamage(damage: number, tower: Tower) {
 		this.hp -= damage;
-		this.changeColor(colors.takingDamage);
+		this.changeColor(colors.takingDamage[tower.towerType]);
 		setTimeout(() => this.changeColor(colors.normal), 100);
 	}
 	die() {

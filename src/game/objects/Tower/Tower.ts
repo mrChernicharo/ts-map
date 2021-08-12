@@ -3,42 +3,10 @@ import { CircleGeometry, CylinderGeometry, Mesh, MeshToonMaterial, Vector3 } fro
 import { Cell } from '../../map/Land/Cell';
 import { Tile } from '../../map/Tile/Tile';
 import { BinCode, cellSize, INFLICT_DAMAGE, TOWER_CREATED } from '../../utils/constants';
+import { towerModels } from '../../utils/towers';
 import { Enemy } from '../Enemy/Enemy';
 
-export type TowerType = 'A' | 'B' | 'C';
-
-const models = {
-	A: {
-		topRadius: 8,
-		bottomRadius: 9,
-		height: 40,
-		range: 95,
-		rangeRadiusColor: 0x0056ed,
-		color: 0x8a8a8a,
-		fireRate: 30, // 1 shot each 2s
-		damage: 10,
-	},
-	B: {
-		topRadius: 10,
-		bottomRadius: 12,
-		height: 25,
-		range: 80,
-		rangeRadiusColor: 0xed1067,
-		color: 0x232323,
-		fireRate: 25,
-		damage: 12,
-	},
-	C: {
-		topRadius: 6,
-		bottomRadius: 7,
-		height: 50,
-		range: 110,
-		rangeRadiusColor: 0x00ab34,
-		color: 0xdedede,
-		fireRate: 20, // 1 shot each 3s
-		damage: 14,
-	},
-};
+export type TowerType = 'machineGun' | 'shotGun' | 'rifle';
 
 let stopLoggin = false;
 export class Tower extends Mesh {
@@ -61,18 +29,18 @@ export class Tower extends Mesh {
 	}
 
 	_init() {
-		this.material = new MeshToonMaterial({ color: models[this.towerType].color });
+		this.material = new MeshToonMaterial({ color: towerModels[this.towerType].color });
 		this.geometry = new CylinderGeometry(
-			models[this.towerType].topRadius,
-			models[this.towerType].bottomRadius,
-			models[this.towerType].height,
+			towerModels[this.towerType].topRadius,
+			towerModels[this.towerType].bottomRadius,
+			towerModels[this.towerType].height,
 			20
 		);
 		this.name = 'Tower';
 		this.selected = false;
-		this.range = models[this.towerType].range;
+		this.range = towerModels[this.towerType].range;
 		this.cooldownTime = 1;
-		this.damage = models[this.towerType].damage;
+		this.damage = towerModels[this.towerType].damage;
 
 		this.emitter = new EventEmitter();
 
@@ -82,28 +50,27 @@ export class Tower extends Mesh {
 
 		this._createTowerRangeCircle();
 
-		// console.log(this);
+		console.log(this);
 	}
 
 	tick(delta) {
 		if (this.cooldownTime >= 0) {
 			this.cooldownTime -= delta;
 		} else if (this.cooldownTime < 0 && !stopLoggin) {
-			console.log('ready to shoot');
+			// console.log('ready to shoot');
 			stopLoggin = true;
 		}
 	}
 
 	attack(enemy: Enemy) {
-		console.log(enemy);
+		// console.log(enemy);
 
-		this.cooldownTime = models[this.towerType].fireRate / 60;
+		this.cooldownTime = 60 / towerModels[this.towerType].fireRate;
 		stopLoggin = false;
 
-		// this.emitter.emit(INFLICT_DAMAGE, enemy);
-		enemy.takeDamage(this.damage);
+		enemy.takeDamage(this.damage, this);
 
-		console.log(`attack!!! ${this.towerType + ':' + this.id} -> ${enemy.id + ':' + enemy.hp}`);
+		// console.log(`attack!!! ${this.towerType + ':' + this.id} -> ${enemy.id + ':' + enemy.hp}`);
 	}
 
 	highlight() {
@@ -124,7 +91,7 @@ export class Tower extends Mesh {
 
 	_createTowerRangeCircle() {
 		const material = new MeshToonMaterial({
-			color: models[this.towerType].rangeRadiusColor,
+			color: towerModels[this.towerType].rangeRadiusColor,
 			opacity: 0.3,
 			transparent: true,
 		});

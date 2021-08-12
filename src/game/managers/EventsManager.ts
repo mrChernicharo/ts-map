@@ -10,8 +10,6 @@ import { EnemiesEventManager } from '../objects/Enemy/EnemiesEventManager';
 import { Scene } from '../core/Scene';
 import { Tower } from '../objects/Tower/Tower';
 
-const towerCreateButton = document.querySelector('#tower-modal button');
-
 export class EventsManager {
 	scene: Scene;
 	inputManager: InputManager;
@@ -47,7 +45,7 @@ export class EventsManager {
 		window.addEventListener('mousemove', e => this.raycaster.handleMouseMove(e));
 
 		window.addEventListener('mousedown', e => {
-			this.TilesEventManager.closeModal();
+			this.TilesEventManager.towerModal.close();
 			this.raycaster.handleClick(e);
 		});
 	}

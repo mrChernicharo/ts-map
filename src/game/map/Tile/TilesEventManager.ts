@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import { Raycaster } from '../../core/dependecies/Raycaster';
 import { Tower, TowerType } from '../../objects/Tower/Tower';
+import { TowerModal } from '../../templates/TowerModal';
 import {
 	IDLE_CLICK,
 	TILE_CLICK,
@@ -8,21 +9,19 @@ import {
 	IDLE_HOVER,
 	TOWER_CREATED,
 	TOWER_SOLD,
+	CREATE_TOWER,
 } from '../../utils/constants';
 import { random } from '../../utils/functions';
 
 import { Cell } from '../Land/Cell';
 import { Tile } from './Tile';
 
-const modal = document.querySelector('#tower-modal');
-const modalSection = document.querySelector('#tower-modal section');
-const towerCreateButton = document.querySelector('#tower-modal button');
-
 export class TilesEventManager {
 	raycaster: Raycaster;
 	previousTileClicked: Tile;
 	previousTileHovered: Tile;
 	emitter: EventEmitter;
+	towerModal: TowerModal;
 	constructor(raycaster: Raycaster) {
 		this.raycaster = raycaster;
 		this._init();
@@ -32,7 +31,9 @@ export class TilesEventManager {
 	_init() {
 		this.previousTileClicked = null;
 		this.previousTileHovered = null;
+		// this.currentTower = null
 		this.emitter = new EventEmitter();
+		this.towerModal = new TowerModal();
 	}
 
 	_setEvents() {
@@ -40,7 +41,7 @@ export class TilesEventManager {
 		this.raycaster.emitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
 		this.raycaster.emitter.on(IDLE_CLICK, () => this.clearTileSelection());
 		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
-		towerCreateButton.addEventListener('click', (e: PointerEvent) => this.handleModalButtonClick(e));
+		this.towerModal.emitter.on(CREATE_TOWER, (towerType: TowerType) => this.createTower(towerType));
 	}
 
 	handleTileClick(tile: Tile) {
@@ -53,7 +54,9 @@ export class TilesEventManager {
 
 			this.previousTileClicked = tile;
 
-			return this.showModal(tile);
+			this.towerModal.open();
+
+			return;
 		}
 
 		if (tile.state === 'selected') {
@@ -72,12 +75,6 @@ export class TilesEventManager {
 		this.previousTileHovered = tile;
 	}
 
-	handleModalButtonClick(e: PointerEvent) {
-		const buttonAction = (e.target as HTMLButtonElement).textContent;
-
-		buttonAction === 'Build Tower' ? this.createTower() : this.sellTower();
-	}
-
 	clearTileSelection() {
 		const tile = this.previousTileClicked;
 
@@ -91,14 +88,11 @@ export class TilesEventManager {
 		if (this.previousTileHovered?.state !== 'selected') this.previousTileHovered?.setState('idle');
 	}
 
-	createTower() {
+	createTower(towerType: TowerType) {
 		const tile = this.previousTileClicked;
 		const currentCell = this.previousTileClicked.parent as Cell;
 
 		const { position } = currentCell;
-
-		const towerTypes: TowerType[] = ['A', 'B', 'C'];
-		const towerType = towerTypes[random(0, 2)];
 
 		const tower = new Tower(position, tile, towerType);
 
@@ -113,19 +107,5 @@ export class TilesEventManager {
 		this.emitter.emit(TOWER_SOLD, tile.tower);
 
 		tile.tower = null;
-	}
-
-	showModal(tile: Tile) {
-		modal.classList.add('visible');
-
-		const tileInfo = `${tile.name}  ${tile.buildPoint}`;
-		const buttonContent = tile.tower?.selected ? 'Sell Tower' : 'Build Tower';
-
-		modalSection.innerHTML = tileInfo;
-		towerCreateButton.innerHTML = buttonContent;
-	}
-
-	closeModal() {
-		modal.classList.remove('visible');
 	}
 }

@@ -15,7 +15,7 @@ export const ZERO = 0;
 export const cellSize = 40; //depth and width must be divisible by cellSize
 
 export const GROUND_WIDTH = 400;
-export const GROUND_DEPTH = 820;
+export const GROUND_DEPTH = 800;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
@@ -42,14 +42,17 @@ export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '
 
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 
-export const CREATE_TOWER = 'createTower';
 export const IDLE_CLICK = 'idleClick';
 export const IDLE_HOVER = 'idleHover';
 export const TILE_HOVER = 'tileHover';
 export const TILE_CLICK = 'tileClick';
+
 export const ENEMY_HOVER = 'enemyHover';
 export const ENEMY_CLICK = 'enemyClick';
+export const INFLICT_DAMAGE = 'inflictDamage';
+
+export const CREATE_TOWER = 'createTower';
 export const TOWER_CREATED = 'towerCreated';
 export const TOWER_SOLD = 'towerSold';
+
 export const ADD_TO_LOOP = 'addToLoop';
-export const INFLICT_DAMAGE = 'inflictDamage';

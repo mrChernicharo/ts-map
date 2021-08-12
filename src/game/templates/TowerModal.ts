@@ -4,7 +4,7 @@ import { CREATE_TOWER } from '../utils/constants';
 import { towerModels } from '../utils/towers';
 
 const modal = document.querySelector('#tower-modal');
-const modalSection = document.querySelector('#tower-modal section');
+// const modalSection = document.querySelector('#tower-modal section');
 const towerFeats = {
 	damage: '🗡',
 	fireRate: '⏱',
@@ -70,6 +70,6 @@ export class TowerModal {
 			this.ul.appendChild(outerLi);
 		});
 
-		modalSection.appendChild(this.ul);
+		modal.appendChild(this.ul);
 	}
 }

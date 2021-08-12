@@ -5,7 +5,6 @@ import { towerModels } from '../utils/towers';
 
 const modal = document.querySelector('#tower-modal');
 const modalSection = document.querySelector('#tower-modal section');
-const towerCreateButton = document.querySelector('#tower-modal button');
 
 export class TowerModal {
 	ul: HTMLUListElement;
@@ -33,10 +32,14 @@ export class TowerModal {
 		Object.keys(towerModels).forEach(key => {
 			const li = document.createElement('li');
 			const button = document.createElement('button');
+			const img = document.createElement('img');
+
+			img.src = `assets/img/${key}.png`;
 
 			button.textContent = key;
 			button.addEventListener('click', e => this.emitter.emit(CREATE_TOWER, key));
 
+			button.appendChild(img);
 			li.appendChild(button);
 			this.ul.appendChild(li);
 		});

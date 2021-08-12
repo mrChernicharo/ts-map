@@ -1,8 +1,7 @@
 import EventEmitter from 'events';
 import { CircleGeometry, CylinderGeometry, Mesh, MeshToonMaterial, Vector3 } from 'three';
-import { Cell } from '../../map/Land/Cell';
 import { Tile } from '../../map/Tile/Tile';
-import { BinCode, cellSize, INFLICT_DAMAGE, TOWER_CREATED } from '../../utils/constants';
+import { cellSize } from '../../utils/constants';
 import { towerModels } from '../../utils/towers';
 import { Enemy } from '../Enemy/Enemy';
 

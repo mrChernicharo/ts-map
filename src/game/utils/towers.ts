@@ -28,7 +28,7 @@ export const towerModels = {
 		topRadius: 6,
 		bottomRadius: 7,
 		height: 50,
-		range: 110,
+		range: 120,
 		rangeRadiusColor: 0x00ab34,
 		color: 0xdedede,
 		fireRate: 16,

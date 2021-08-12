@@ -5,6 +5,12 @@ import { towerModels } from '../utils/towers';
 
 const modal = document.querySelector('#tower-modal');
 const modalSection = document.querySelector('#tower-modal section');
+const towerFeats = {
+	damage: '🗡',
+	fireRate: '⏱',
+	range: '📐',
+	price: '💰',
+};
 
 export class TowerModal {
 	ul: HTMLUListElement;
@@ -29,29 +35,41 @@ export class TowerModal {
 	}
 
 	appendTowerButtons() {
-		Object.keys(towerModels).forEach(key => {
-			const li = document.createElement('li');
+		Object.keys(towerModels).forEach(model => {
+			const outerLi = document.createElement('li');
+
 			const button = document.createElement('button');
+			button.addEventListener('click', e => this.emitter.emit(CREATE_TOWER, model));
+
 			const img = document.createElement('img');
+			img.src = `assets/img/${model}.png`;
 
-			img.src = `assets/img/${key}.png`;
+			const ul = document.createElement('ul');
+			ul.classList.add('tower-feats');
 
-			button.textContent = key;
-			button.addEventListener('click', e => this.emitter.emit(CREATE_TOWER, key));
+			const towerKeys = Object.keys(towerFeats);
+
+			Object.entries(towerModels[model])
+				.filter(([key, value]) => towerKeys.includes(key))
+				.forEach(([key, value]) => {
+					const li = document.createElement('li');
+					const kspan = document.createElement('span');
+					const vspan = document.createElement('span');
+
+					kspan.textContent = towerFeats[key];
+					vspan.textContent = String(value);
+
+					li.appendChild(kspan);
+					li.appendChild(vspan);
+					ul.appendChild(li);
+				});
 
 			button.appendChild(img);
-			li.appendChild(button);
-			this.ul.appendChild(li);
+			outerLi.appendChild(button);
+			outerLi.appendChild(ul);
+			this.ul.appendChild(outerLi);
 		});
 
 		modalSection.appendChild(this.ul);
 	}
 }
-
-// const modalTemplate = `
-//     <div id="tower-modal">
-//         <h2>Tower Build</h2>
-//         <main>Tower Name</main>
-//         <button>Create Tower!</button>
-//     </div>`;
-// this.container.innerHTML += modalTemplate;

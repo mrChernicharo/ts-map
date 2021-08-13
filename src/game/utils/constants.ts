@@ -21,6 +21,8 @@ export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2)
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
 // export const levelFinish = new Vector3(-GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
 
+export const enemyInterval = 2;
+
 export const pathFindingDelay = GROUND_WIDTH * GROUND_DEPTH * 0.0024;
 
 export const cellPoints = {

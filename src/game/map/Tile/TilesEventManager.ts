@@ -48,13 +48,23 @@ export class TilesEventManager {
 		if (tile.state === 'hovered' || tile.state === 'idle') {
 			tile.setState('selected');
 
-			if (tile.tower) tile.tower.highlight();
+			if (tile.tower) {
+				tile.tower.highlight();
 
+				if (this.previousTileClicked?.tower !== tile.tower) {
+					this.previousTileClicked.tower.removeHighlight();
+				}
+			}
+			if (!tile.tower) {
+				this.previousTileClicked?.tower?.removeHighlight();
+			}
+
+			this.towerModal.open(tile);
+
+			// remove highlight
 			if (this.previousTileClicked !== tile) this.previousTileClicked?.setState('idle');
 
 			this.previousTileClicked = tile;
-
-			this.towerModal.open();
 
 			return;
 		}

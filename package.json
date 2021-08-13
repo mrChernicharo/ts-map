@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "events": "^3.3.0",
+    "sass": "^1.37.5",
     "three": "^0.130.1",
     "three-pathfinding": "^0.14.1"
   }

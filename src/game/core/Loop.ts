@@ -3,7 +3,7 @@ import { Camera } from './dependecies/Camera';
 import { Cube } from '../helpers/objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../helpers/objects/Ball';
-import { levelFinish, levelStart, CREATE_TOWER, TOWER_CREATED, TOWER_SOLD } from '../utils/constants';
+import { levelFinish, levelStart, enemyInterval, TOWER_CREATED, TOWER_SOLD } from '../utils/constants';
 import { enemyGenerator } from '../utils/functions';
 import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
@@ -17,7 +17,6 @@ interface IUpdatable extends Mesh {
 const clock = new Clock();
 const enemyGen = enemyGenerator();
 // const towerGen = towerGenerator;
-const enemyInterval = 1.2;
 
 class Loop {
 	updatables: IUpdatable[];

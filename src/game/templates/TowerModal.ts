@@ -15,19 +15,23 @@ const towerFeats = {
 export class TowerModal {
 	ul: HTMLUListElement;
 	emitter: EventEmitter;
-	constructor(tile?: Tile) {
+	tile: Tile;
+	constructor() {
 		this._initTemplate();
 	}
 
 	_initTemplate() {
+		this.tile = null;
 		this.emitter = new EventEmitter();
 		this.ul = document.createElement('ul');
 		this.ul.classList.add('tower-list');
 		this.appendTowerButtons();
 	}
 
-	open() {
+	open(tile) {
 		modal.classList.add('visible');
+		this.tile = tile;
+		console.log(tile);
 	}
 
 	close() {

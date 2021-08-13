@@ -99,10 +99,10 @@ class Loop {
 			}
 		}
 
-		for (const missile of this.getMissiles()) {
-			missile.position.z += 0.5;
-			// missile.position.y += 0.1;
-		}
+		// for (const missile of this.getMissiles()) {
+		// 	missile.position.z += 5;
+		// 	// missile.position.y += 0.1;
+		// }
 
 		this.removeDeadEnemies();
 

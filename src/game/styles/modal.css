@@ -8,6 +8,7 @@
 }
 #sell-tower-modal {
 	z-index: 1;
+	list-style: none;
 }
 
 #buy-tower-modal ul {

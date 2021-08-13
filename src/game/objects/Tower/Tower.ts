@@ -19,6 +19,7 @@ export class Tower extends Mesh {
 	selected: boolean;
 	enemiesinRange: [] = [];
 	emitter: EventEmitter;
+	height: number;
 	constructor(pos: Vector3, tile: Tile, towerType: TowerType) {
 		super();
 		this.position.set(pos.x, pos.y, pos.z);
@@ -37,7 +38,7 @@ export class Tower extends Mesh {
 		);
 		this.name = 'Tower';
 		this.selected = false;
-		this.range = towerModels[this.towerType].range;
+		(this.height = towerModels[this.towerType].height), (this.range = towerModels[this.towerType].range);
 		this.damage = towerModels[this.towerType].damage;
 		this.fireRate = towerModels[this.towerType].fireRate;
 		this.cooldownTime = 1;

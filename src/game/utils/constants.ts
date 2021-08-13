@@ -14,8 +14,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const cellSize = 40; //depth and width must be divisible by cellSize
 
-export const GROUND_WIDTH = 400;
-export const GROUND_DEPTH = 800;
+export const GROUND_WIDTH = 600;
+export const GROUND_DEPTH = 600;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
@@ -56,5 +56,7 @@ export const INFLICT_DAMAGE = 'inflictDamage';
 export const CREATE_TOWER = 'createTower';
 export const TOWER_CREATED = 'towerCreated';
 export const TOWER_SOLD = 'towerSold';
+
+export const MISSILE_FIRED = 'missileFired';
 
 export const ADD_TO_LOOP = 'addToLoop';

@@ -1,6 +1,6 @@
 import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
 import { Tower } from '../../objects/Tower/Tower';
-import { random, cellSize, BinCode } from '../../utils/constants';
+import { cellSize } from '../../utils/constants';
 
 export type TileState = 'idle' | 'hovered' | 'selected';
 export type BuildPoint = 'a' | 'b' | 'c' | 'd' | 'center';
@@ -51,7 +51,7 @@ export class Tile extends Mesh {
 	}
 
 	addTower(tower: Tower) {
-		console.log(tower);
+		// console.log(tower);
 		this.tower = tower;
 	}
 }

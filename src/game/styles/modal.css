@@ -37,6 +37,7 @@
 	opacity: 0.8;
 	transition: 0.4s;
 }
+
 #sell-tower-modal.visible,
 #buy-tower-modal.visible {
 	transition: 0.4s;

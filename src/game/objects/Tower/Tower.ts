@@ -1,15 +1,15 @@
 import EventEmitter from 'events';
 import { CircleGeometry, CylinderGeometry, Mesh, MeshToonMaterial, Vector3 } from 'three';
 import { Tile } from '../../map/Tile/Tile';
-import { cellSize } from '../../utils/constants';
+import { cellSize, MISSILE_FIRED } from '../../utils/constants';
 import { towerModels } from '../../utils/towers';
 import { Enemy } from '../Enemy/Enemy';
+import { Missile } from '../Missile/Missile';
 
 export type TowerType = 'machineGun' | 'shotgun' | 'rifle';
 
-let stopLoggin = false;
+// let stopLoggin = false;
 export class Tower extends Mesh {
-	pos: Vector3;
 	tile: Tile;
 	towerType: TowerType;
 	range: number;
@@ -21,7 +21,7 @@ export class Tower extends Mesh {
 	emitter: EventEmitter;
 	constructor(pos: Vector3, tile: Tile, towerType: TowerType) {
 		super();
-		this.pos = pos;
+		this.position.set(pos.x, pos.y, pos.z);
 		this.tile = tile;
 		this.towerType = towerType;
 		this._init();
@@ -50,25 +50,30 @@ export class Tower extends Mesh {
 
 		this._createTowerRangeCircle();
 
-		console.log(this);
+		// console.log(this);
 	}
 
 	tick(delta) {
 		if (this.cooldownTime >= 0) {
 			this.cooldownTime -= delta;
-		} else if (this.cooldownTime < 0 && !stopLoggin) {
-			// console.log('ready to shoot');
-			stopLoggin = true;
 		}
+		// else if (this.cooldownTime < 0 && !stopLoggin) {
+		// 	// console.log('ready to shoot');
+		// 	stopLoggin = true;
+		// }
 	}
 
 	attack(enemy: Enemy) {
 		// console.log(enemy);
 
 		this.cooldownTime = 60 / towerModels[this.towerType].fireRate;
-		stopLoggin = false;
+		// stopLoggin = false;
+
+		const missile = new Missile(this, enemy);
 
 		enemy.takeDamage(this.damage, this);
+
+		return missile;
 
 		// console.log(`attack!!! ${this.towerType + ':' + this.id} -> ${enemy.id + ':' + enemy.hp}`);
 	}
@@ -106,7 +111,7 @@ export class Tower extends Mesh {
 	}
 
 	_correctPosition() {
-		let { x, y, z } = this.pos;
+		let { x, y, z } = this.position;
 
 		if (this.tile.buildPoint === 'a') {
 			this.position.set(x, y + 42, z);

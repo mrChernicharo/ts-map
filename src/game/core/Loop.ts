@@ -3,12 +3,20 @@ import { Camera } from './dependecies/Camera';
 import { Cube } from '../helpers/objects/Cube';
 import { Scene } from './Scene';
 import { Ball } from '../helpers/objects/Ball';
-import { levelFinish, levelStart, enemyInterval, TOWER_CREATED, TOWER_SOLD } from '../utils/constants';
+import {
+	levelFinish,
+	levelStart,
+	enemyInterval,
+	TOWER_CREATED,
+	TOWER_SOLD,
+	MISSILE_FIRED,
+} from '../utils/constants';
 import { enemyGenerator } from '../utils/functions';
 import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
 import { EventsManager } from '../managers/EventsManager';
 import { Tower } from '../objects/Tower/Tower';
+import { Missile } from '../objects/Missile/Missile';
 
 interface IUpdatable extends Mesh {
 	tick: (delta: number) => void;
@@ -84,19 +92,17 @@ class Loop {
 				if (inRange) {
 					if (tower.cooldownTime < 0.1) {
 						// console.log('attack');
-						tower.attack(enemy);
+						const missile = tower.attack(enemy);
+						this.add(missile);
 					}
 				}
-
-				// console.log({
-				// 	tower: tower.id + '.' + tower.towerType,
-				// 	distance,
-				// 	inRange,
-				// });
 			}
 		}
-		// console.log('----------------------------');
-		// }
+
+		for (const missile of this.getMissiles()) {
+			missile.position.z += 0.5;
+			// missile.position.y += 0.1;
+		}
 
 		this.removeDeadEnemies();
 
@@ -104,7 +110,6 @@ class Loop {
 			object.tick(delta);
 		}
 	}
-
 	spawnEnemies(delta: number, elapsed: number) {
 		if ((elapsed % enemyInterval) + delta >= enemyInterval) {
 			const enemy = enemyGen.next().value;
@@ -117,6 +122,11 @@ class Loop {
 		this.getEnemies()
 			.filter(enemy => !enemy.isAlive())
 			.forEach(enemy => this.remove(enemy));
+	}
+
+	getMissiles() {
+		const missiles = this.updatables.filter(item => item.name.includes('Missile'));
+		return missiles as Missile[];
 	}
 
 	getEnemies() {

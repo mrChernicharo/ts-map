@@ -10,7 +10,7 @@ const enemyGen = enemyGenerator();
 
 const colors = {
 	normal: 0xff9d00,
-	takingDamage: { shotGun: 0xff0000, machineGun: 0xffee00, rifle: 0x00ff00 },
+	takingDamage: { shotgun: 0xff0000, machineGun: 0xffee00, rifle: 0x00ff00 },
 };
 
 export class Enemy extends Mesh {

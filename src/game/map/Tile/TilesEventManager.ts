@@ -42,6 +42,7 @@ export class TilesEventManager {
 		this.raycaster.emitter.on(IDLE_CLICK, () => this.clearTileSelection());
 		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
 		this.towerModal.emitter.on(CREATE_TOWER, (towerType: TowerType) => this.createTower(towerType));
+		this.towerModal.emitter.on(TOWER_SOLD, () => this.sellTower());
 	}
 
 	handleTileClick(tile: Tile) {
@@ -52,7 +53,7 @@ export class TilesEventManager {
 				tile.tower.highlight();
 
 				if (this.previousTileClicked?.tower !== tile.tower) {
-					this.previousTileClicked.tower.removeHighlight();
+					this.previousTileClicked?.tower?.removeHighlight();
 				}
 			}
 			if (!tile.tower) {
@@ -71,6 +72,7 @@ export class TilesEventManager {
 
 		if (tile.state === 'selected') {
 			tile.setState('hovered');
+			this.previousTileClicked?.tower?.removeHighlight();
 
 			return;
 		}

@@ -5,7 +5,7 @@ import { cellSize } from '../../utils/constants';
 import { towerModels } from '../../utils/towers';
 import { Enemy } from '../Enemy/Enemy';
 
-export type TowerType = 'machineGun' | 'shotGun' | 'rifle';
+export type TowerType = 'machineGun' | 'shotgun' | 'rifle';
 
 let stopLoggin = false;
 export class Tower extends Mesh {
@@ -38,8 +38,9 @@ export class Tower extends Mesh {
 		this.name = 'Tower';
 		this.selected = false;
 		this.range = towerModels[this.towerType].range;
-		this.cooldownTime = 1;
 		this.damage = towerModels[this.towerType].damage;
+		this.fireRate = towerModels[this.towerType].fireRate;
+		this.cooldownTime = 1;
 
 		this.emitter = new EventEmitter();
 

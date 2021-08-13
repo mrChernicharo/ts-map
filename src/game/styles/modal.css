@@ -1,76 +1,44 @@
-#tower-modal {
-	/* border: 2px solid blue; */
+#buy-tower-modal,
+#sell-tower-modal {
 	position: absolute;
 	top: 3rem;
 	right: 2rem;
-
-	/* border-block: 5px solid var(--color--txt); */
 	opacity: 0;
+	z-index: 2;
+}
+#sell-tower-modal {
 	z-index: 1;
 }
 
-#tower-modal ul {
-	/* border: 1px solid #343434; */
+#buy-tower-modal ul {
 	list-style: none;
 	display: flex;
 }
 
-#tower-modal ul li {
+#buy-tower-modal ul li {
 	list-style: none;
 	display: flex;
 }
 
-#tower-modal ul li button {
-	background-color: blue;
+#buy-tower-modal ul li button {
 	border: none;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 
-#tower-modal ul li button img {
+#buy-tower-modal ul li button img {
 	width: 42px;
 	height: 42px;
 }
 
-#tower-modal ul li ul.tower-feats {
-	/* border: 1px solid red; */
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	border: 1px solid #343434;
-}
-
-#tower-modal ul li ul.tower-feats li:not(:last-child) {
-	min-width: 32px;
-	justify-content: center;
-	height: 10px;
-}
-
-#tower-modal ul li ul.tower-feats li span:first-child {
-	font-size: 11px;
-}
-
-#tower-modal ul li ul.tower-feats li span:last-child {
-	font-size: 8px;
-}
-
-#tower-modal ul li ul.tower-feats li:last-child {
-	border-top: 1px solid #343434;
-	grid-column: 1/4;
-	justify-content: center;
-	align-items: baseline;
-}
-#tower-modal ul li ul.tower-feats li:last-child span {
-	font-size: 14px;
-	font-weight: bold;
-}
-
-#tower-modal button:hover {
+#buy-tower-modal button:hover {
 	opacity: 0.8;
 	transition: 0.4s;
 }
-
-#tower-modal.visible {
+#sell-tower-modal.visible,
+#buy-tower-modal.visible {
 	transition: 0.4s;
 	opacity: 1;
 }

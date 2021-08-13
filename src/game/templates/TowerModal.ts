@@ -1,9 +1,11 @@
 import EventEmitter from 'events';
 import { Tile } from '../map/Tile/Tile';
-import { CREATE_TOWER } from '../utils/constants';
+import { Tower } from '../objects/Tower/Tower';
+import { CREATE_TOWER, TOWER_SOLD } from '../utils/constants';
 import { towerModels } from '../utils/towers';
 
-const modal = document.querySelector('#tower-modal');
+const buyModal = document.querySelector('#buy-tower-modal');
+const sellModal = document.querySelector('#sell-tower-modal');
 // const modalSection = document.querySelector('#tower-modal section');
 const towerFeats = {
 	range: '📐',
@@ -13,67 +15,96 @@ const towerFeats = {
 };
 
 export class TowerModal {
-	ul: HTMLUListElement;
 	emitter: EventEmitter;
-	tile: Tile;
+	buyTowerList: HTMLUListElement;
+	sellTowerDiv: HTMLDivElement;
 	constructor() {
 		this._initTemplate();
 	}
 
 	_initTemplate() {
-		this.tile = null;
 		this.emitter = new EventEmitter();
-		this.ul = document.createElement('ul');
-		this.ul.classList.add('tower-list');
-		this.appendTowerButtons();
+		this.buyTowerList = document.createElement('ul');
+		this.sellTowerDiv = document.createElement('div');
+		this.buyTowerList.classList.add('buy-tower-list');
+		this.sellTowerDiv.classList.add('sell-tower-list');
+		this.createBuyModal();
 	}
 
-	open(tile) {
-		modal.classList.add('visible');
-		this.tile = tile;
-		console.log(tile);
+	open(tile: Tile) {
+		if (tile.tower) {
+			sellModal.classList.add('visible');
+			this.createSellModal(tile.tower);
+		} else {
+			buyModal.classList.add('visible');
+		}
 	}
 
 	close() {
-		modal.classList.remove('visible');
+		buyModal.classList.remove('visible');
+		sellModal.classList.remove('visible');
 	}
 
-	appendTowerButtons() {
+	// depend on the towerModels list only
+	createBuyModal() {
 		Object.keys(towerModels).forEach(model => {
 			const outerLi = document.createElement('li');
-
 			const button = document.createElement('button');
+			const img = document.createElement('img');
+
 			button.addEventListener('click', e => this.emitter.emit(CREATE_TOWER, model));
 
-			const img = document.createElement('img');
 			img.src = `assets/img/${model}.png`;
 
-			const ul = document.createElement('ul');
-			ul.classList.add('tower-feats');
+			const price = document.createElement('div');
+			const priceSpan = document.createElement('span');
+			priceSpan.textContent = towerModels[model].price;
 
-			const towerKeys = ['damage', 'fireRate', 'range', 'price'];
-
-			Object.entries(towerModels[model])
-				.filter(([key, value]) => towerKeys.includes(key))
-				.forEach(([key, value]) => {
-					const li = document.createElement('li');
-					const kspan = document.createElement('span');
-					const vspan = document.createElement('span');
-
-					kspan.textContent = String(value);
-					vspan.textContent = towerFeats[key];
-
-					li.appendChild(kspan);
-					li.appendChild(vspan);
-					ul.appendChild(li);
-				});
+			price.append(priceSpan);
 
 			button.appendChild(img);
+			button.appendChild(price);
 			outerLi.appendChild(button);
-			outerLi.appendChild(ul);
-			this.ul.appendChild(outerLi);
+
+			// outerLi.appendChild(ul);
+			this.buyTowerList.appendChild(outerLi);
 		});
 
-		modal.appendChild(this.ul);
+		buyModal.appendChild(this.buyTowerList);
+	}
+
+	createSellModal(tower: Tower) {
+		this.sellTowerDiv.innerHTML = '';
+
+		const featSection = document.createElement('section');
+
+		const button = document.createElement('button');
+		button.textContent = 'Sell';
+		button.addEventListener('click', e => this.emitter.emit(TOWER_SOLD));
+
+		const titleSpan = document.createElement('span');
+		titleSpan.textContent = tower.towerType;
+
+		const towerKeys = ['damage', 'fireRate', 'range'];
+
+		Object.entries(tower)
+			.filter(([key, value]) => towerKeys.includes(key))
+			.forEach(([key, value]) => {
+				const li = document.createElement('li');
+				const kspan = document.createElement('span');
+				const vspan = document.createElement('span');
+
+				kspan.textContent = String(value);
+				vspan.textContent = towerFeats[key];
+
+				li.appendChild(kspan);
+				li.appendChild(vspan);
+				featSection.appendChild(li);
+			});
+
+		this.sellTowerDiv.appendChild(titleSpan);
+		this.sellTowerDiv.appendChild(featSection);
+		this.sellTowerDiv.appendChild(button);
+		sellModal.appendChild(this.sellTowerDiv);
 	}
 }

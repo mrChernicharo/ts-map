@@ -11,7 +11,7 @@ export const towerModels = {
 		damage: 10,
 		price: 45,
 	},
-	shotGun: {
+	shotgun: {
 		title: 'shotgun',
 		topRadius: 10,
 		bottomRadius: 12,

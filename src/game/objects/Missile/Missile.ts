@@ -15,7 +15,9 @@ export type ITrajectory = 'straight' | 'curved';
 export type IMissileShape = 'capsule' | 'continuous' | 'cone';
 
 export class Missile extends Mesh {
-	i = 0;
+	counter = 0;
+	frameCount = 0;
+	deltaSum = 0;
 	tower: Tower;
 	enemy: Enemy;
 	origin: Vector3;
@@ -87,21 +89,39 @@ export class Missile extends Mesh {
 	getVelocity() {
 		// console.log(this.enemy.position);
 
-		// const targetVec = this.position.clone().add(this.enemy.position);
 		const targetVec = this.position.clone().sub(this.enemy.position);
 		const normalizedVec = targetVec.normalize();
 
 		return normalizedVec;
 	}
 
+	getEnemyFuturePosition() {}
+
 	tick(delta: number) {
-		// console.log(delta);
-		// this.position.add(this.enemy.position);
+		const dist = this.position.distanceTo(this.enemy.position);
 		this.position.sub(this.getVelocity().multiplyScalar(delta * this.speed));
-		while (this.i < 1) {
-			// console.log({ delta, perSec: delta * 60, vel: this.getVelocity() });
+		this.frameCount++;
+		this.deltaSum += delta;
+		// console.log({ frameCount: this.frameCount });
+
+		while (this.counter < 1) {
+			console.log({
+				path: this.enemy.path,
+				// 	delta,
+				// 	dist,
+				// 	perSec: delta * 60,
+				// 	vel: this.getVelocity(),
+			});
 			// this.getVelocity();
-			this.i++;
+			this.counter++;
+		}
+
+		if (dist < 4) {
+			while (this.counter < 2) {
+				console.log('hit !');
+				console.log({ enemy: this.enemy, frameCount: this.frameCount, deltaSum: this.deltaSum });
+				this.counter++;
+			}
 		}
 	}
 }

@@ -2,7 +2,7 @@ import { Color, ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3
 import { PathNode } from '../../helpers/aStarPathfinder';
 import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
-import { enemyGenerator } from '../../utils/functions';
+import { enemyGenerator, random } from '../../utils/functions';
 import { Tower } from '../Tower/Tower';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
@@ -21,6 +21,7 @@ export class Enemy extends Mesh {
 	nxPathIdx = 1; // nextPathIndex
 	state: EnemyState;
 	hp: number;
+	strictnessToPath = random(0.01, 24);
 	constructor(speed: number) {
 		super();
 
@@ -40,7 +41,7 @@ export class Enemy extends Mesh {
 		new Mesh(this.geometry, this.material);
 
 		const [x, y, z] = Object.values(this.path[0].clone());
-		this.position.set(x, y, z);
+		this.position.set(x, y + 10, z);
 
 		this.nextPos = this.path[this.nxPathIdx];
 	}
@@ -49,13 +50,25 @@ export class Enemy extends Mesh {
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {
 				const ground = this.parent.children.find(item => item.name === 'Ground') as Ground;
+				const path = ground.path.map((node: PathNode) => node.pos);
 
-				ground.path.length
-					? resolve(ground.path.map((node: PathNode) => node.pos))
-					: reject("couldn't get path nodes in time!");
-				// }, 0);
-				// }, 1000);
-			}, pathFindingDelay);
+				if (path.length) {
+					const [foreLastPos, lastPos] = [path[path.length - 2], path[path.length - 1]];
+
+					const diff = lastPos.clone().sub(foreLastPos.clone());
+					const extraPos = lastPos.clone().add(diff.clone());
+
+					path.push(extraPos);
+
+					console.log({ path, foreLastPos, lastPos, diff, extraPos });
+
+					resolve(path);
+				} else {
+					reject("couldn't get path nodes in time!");
+				}
+			}, 0);
+			// }, 1000);
+			// }, pathFindingDelay);
 		});
 	}
 
@@ -87,7 +100,8 @@ export class Enemy extends Mesh {
 
 			this.position.sub(this.velocity.multiplyScalar(delta * this.speed));
 
-			if (this.position.distanceTo(next) < 4) {
+			// cheguei no alvo ?
+			if (this.position.distanceTo(next) < this.strictnessToPath) {
 				this.nxPathIdx += 1;
 				this.nextPos = this.path[this.nxPathIdx];
 			}

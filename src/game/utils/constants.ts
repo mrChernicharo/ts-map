@@ -14,8 +14,8 @@ export type Bin = '0' | '1';
 export const ZERO = 0;
 export const cellSize = 40; //depth and width must be divisible by cellSize
 
-export const GROUND_WIDTH = 600;
-export const GROUND_DEPTH = 600;
+export const GROUND_WIDTH = 200;
+export const GROUND_DEPTH = 400;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
 export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);

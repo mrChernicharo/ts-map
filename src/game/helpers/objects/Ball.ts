@@ -29,9 +29,6 @@ export class Ball extends Mesh {
 	}
 
 	calculateVelocity() {
-		// const clone = levelStart.clone();
-		// const vel = clone.subVectors(levelFinish, levelStart);
-		// return new Vector3(vel.x, vel.y, vel.z).normalize();
 		let x = this.targetPos.x - this.initialPos.x;
 		let y = this.targetPos.y - this.initialPos.y;
 		let z = this.targetPos.z - this.initialPos.z;

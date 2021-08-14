@@ -99,12 +99,8 @@ class Loop {
 			}
 		}
 
-		// for (const missile of this.getMissiles()) {
-		// 	missile.position.z += 5;
-		// 	// missile.position.y += 0.1;
-		// }
-
 		this.removeDeadEnemies();
+		this.removeMissiles();
 
 		for (const object of this.updatables) {
 			object.tick(delta);
@@ -116,6 +112,12 @@ class Loop {
 
 			if (enemy) this.add(enemy);
 		}
+	}
+
+	removeMissiles() {
+		this.getMissiles()
+			.filter(missile => missile.hasHitTarget())
+			.forEach(missile => this.remove(missile));
 	}
 
 	removeDeadEnemies() {

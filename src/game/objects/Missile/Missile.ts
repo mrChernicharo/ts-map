@@ -1,4 +1,5 @@
 import {
+	Clock,
 	Color,
 	CylinderGeometry,
 	Light,
@@ -6,8 +7,10 @@ import {
 	Mesh,
 	MeshToonMaterial,
 	PointLight,
+	Quaternion,
 	Vector3,
 } from 'three';
+import { missileMods } from '../../utils/constants';
 import { Enemy } from '../Enemy/Enemy';
 import { Tower } from '../Tower/Tower';
 
@@ -17,7 +20,7 @@ export type IMissileShape = 'capsule' | 'continuous' | 'cone';
 export class Missile extends Mesh {
 	counter = 0;
 	frameCount = 0;
-	deltaSum = 0;
+	travelTime = 0;
 	tower: Tower;
 	enemy: Enemy;
 	origin: Vector3;
@@ -25,6 +28,8 @@ export class Missile extends Mesh {
 	speed: number;
 	trajectory: ITrajectory;
 	shape: IMissileShape;
+	hit = false;
+	clock: Clock;
 	constructor(tower: Tower, enemy: Enemy) {
 		super();
 		this.tower = tower;
@@ -35,7 +40,8 @@ export class Missile extends Mesh {
 	_init() {
 		this.name = 'Missile';
 		this.origin = this.tower.position;
-		this.speed = 250;
+		this.clock = new Clock();
+		this.speed = 150;
 		this._setMissileFeatures(this.tower);
 
 		this.material = new MeshToonMaterial({ color: 0xff6400 });
@@ -44,7 +50,15 @@ export class Missile extends Mesh {
 		new Mesh(this.geometry, this.material);
 		const { x, y, z } = this.tower.position;
 		this.position.set(x, y + this.tower.height / 3, z);
-		this.rotateX(Math.PI / 2);
+		// this.rotateX(Math.PI / 2);
+
+		// const quat = this.quaternion.setFromUnitVectors(this.position, this.getVelocity());
+		const quat = this.quaternion.setFromUnitVectors(this.position, this.enemy.position);
+		// const quat = this.quaternion.setFromUnitVectors(this.enemy.position, this.position);
+		// this.quaternion.rotateTowards(quat, missileMods.quatFactor);
+		this.quaternion.slerp(quat, missileMods.quatFactor);
+
+		this.clock.start();
 	}
 
 	_setMissileFeatures(tower: Tower) {
@@ -95,31 +109,31 @@ export class Missile extends Mesh {
 		return normalizedVec;
 	}
 
-	getEnemyFuturePosition() {}
+	hasHitTarget() {
+		return this.hit;
+	}
+
+	getEnemyFuturePosition(time) {}
 
 	tick(delta: number) {
 		const dist = this.position.distanceTo(this.enemy.position);
-		this.position.sub(this.getVelocity().multiplyScalar(delta * this.speed));
-		this.frameCount++;
-		this.deltaSum += delta;
-		// console.log({ frameCount: this.frameCount });
 
-		while (this.counter < 1) {
-			console.log({
-				path: this.enemy.path,
-				// 	delta,
-				// 	dist,
-				// 	perSec: delta * 60,
-				// 	vel: this.getVelocity(),
-			});
-			// this.getVelocity();
-			this.counter++;
-		}
+		this.position.sub(this.getVelocity().multiplyScalar(delta * this.speed));
+		this.travelTime += delta;
 
 		if (dist < 4) {
-			while (this.counter < 2) {
+			while (this.counter < 1) {
 				console.log('hit !');
-				console.log({ enemy: this.enemy, frameCount: this.frameCount, deltaSum: this.deltaSum });
+				this.hit = true;
+
+				this.enemy.takeDamage(this.tower.damage, this.tower);
+
+				// console.log({
+				// 	cl: this.clock.elapsedTime,
+				// 	enemy: this.enemy,
+				// 	frameCount: this.frameCount,
+				// 	travelTime: this.travelTime,
+				// });
 				this.counter++;
 			}
 		}

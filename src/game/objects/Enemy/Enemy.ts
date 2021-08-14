@@ -1,4 +1,13 @@
-import { Color, ConeGeometry, Mesh, MeshPhongMaterial, MeshToonMaterial, Object3D, Vector3 } from 'three';
+import {
+	Clock,
+	Color,
+	ConeGeometry,
+	Mesh,
+	MeshPhongMaterial,
+	MeshToonMaterial,
+	Object3D,
+	Vector3,
+} from 'three';
 import { PathNode } from '../../helpers/aStarPathfinder';
 import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
@@ -10,7 +19,7 @@ const enemyGen = enemyGenerator();
 
 const colors = {
 	normal: 0xff9d00,
-	takingDamage: { shotgun: 0xff0000, machineGun: 0xffee00, rifle: 0x00ff00 },
+	takingDamage: { shotgun: 0xff0000, machineGun: 0xff6900, rifle: 0x34ff98 },
 };
 
 export class Enemy extends Mesh {
@@ -21,7 +30,10 @@ export class Enemy extends Mesh {
 	nxPathIdx = 1; // nextPathIndex
 	state: EnemyState;
 	hp: number;
-	strictnessToPath = random(0.01, 24);
+	strictnessToPath = random(1, 24);
+	// clock: Clock;
+	timeUnhurt = 0;
+	currColor = colors.normal;
 	constructor(speed: number) {
 		super();
 
@@ -37,6 +49,7 @@ export class Enemy extends Mesh {
 		this.geometry = new ConeGeometry(8, 20, 16);
 		this.name = `Enemy-${this.id}`;
 		this.hp = 160;
+		// this.clock = new Clock();
 
 		new Mesh(this.geometry, this.material);
 
@@ -44,6 +57,8 @@ export class Enemy extends Mesh {
 		this.position.set(x, y + 10, z);
 
 		this.nextPos = this.path[this.nxPathIdx];
+
+		// this.clock.start();
 	}
 
 	async _getPathNodes(): Promise<Vector3[]> {
@@ -60,7 +75,7 @@ export class Enemy extends Mesh {
 
 					path.push(extraPos);
 
-					console.log({ path, foreLastPos, lastPos, diff, extraPos });
+					// console.log({ path, foreLastPos, lastPos, diff, extraPos });
 
 					resolve(path);
 				} else {
@@ -78,9 +93,13 @@ export class Enemy extends Mesh {
 	}
 
 	takeDamage(damage: number, tower: Tower) {
+		// console.log(this.clock.getElapsedTime());
+		console.log({ m: 'HIT!!!', time: this.timeUnhurt });
+
 		this.hp -= damage;
+		this.timeUnhurt = 0;
+
 		this.changeColor(colors.takingDamage[tower.towerType]);
-		setTimeout(() => this.changeColor(colors.normal), 100);
 	}
 	die() {
 		this.hp -= 100;
@@ -105,10 +124,20 @@ export class Enemy extends Mesh {
 				this.nxPathIdx += 1;
 				this.nextPos = this.path[this.nxPathIdx];
 			}
+		} else {
+			this.die();
 		}
 	}
 
+	getFuturePosition(time) {}
+
 	tick(delta: number) {
 		this.move(delta);
+
+		this.timeUnhurt += delta;
+
+		if (this.timeUnhurt > 0.1) {
+			this.changeColor(colors.normal);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 import { BufferGeometry, Line, Material, Vector3 } from 'three';
 import { Enemy } from '../objects/Enemy/Enemy';
-import { binCodes, binOptions } from './constants';
+import { binCodes, binOptions, enemyMods } from './constants';
 
 export const random = (a: number, b?: number) => {
 	if (!b) {
@@ -32,7 +32,8 @@ export function* idGenerator() {
 
 export function* enemyGenerator(amount = 100) {
 	for (let i = 0; i < amount; i++) {
-		let enemy = new Enemy(random(20, 40));
+		// let enemy = new Enemy(random(20, 40));
+		let enemy = new Enemy(enemyMods.speed);
 
 		yield enemy;
 	}

@@ -32,6 +32,14 @@ export const cellPoints = {
 	d: new Vector3(0, 0, cellSize),
 };
 
+export const enemyMods = {
+	speed: 20,
+};
+
+export const missileMods = {
+	quatFactor: 0.5,
+};
+
 // prettier-ignore
 export const binCodes: BinCode[] = [
   '1000','0100','0010','0001',

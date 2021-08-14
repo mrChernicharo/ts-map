@@ -72,8 +72,6 @@ export class Tower extends Mesh {
 
 		const missile = new Missile(this, enemy);
 
-		enemy.takeDamage(this.damage, this);
-
 		return missile;
 
 		// console.log(`attack!!! ${this.towerType + ':' + this.id} -> ${enemy.id + ':' + enemy.hp}`);

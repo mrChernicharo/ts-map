@@ -94,7 +94,7 @@ export class Enemy extends Mesh {
 
 	takeDamage(damage: number, tower: Tower) {
 		// console.log(this.clock.getElapsedTime());
-		console.log({ m: 'HIT!!!', time: this.timeUnhurt });
+		// console.log({ m: 'HIT!!!', time: this.timeUnhurt });
 
 		this.hp -= damage;
 		this.timeUnhurt = 0;

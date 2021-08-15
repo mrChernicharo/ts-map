@@ -37,7 +37,9 @@ export const enemyMods = {
 };
 
 export const missileMods = {
-	quatFactor: 0.5,
+	x: 0,
+	y: 0,
+	z: 0,
 };
 
 // prettier-ignore

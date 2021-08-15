@@ -34,14 +34,18 @@ export class GUI extends THREEDatGUI {
 
 		// flagsFolder.open();
 
-		const enemyFolder = this.addFolder('👾 Enemy');
-		const speed = enemyFolder.addFolder('speed');
+		// const enemyFolder = this.addFolder('👾 Enemy');
+		// const speed = enemyFolder.addFolder('speed');
 
-		speed.add(enemyMods, 'speed', 2, 100);
+		// speed.add(enemyMods, 'speed', 2, 100);
 
-		const missileFolder = this.addFolder('🚀 Missile');
-		const quatFactor = missileFolder.addFolder('quatFactor');
+		// const missileFolder = this.addFolder('🚀 Missile');
+		// const rotationX = missileFolder.addFolder('rotationX');
+		// const rotationY = missileFolder.addFolder('rotationY');
+		// const rotationZ = missileFolder.addFolder('rotationZ');
 
-		quatFactor.add(missileMods, 'quatFactor', -1, 1, 0.001);
+		// rotationX.add(missileMods, 'x', -3.1416, 3.1416, 0.01);
+		// rotationY.add(missileMods, 'y', -3.1416, 3.1416, 0.01);
+		// rotationZ.add(missileMods, 'z', -3.1416, 3.1416, 0.01);
 	}
 }

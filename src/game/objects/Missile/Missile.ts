@@ -8,9 +8,10 @@ import {
 	MeshToonMaterial,
 	PointLight,
 	Quaternion,
+	Vector2,
 	Vector3,
 } from 'three';
-import { missileMods } from '../../utils/constants';
+import { enemyMods, missileMods } from '../../utils/constants';
 import { Enemy } from '../Enemy/Enemy';
 import { Tower } from '../Tower/Tower';
 
@@ -41,23 +42,28 @@ export class Missile extends Mesh {
 		this.name = 'Missile';
 		this.origin = this.tower.position;
 		this.clock = new Clock();
-		this.speed = 150;
+		// this.speed = 50;
+		this.speed = 250;
 		this._setMissileFeatures(this.tower);
 
 		this.material = new MeshToonMaterial({ color: 0xff6400 });
 		this.geometry = this._setGeometry();
 
+		this.geometry.rotateX(Math.PI / 2);
+
 		new Mesh(this.geometry, this.material);
-		const { x, y, z } = this.tower.position;
-		this.position.set(x, y + this.tower.height / 3, z);
-		// this.rotateX(Math.PI / 2);
 
-		// const quat = this.quaternion.setFromUnitVectors(this.position, this.getVelocity());
-		const quat = this.quaternion.setFromUnitVectors(this.position, this.enemy.position);
-		// const quat = this.quaternion.setFromUnitVectors(this.enemy.position, this.position);
-		// this.quaternion.rotateTowards(quat, missileMods.quatFactor);
-		this.quaternion.slerp(quat, missileMods.quatFactor);
+		let { x, y, z } = this.tower.position;
+		y = y + this.tower.height / 3;
 
+		this.position.set(x, y, z);
+
+		function calcAngle(adjacent, hypotenuse) {
+			return Math.acos(adjacent / hypotenuse);
+		}
+		function radiansToDegrees(radians) {
+			return radians * (180 / Math.PI);
+		}
 		this.clock.start();
 	}
 
@@ -120,6 +126,9 @@ export class Missile extends Mesh {
 
 		this.position.sub(this.getVelocity().multiplyScalar(delta * this.speed));
 		this.travelTime += delta;
+
+		// the solution to the bullet facing enemy problem!
+		this.lookAt(this.enemy.position);
 
 		if (dist < 4) {
 			while (this.counter < 1) {

@@ -58,12 +58,6 @@ export class Missile extends Mesh {
 
 		this.position.set(x, y, z);
 
-		function calcAngle(adjacent, hypotenuse) {
-			return Math.acos(adjacent / hypotenuse);
-		}
-		function radiansToDegrees(radians) {
-			return radians * (180 / Math.PI);
-		}
 		this.clock.start();
 	}
 

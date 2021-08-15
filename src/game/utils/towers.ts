@@ -8,7 +8,7 @@ export const towerModels = {
 		rangeRadiusColor: 0x0056ed,
 		color: 0x8a8a8a,
 		fireRate: 120, // 2 shots/s
-		damage: 10,
+		damage: 8,
 		price: 45,
 	},
 	shotgun: {

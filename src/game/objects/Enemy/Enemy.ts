@@ -1,7 +1,10 @@
 import {
+	BoxGeometry,
 	Clock,
 	Color,
 	ConeGeometry,
+	CylinderGeometry,
+	Group,
 	Mesh,
 	MeshPhongMaterial,
 	MeshToonMaterial,
@@ -17,12 +20,19 @@ import { Tower } from '../Tower/Tower';
 export type EnemyState = 'idle' | 'hovered' | 'selected';
 const enemyGen = enemyGenerator();
 
+const wheelPositions = (size: number) => ({
+	a: { x: -size, y: -size },
+	b: { x: size, y: -size },
+	c: { x: size, y: size },
+	d: { x: -size, y: size },
+});
+
 const colors = {
 	normal: 0xff9d00,
 	takingDamage: { shotgun: 0xff0000, machineGun: 0xff6900, rifle: 0x34ff98 },
 };
 
-export class Enemy extends Mesh {
+export class Enemy extends Group {
 	speed: number;
 	path: Vector3[];
 	nextPos: Vector3;
@@ -30,7 +40,8 @@ export class Enemy extends Mesh {
 	nxPathIdx = 1; // nextPathIndex
 	state: EnemyState;
 	hp: number;
-	strictnessToPath = random(1, 24);
+	strictnessToPath = random(1, 16);
+	group: Group;
 	// clock: Clock;
 	timeUnhurt = 0;
 	currColor = colors.normal;
@@ -45,16 +56,11 @@ export class Enemy extends Mesh {
 	async _init() {
 		this.path = await this._getPathNodes();
 
-		this.material = new MeshToonMaterial({ color: colors.normal });
-		this.geometry = new ConeGeometry(8, 20, 16);
+		this._assemblyGeometry();
+
 		this.name = `Enemy-${this.id}`;
 		this.hp = 160;
 		// this.clock = new Clock();
-
-		new Mesh(this.geometry, this.material);
-
-		const [x, y, z] = Object.values(this.path[0].clone());
-		this.position.set(x, y + 10, z);
 
 		this.nextPos = this.path[this.nxPathIdx];
 
@@ -87,9 +93,48 @@ export class Enemy extends Mesh {
 		});
 	}
 
+	_assemblyGeometry() {
+		new Group();
+
+		const [x, y, z] = Object.values(this.path[0].clone());
+		this.position.set(x, y + 4, z);
+
+		const material = new MeshToonMaterial({ color: colors.normal });
+		const geometry = new BoxGeometry(8, 4, 12);
+		const core = new Mesh(geometry, material);
+		core.name = 'Enemy-core';
+
+		const cabinGeo = new BoxGeometry(6, 2, 8);
+		const cabin = new Mesh(cabinGeo, material);
+		cabin.name = 'Enemy-cabin';
+		cabin.translateY(3);
+		cabin.translateZ(-1.5);
+
+		const wheelCoords = wheelPositions(5);
+		Object.values(wheelCoords).forEach(coors => {
+			const wheelMat = new MeshToonMaterial({ color: 0x343434 });
+			const wheelGeo = new CylinderGeometry(4, 4, 2);
+			const wheel = new Mesh(wheelGeo, wheelMat);
+			wheel.rotateX(Math.PI / 2);
+			wheel.rotateZ(Math.PI / 2);
+			wheel.name = 'Enemy-wheel';
+			this.add(wheel);
+			wheel.position.set(coors.x, 0, coors.y);
+		});
+		// wheel.position.set(x, y, z);
+		// wheel.position.set()
+
+		this.add(core);
+		this.add(cabin);
+
+		// const;
+	}
+
 	setState(str) {}
 	changeColor(color: number) {
-		this.material = new MeshToonMaterial({ color });
+		console.log();
+		const core = this.children.find(c => c.name === 'core');
+		// (core as any).material = new MeshToonMaterial({ color });
 	}
 
 	takeDamage(damage: number, tower: Tower) {
@@ -114,8 +159,12 @@ export class Enemy extends Mesh {
 		let nextClone = this.nextPos?.clone();
 
 		if (nextClone) {
-			let next = new Vector3(nextClone.x, nextClone.y + 12, nextClone.z);
+			let next = new Vector3(nextClone.x, nextClone.y + 4, nextClone.z);
 			this.velocity = pos.clone().sub(next).normalize();
+			this.lookAt(next);
+
+			const wheels = this.children.filter(c => c.name === 'wheel');
+			wheels.forEach(w => w.rotateY(-0.1));
 
 			this.position.sub(this.velocity.multiplyScalar(delta * this.speed));
 
@@ -125,6 +174,7 @@ export class Enemy extends Mesh {
 				this.nextPos = this.path[this.nxPathIdx];
 			}
 		} else {
+			// fim do caminho
 			this.die();
 		}
 	}

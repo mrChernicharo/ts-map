@@ -1,11 +1,11 @@
 import EventEmitter from 'events';
 import { Tile } from '../map/Tile/Tile';
 import { Tower } from '../objects/Tower/Tower';
-import { CREATE_TOWER, TOWER_SOLD } from '../utils/constants';
+import { CLEAR_TILE, CREATE_TOWER, TOWER_SOLD } from '../utils/constants';
 import { towerModels } from '../utils/towers';
 
-const buyModal = document.querySelector('#buy-tower-modal');
-const sellModal = document.querySelector('#sell-tower-modal');
+const buyModal = document.querySelector('#buy-tower-modal') as HTMLElement;
+const sellModal = document.querySelector('#sell-tower-modal') as HTMLElement;
 // const modalSection = document.querySelector('#tower-modal section');
 const towerFeats = {
 	range: '📐',
@@ -28,6 +28,7 @@ export class TowerModal {
 		this.sellTowerDiv = document.createElement('div');
 		this.buyTowerList.classList.add('buy-tower-list');
 		this.sellTowerDiv.classList.add('sell-tower-list');
+
 		this.createBuyModal();
 	}
 
@@ -52,8 +53,6 @@ export class TowerModal {
 			const button = document.createElement('button');
 			const img = document.createElement('img');
 
-			button.addEventListener('click', e => this.emitter.emit(CREATE_TOWER, model));
-
 			img.src = `assets/img/${model}.png`;
 
 			const price = document.createElement('div');
@@ -68,9 +67,19 @@ export class TowerModal {
 
 			// outerLi.appendChild(ul);
 			this.buyTowerList.appendChild(outerLi);
+
+			button.addEventListener('mouseover', e => e.stopImmediatePropagation());
+			button.addEventListener('click', e => {
+				e.stopImmediatePropagation();
+				this.emitter.emit(CREATE_TOWER, model);
+			});
 		});
 
 		buyModal.appendChild(this.buyTowerList);
+		buyModal.addEventListener('mousemove', e => {
+			this.emitter.emit(CLEAR_TILE);
+			e.stopImmediatePropagation();
+		});
 	}
 
 	createSellModal(tower: Tower) {
@@ -79,8 +88,8 @@ export class TowerModal {
 		const featSection = document.createElement('section');
 
 		const button = document.createElement('button');
+		button.classList.add('sell-button');
 		button.textContent = 'Sell';
-		button.addEventListener('click', e => this.emitter.emit(TOWER_SOLD));
 
 		const titleSpan = document.createElement('span');
 		titleSpan.textContent = tower.towerType;
@@ -105,6 +114,16 @@ export class TowerModal {
 		this.sellTowerDiv.appendChild(titleSpan);
 		this.sellTowerDiv.appendChild(featSection);
 		this.sellTowerDiv.appendChild(button);
+
 		sellModal.appendChild(this.sellTowerDiv);
+
+		sellModal.addEventListener('mousemove', e => {
+			e.stopImmediatePropagation();
+			this.emitter.emit(CLEAR_TILE);
+		});
+		button.addEventListener('click', e => {
+			e.stopImmediatePropagation();
+			this.emitter.emit(TOWER_SOLD);
+		});
 	}
 }

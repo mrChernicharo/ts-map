@@ -31,8 +31,8 @@ export const towerModels = {
 		range: 130,
 		rangeRadiusColor: 0x00ab34,
 		color: 0xdedede,
-		fireRate: 18,
-		damage: 62,
+		fireRate: 24,
+		damage: 64,
 		price: 100,
 	},
 };

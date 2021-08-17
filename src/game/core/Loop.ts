@@ -11,7 +11,7 @@ import {
 	TOWER_SOLD,
 	MISSILE_FIRED,
 } from '../utils/constants';
-import { enemyGenerator } from '../utils/functions';
+import { enemyFactory } from '../utils/functions';
 import { Flag } from '../helpers/objects/Flag';
 import { Enemy } from '../objects/Enemy/Enemy';
 import { EventsManager } from '../managers/EventsManager';
@@ -23,7 +23,7 @@ interface IUpdatable extends Mesh {
 }
 
 const clock = new Clock();
-const enemyGen = enemyGenerator();
+const enemyGen = enemyFactory();
 // const towerGen = towerGenerator;
 
 class Loop {
@@ -133,7 +133,6 @@ class Loop {
 
 	getEnemies() {
 		const enemies = this.updatables.filter(item => item.name.includes('Enemy'));
-		console.log(enemies);
 		return enemies as unknown as Enemy[];
 	}
 

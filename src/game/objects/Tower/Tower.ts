@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import { CircleGeometry, CylinderGeometry, Mesh, MeshToonMaterial, Vector3 } from 'three';
 import { Tile } from '../../map/Tile/Tile';
 import { cellSize, MISSILE_FIRED } from '../../utils/constants';
+import { random } from '../../utils/functions';
 import { towerModels } from '../../utils/towers';
 import { Enemy } from '../Enemy/Enemy';
 import { Missile } from '../Missile/Missile';
@@ -103,7 +104,7 @@ export class Tower extends Mesh {
 
 		const rangeMesh = new Mesh(geometry, material);
 		rangeMesh.name = 'towerRange';
-		rangeMesh.position.y = -39;
+		rangeMesh.position.y = -40 + Math.random();
 		rangeMesh.rotateX(-Math.PI / 2);
 
 		this.add(rangeMesh);

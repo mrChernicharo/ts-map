@@ -14,11 +14,11 @@ import {
 import { PathNode } from '../../helpers/aStarPathfinder';
 import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
-import { enemyGenerator, random } from '../../utils/functions';
+import { enemyFactory, random } from '../../utils/functions';
 import { Tower } from '../Tower/Tower';
 
 export type EnemyState = 'idle' | 'hovered' | 'selected';
-const enemyGen = enemyGenerator();
+const enemyGen = enemyFactory();
 
 const wheelPositions = (size: number) => ({
 	a: { x: -size, y: -size },
@@ -29,7 +29,7 @@ const wheelPositions = (size: number) => ({
 
 const colors = {
 	normal: 0xff9d00,
-	takingDamage: { shotgun: 0xff0000, machineGun: 0xff6900, rifle: 0x34ff98 },
+	takingDamage: { shotgun: 0xff0000, machineGun: 0xff6900, rifle: 0x34edab },
 };
 
 export class Enemy extends Group {
@@ -42,7 +42,6 @@ export class Enemy extends Group {
 	hp: number;
 	strictnessToPath = random(1, 16);
 	group: Group;
-	// clock: Clock;
 	timeUnhurt = 0;
 	currColor = colors.normal;
 	constructor(speed: number) {
@@ -59,12 +58,9 @@ export class Enemy extends Group {
 		this._assemblyGeometry();
 
 		this.name = `Enemy-${this.id}`;
-		this.hp = 160;
-		// this.clock = new Clock();
+		this.hp = 100;
 
 		this.nextPos = this.path[this.nxPathIdx];
-
-		// this.clock.start();
 	}
 
 	async _getPathNodes(): Promise<Vector3[]> {
@@ -130,22 +126,19 @@ export class Enemy extends Group {
 		// const;
 	}
 
-	setState(str) {}
 	changeColor(color: number) {
-		console.log();
-		const core = this.children.find(c => c.name === 'core');
-		// (core as any).material = new MeshToonMaterial({ color });
+		const enemyBody = this.children.filter(c => ['Enemy-core', 'Enemy-cabin'].includes(c.name));
+
+		enemyBody.forEach(piece => ((piece as any).material = new MeshToonMaterial({ color })));
 	}
 
 	takeDamage(damage: number, tower: Tower) {
-		// console.log(this.clock.getElapsedTime());
-		// console.log({ m: 'HIT!!!', time: this.timeUnhurt });
-
 		this.hp -= damage;
 		this.timeUnhurt = 0;
 
 		this.changeColor(colors.takingDamage[tower.towerType]);
 	}
+
 	die() {
 		this.hp -= 100;
 	}
@@ -163,7 +156,7 @@ export class Enemy extends Group {
 			this.velocity = pos.clone().sub(next).normalize();
 			this.lookAt(next);
 
-			const wheels = this.children.filter(c => c.name === 'wheel');
+			const wheels = this.children.filter(c => c.name === 'Enemy-wheel');
 			wheels.forEach(w => w.rotateY(-0.1));
 
 			this.position.sub(this.velocity.multiplyScalar(delta * this.speed));

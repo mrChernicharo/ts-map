@@ -7,5 +7,11 @@ export class OrbitControls extends THREEOrbitControls {
 
 		this.enableDamping = true;
 		this.maxPolarAngle = Math.PI / 2;
+
+		console.log(this);
+		this.minDistance = 100;
+		this.maxDistance = 2000;
+
+		this.screenSpacePanning = false;
 	}
 }

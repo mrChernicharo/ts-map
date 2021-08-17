@@ -58,6 +58,7 @@ export const IDLE_CLICK = 'idleClick';
 export const IDLE_HOVER = 'idleHover';
 export const TILE_HOVER = 'tileHover';
 export const TILE_CLICK = 'tileClick';
+export const CLEAR_TILE = 'clearTile';
 
 export const ENEMY_HOVER = 'enemyHover';
 export const ENEMY_CLICK = 'enemyClick';

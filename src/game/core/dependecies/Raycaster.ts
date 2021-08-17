@@ -89,7 +89,7 @@ export class Raycaster extends THREERaycaster {
 		);
 		const enemy = enemyIntersection?.object;
 		if (enemy) {
-			console.log(enemy);
+			// console.log(enemy);
 			this.emitter.emit(ENEMY_CLICK, enemy.parent);
 		}
 	}

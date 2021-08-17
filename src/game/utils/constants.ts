@@ -52,8 +52,6 @@ export const binCodes: BinCode[] = [
 
 export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '1', '1']; // 40% chance
 
-// export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
-
 export const IDLE_CLICK = 'idleClick';
 export const IDLE_HOVER = 'idleHover';
 export const TILE_HOVER = 'tileHover';
@@ -71,3 +69,18 @@ export const TOWER_SOLD = 'towerSold';
 export const MISSILE_FIRED = 'missileFired';
 
 export const ADD_TO_LOOP = 'addToLoop';
+
+// export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
+
+export const buyModalIcons = {
+	price: 'fas fa-coins',
+};
+export const sellModalIcons = {
+	price: 'fas fa-coins',
+	tower: 'fas fa-archway',
+};
+export const towerFeatIcons = {
+	damage: 'fas fa-bolt',
+	range: 'fas fa-circle-notch',
+	fireRate: 'fas fa-meteor',
+};

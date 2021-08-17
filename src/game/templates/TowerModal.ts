@@ -1,20 +1,12 @@
 import EventEmitter from 'events';
 import { Tile } from '../map/Tile/Tile';
 import { Tower } from '../objects/Tower/Tower';
-import { CLEAR_TILE, CREATE_TOWER, TOWER_SOLD } from '../utils/constants';
+import { buyModalIcons, CLEAR_TILE, CREATE_TOWER, towerFeatIcons, TOWER_SOLD } from '../utils/constants';
 import { towerModels } from '../utils/towers';
 
 const buyModal = document.querySelector('#buy-tower-modal') as HTMLElement;
 const sellModal = document.querySelector('#sell-tower-modal') as HTMLElement;
 // const modalSection = document.querySelector('#tower-modal section');
-
-const buyIcons = {};
-
-const towerFeatIcons = {
-	damage: 'fas fa-bolt',
-	range: 'fas fa-circle-notch',
-	fireRate: 'fas fa-meteor',
-};
 
 export class TowerModal {
 	emitter: EventEmitter;
@@ -26,12 +18,8 @@ export class TowerModal {
 
 	_initTemplate() {
 		this.emitter = new EventEmitter();
-		this.buyTowerList = document.createElement('ul');
-		this.sellTowerDiv = document.createElement('div');
-		this.buyTowerList.classList.add('buy-tower-list');
-		this.sellTowerDiv.classList.add('sell-tower-list');
 
-		this.createBuyModal();
+		this._createBuyModal();
 	}
 
 	open(tile: Tile) {
@@ -49,7 +37,12 @@ export class TowerModal {
 	}
 
 	// depend on the towerModels list only
-	createBuyModal() {
+	_createBuyModal() {
+		this.buyTowerList = document.createElement('ul');
+		this.sellTowerDiv = document.createElement('div');
+		this.buyTowerList.classList.add('buy-tower-list');
+		this.sellTowerDiv.classList.add('sell-tower-list');
+
 		Object.keys(towerModels).forEach(model => {
 			const outerLi = document.createElement('li');
 			const button = document.createElement('button');
@@ -58,13 +51,14 @@ export class TowerModal {
 			img.src = `assets/img/${model}.png`;
 
 			const price = document.createElement('div');
+			const priceIcon = document.createElement('i');
 			const priceSpan = document.createElement('span');
+			priceIcon.setAttribute('class', buyModalIcons.price);
 			priceSpan.textContent = towerModels[model].price;
 
-			price.append(priceSpan);
+			price.append(priceIcon, priceSpan);
 
-			button.appendChild(img);
-			button.appendChild(price);
+			button.append(img, price);
 			outerLi.appendChild(button);
 
 			// outerLi.appendChild(ul);
@@ -105,7 +99,7 @@ export class TowerModal {
 				const span = document.createElement('span');
 				const icon = document.createElement('i');
 
-				span.textContent = String(value).toUpperCase();
+				span.textContent = String(value);
 				icon.setAttribute('class', towerFeatIcons[key]);
 
 				li.appendChild(span);

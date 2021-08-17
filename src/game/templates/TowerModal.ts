@@ -7,11 +7,13 @@ import { towerModels } from '../utils/towers';
 const buyModal = document.querySelector('#buy-tower-modal') as HTMLElement;
 const sellModal = document.querySelector('#sell-tower-modal') as HTMLElement;
 // const modalSection = document.querySelector('#tower-modal section');
-const towerFeats = {
-	range: '📐',
-	damage: '🗡',
-	fireRate: '⏱',
-	price: '💰',
+
+const buyIcons = {};
+
+const towerFeatIcons = {
+	damage: 'fas fa-bolt',
+	range: 'fas fa-circle-notch',
+	fireRate: 'fas fa-meteor',
 };
 
 export class TowerModal {
@@ -100,14 +102,14 @@ export class TowerModal {
 			.filter(([key, value]) => towerKeys.includes(key))
 			.forEach(([key, value]) => {
 				const li = document.createElement('li');
-				const kspan = document.createElement('span');
-				const vspan = document.createElement('span');
+				const span = document.createElement('span');
+				const icon = document.createElement('i');
 
-				kspan.textContent = String(value);
-				vspan.textContent = towerFeats[key];
+				span.textContent = String(value).toUpperCase();
+				icon.setAttribute('class', towerFeatIcons[key]);
 
-				li.appendChild(kspan);
-				li.appendChild(vspan);
+				li.appendChild(span);
+				li.appendChild(icon);
 				featSection.appendChild(li);
 			});
 

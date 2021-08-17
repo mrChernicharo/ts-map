@@ -133,7 +133,8 @@ class Loop {
 
 	getEnemies() {
 		const enemies = this.updatables.filter(item => item.name.includes('Enemy'));
-		return enemies as Enemy[];
+		console.log(enemies);
+		return enemies as unknown as Enemy[];
 	}
 
 	getTowers() {

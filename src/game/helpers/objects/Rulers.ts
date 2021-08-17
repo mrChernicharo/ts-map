@@ -1,5 +1,6 @@
 import { FontLoader, LineBasicMaterial, Mesh, MeshBasicMaterial, TextGeometry, Vector3 } from 'three';
-import { drawLine, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../../utils/constants';
+import { GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../../utils/constants';
+import { drawLine } from '../../utils/functions';
 
 const bottomBorder = GROUND_DEPTH / 2;
 

@@ -16,6 +16,10 @@ body {
 	background-color: var(--color-black);
 	color: var(--color--txt);
 }
+
+a.back-to-index {
+	position: absolute;
+}
 #app {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

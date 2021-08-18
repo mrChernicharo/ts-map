@@ -1,7 +1,7 @@
 import './styles/global.css';
 import './styles/modal.css';
+import './styles/loading.css';
 import { Game } from './game/index';
-// import { Title } from './game/templates/title';
 
 const domContainer = document.querySelector('#scene-container') as HTMLDivElement;
 

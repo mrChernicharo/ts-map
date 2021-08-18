@@ -106,6 +106,7 @@ class Loop {
 			object.tick(delta);
 		}
 	}
+
 	spawnEnemies(delta: number, elapsed: number) {
 		if ((elapsed % enemyInterval) + delta >= enemyInterval) {
 			const enemy = enemyGen.next().value;

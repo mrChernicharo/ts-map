@@ -1,0 +1,13 @@
+#loading-screen {
+	width: 100vw;
+	height: 100vh;
+	background: black;
+	position: absolute;
+	z-index: 100;
+	top: 0;
+	/* display: none; */
+}
+
+#loading-screen.done {
+	display: none;
+}

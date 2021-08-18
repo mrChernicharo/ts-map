@@ -50,7 +50,7 @@ export const binCodes: BinCode[] = [
   '1011','1101','1110','0111',
 ];
 
-export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '0', '1', '1', '1', '1', '1']; // 40% chance
+export const binOptions: Bin[] = ['0', '0', '0', '0', '0', '1', '1', '1', '1', '1', '1']; // 40% chance
 
 export const IDLE_CLICK = 'idleClick';
 export const IDLE_HOVER = 'idleHover';

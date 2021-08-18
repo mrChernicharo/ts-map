@@ -30,7 +30,7 @@ export function* idGenerator() {
 	}
 }
 
-export function* enemyGenerator(amount = 100) {
+export function* enemyFactory(amount = 100) {
 	for (let i = 0; i < amount; i++) {
 		// let enemy = new Enemy(random(20, 40));
 		let enemy = new Enemy(enemyMods.speed);

@@ -8,7 +8,7 @@ export class GameState {
     this.gold = 100;
     this.castle = 10;
 
-    console.log(this);
+    // console.log(this);
   }
 
   // setFocused(obj: Object3D) {

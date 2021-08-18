@@ -1,18 +1,12 @@
 import EventEmitter from 'events';
 import { Tile } from '../map/Tile/Tile';
 import { Tower } from '../objects/Tower/Tower';
-import { CREATE_TOWER, TOWER_SOLD } from '../utils/constants';
+import { buyModalIcons, CLEAR_TILE, CREATE_TOWER, towerFeatIcons, TOWER_SOLD } from '../utils/constants';
 import { towerModels } from '../utils/towers';
 
-const buyModal = document.querySelector('#buy-tower-modal');
-const sellModal = document.querySelector('#sell-tower-modal');
+const buyModal = document.querySelector('#buy-tower-modal') as HTMLElement;
+const sellModal = document.querySelector('#sell-tower-modal') as HTMLElement;
 // const modalSection = document.querySelector('#tower-modal section');
-const towerFeats = {
-	range: '📐',
-	damage: '🗡',
-	fireRate: '⏱',
-	price: '💰',
-};
 
 export class TowerModal {
 	emitter: EventEmitter;
@@ -24,11 +18,8 @@ export class TowerModal {
 
 	_initTemplate() {
 		this.emitter = new EventEmitter();
-		this.buyTowerList = document.createElement('ul');
-		this.sellTowerDiv = document.createElement('div');
-		this.buyTowerList.classList.add('buy-tower-list');
-		this.sellTowerDiv.classList.add('sell-tower-list');
-		this.createBuyModal();
+
+		this._createBuyModal();
 	}
 
 	open(tile: Tile) {
@@ -46,31 +37,45 @@ export class TowerModal {
 	}
 
 	// depend on the towerModels list only
-	createBuyModal() {
+	_createBuyModal() {
+		this.buyTowerList = document.createElement('ul');
+		this.sellTowerDiv = document.createElement('div');
+		this.buyTowerList.classList.add('buy-tower-list');
+		this.sellTowerDiv.classList.add('sell-tower-list');
+
 		Object.keys(towerModels).forEach(model => {
 			const outerLi = document.createElement('li');
 			const button = document.createElement('button');
 			const img = document.createElement('img');
 
-			button.addEventListener('click', e => this.emitter.emit(CREATE_TOWER, model));
-
 			img.src = `assets/img/${model}.png`;
 
 			const price = document.createElement('div');
+			const priceIcon = document.createElement('i');
 			const priceSpan = document.createElement('span');
+			priceIcon.setAttribute('class', buyModalIcons.price);
 			priceSpan.textContent = towerModels[model].price;
 
-			price.append(priceSpan);
+			price.append(priceIcon, priceSpan);
 
-			button.appendChild(img);
-			button.appendChild(price);
+			button.append(img, price);
 			outerLi.appendChild(button);
 
 			// outerLi.appendChild(ul);
 			this.buyTowerList.appendChild(outerLi);
+
+			button.addEventListener('mouseover', e => e.stopImmediatePropagation());
+			button.addEventListener('click', e => {
+				e.stopImmediatePropagation();
+				this.emitter.emit(CREATE_TOWER, model);
+			});
 		});
 
 		buyModal.appendChild(this.buyTowerList);
+		buyModal.addEventListener('mousemove', e => {
+			this.emitter.emit(CLEAR_TILE);
+			e.stopImmediatePropagation();
+		});
 	}
 
 	createSellModal(tower: Tower) {
@@ -79,8 +84,8 @@ export class TowerModal {
 		const featSection = document.createElement('section');
 
 		const button = document.createElement('button');
+		button.classList.add('sell-button');
 		button.textContent = 'Sell';
-		button.addEventListener('click', e => this.emitter.emit(TOWER_SOLD));
 
 		const titleSpan = document.createElement('span');
 		titleSpan.textContent = tower.towerType;
@@ -91,20 +96,30 @@ export class TowerModal {
 			.filter(([key, value]) => towerKeys.includes(key))
 			.forEach(([key, value]) => {
 				const li = document.createElement('li');
-				const kspan = document.createElement('span');
-				const vspan = document.createElement('span');
+				const span = document.createElement('span');
+				const icon = document.createElement('i');
 
-				kspan.textContent = String(value);
-				vspan.textContent = towerFeats[key];
+				span.textContent = String(value);
+				icon.setAttribute('class', towerFeatIcons[key]);
 
-				li.appendChild(kspan);
-				li.appendChild(vspan);
+				li.appendChild(span);
+				li.appendChild(icon);
 				featSection.appendChild(li);
 			});
 
 		this.sellTowerDiv.appendChild(titleSpan);
 		this.sellTowerDiv.appendChild(featSection);
 		this.sellTowerDiv.appendChild(button);
+
 		sellModal.appendChild(this.sellTowerDiv);
+
+		sellModal.addEventListener('mousemove', e => {
+			e.stopImmediatePropagation();
+			this.emitter.emit(CLEAR_TILE);
+		});
+		button.addEventListener('click', e => {
+			e.stopImmediatePropagation();
+			this.emitter.emit(TOWER_SOLD);
+		});
 	}
 }

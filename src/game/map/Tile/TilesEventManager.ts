@@ -10,6 +10,7 @@ import {
 	TOWER_CREATED,
 	TOWER_SOLD,
 	CREATE_TOWER,
+	CLEAR_TILE,
 } from '../../utils/constants';
 import { random } from '../../utils/functions';
 
@@ -43,6 +44,7 @@ export class TilesEventManager {
 		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
 		this.towerModal.emitter.on(CREATE_TOWER, (towerType: TowerType) => this.createTower(towerType));
 		this.towerModal.emitter.on(TOWER_SOLD, () => this.sellTower());
+		this.towerModal.emitter.on(CLEAR_TILE, () => this.clearTileHover());
 	}
 
 	handleTileClick(tile: Tile) {
@@ -99,10 +101,15 @@ export class TilesEventManager {
 	clearTileHover() {
 		if (this.previousTileHovered?.state !== 'selected') this.previousTileHovered?.setState('idle');
 	}
+	// clearTiles() {
+	// 	this.previousTileHovered.setState('idle');
+	// }
 
 	createTower(towerType: TowerType) {
 		const tile = this.previousTileClicked;
 		const currentCell = this.previousTileClicked.parent as Cell;
+
+		if (tile.tower) return;
 
 		const { position } = currentCell;
 

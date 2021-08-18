@@ -88,13 +88,13 @@ export class Missile extends Mesh {
 		let geometry;
 		switch (this.tower.towerType) {
 			case 'machineGun':
-				geometry = new CylinderGeometry(1, 1, 3);
+				geometry = new CylinderGeometry(1.4, 1.4, 3.6);
 				break;
 			case 'shotgun':
-				geometry = new CylinderGeometry(2, 2, 4);
+				geometry = new CylinderGeometry(2.2, 2.2, 4);
 				break;
 			case 'rifle':
-				geometry = new CylinderGeometry(1, 2, 7);
+				geometry = new CylinderGeometry(1.2, 2, 8);
 				break;
 		}
 		return geometry;
@@ -124,21 +124,21 @@ export class Missile extends Mesh {
 		// the solution to the bullet facing enemy problem!
 		this.lookAt(this.enemy.position);
 
+		// if (this.counter < 1) {
+		// 	this.counter++;
+		// }
+
 		if (dist < 4) {
-			while (this.counter < 1) {
-				console.log('hit !');
-				this.hit = true;
+			this.hit = true;
 
-				this.enemy.takeDamage(this.tower.damage, this.tower);
+			this.enemy.takeDamage(this.tower.damage, this.tower);
 
-				// console.log({
-				// 	cl: this.clock.elapsedTime,
-				// 	enemy: this.enemy,
-				// 	frameCount: this.frameCount,
-				// 	travelTime: this.travelTime,
-				// });
-				this.counter++;
-			}
+			// console.log({
+			// 	cl: this.clock.elapsedTime,
+			// 	enemy: this.enemy,
+			// 	frameCount: this.frameCount,
+			// 	travelTime: this.travelTime,
+			// });
 		}
 	}
 }

@@ -39,7 +39,8 @@ export class Tower extends Mesh {
 		);
 		this.name = 'Tower';
 		this.selected = false;
-		(this.height = towerModels[this.towerType].height), (this.range = towerModels[this.towerType].range);
+		this.height = towerModels[this.towerType].height;
+		this.range = towerModels[this.towerType].range;
 		this.damage = towerModels[this.towerType].damage;
 		this.fireRate = towerModels[this.towerType].fireRate;
 		this.cooldownTime = 1;
@@ -112,21 +113,26 @@ export class Tower extends Mesh {
 
 	_correctPosition() {
 		let { x, y, z } = this.position;
+		let offY = 42;
+
+		if (this.towerType === 'shotgun') {
+			offY -= 6;
+		}
 
 		if (this.tile.buildPoint === 'a') {
-			this.position.set(x, y + 42, z);
+			this.position.set(x, y + offY, z);
 		}
 		if (this.tile.buildPoint === 'b') {
-			this.position.set(x + cellSize, y + 42, z);
+			this.position.set(x + cellSize, y + offY, z);
 		}
 		if (this.tile.buildPoint === 'c') {
-			this.position.set(x + cellSize, y + 42, z + cellSize);
+			this.position.set(x + cellSize, y + offY, z + cellSize);
 		}
 		if (this.tile.buildPoint === 'd') {
-			this.position.set(x, y + 42, z + cellSize);
+			this.position.set(x, y + offY, z + cellSize);
 		}
 		if (this.tile.buildPoint === 'center') {
-			this.position.set(x + cellSize / 2, y + 42, z + cellSize / 2);
+			this.position.set(x + cellSize / 2, y + offY, z + cellSize / 2);
 		}
 	}
 }

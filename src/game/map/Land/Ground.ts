@@ -123,6 +123,7 @@ export class Ground extends Mesh {
 				this.spots.push(spot);
 			});
 	}
+
 	enhanceBinCode(origin: Vector3, edges: CellEdges) {
 		// prevents start/finish from being locked by walls:
 		// forces bin '0' if edge is too close from start/finish
@@ -169,12 +170,11 @@ export class Ground extends Mesh {
 	}
 
 	createPathLine() {
-		const pathMaterial = new LineDashedMaterial({ dashSize: 3, color: 0xff9d00 });
-		const pathGeometry = [];
+		const pathMaterial = new LineBasicMaterial({ color: 0xff9d00, transparent: true, opacity: 0.6 });
 
 		this.path.forEach(n => {
 			const pathLine = drawLine(n?.previous?.pos || levelStart, n.pos, pathMaterial);
-			pathLine.position.y += 10;
+			pathLine.position.y += 2;
 
 			this.add(pathLine);
 		});

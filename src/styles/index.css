@@ -23,6 +23,10 @@ a {
 	text-decoration: none;
 	transition: 0.3s;
 	bottom: 20%;
+	position: absolute;
+	right: 0.5rem;
+	top: 0.25rem;
+	font-size: 22px;
 }
 
 a:hover {

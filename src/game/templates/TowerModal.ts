@@ -1,7 +1,14 @@
 import EventEmitter from 'events';
 import { Tile } from '../map/Tile/Tile';
 import { Tower } from '../objects/Tower/Tower';
-import { buyModalIcons, CLEAR_TILE, CREATE_TOWER, towerFeatIcons, TOWER_SOLD } from '../utils/constants';
+import {
+	buyModalIcons,
+	CLEAR_TILE,
+	CREATE_TOWER,
+	sellModalIcons,
+	towerFeatIcons,
+	TOWER_SOLD,
+} from '../utils/constants';
 import { towerModels } from '../utils/towers';
 
 const buyModal = document.querySelector('#buy-tower-modal') as HTMLElement;
@@ -50,15 +57,18 @@ export class TowerModal {
 
 			img.src = `/assets/img/${model}.png`;
 
-			const price = document.createElement('div');
+			const priceDiv = document.createElement('div');
+			priceDiv.classList.add('price-div');
+
 			const priceIcon = document.createElement('i');
-			const priceSpan = document.createElement('span');
 			priceIcon.setAttribute('class', buyModalIcons.price);
+
+			const priceSpan = document.createElement('span');
 			priceSpan.textContent = towerModels[model].price;
 
-			price.append(priceIcon, priceSpan);
+			priceDiv.append(priceIcon, priceSpan);
 
-			button.append(img, price);
+			button.append(img, priceDiv);
 			outerLi.appendChild(button);
 			this.buyTowerList.appendChild(outerLi);
 
@@ -83,7 +93,21 @@ export class TowerModal {
 
 		const button = document.createElement('button');
 		button.classList.add('sell-button');
-		button.textContent = 'Sell';
+
+		const buttonIcon = document.createElement('i');
+		buttonIcon.setAttribute('class', sellModalIcons.price);
+
+		const buttonSpan = document.createElement('span');
+		buttonSpan.textContent = 'Sell';
+
+		const towerPriceSpan = document.createElement('span');
+		towerPriceSpan.classList.add('tower-price');
+		towerPriceSpan.textContent = String(Math.round(towerModels[tower.towerType].price * 0.65));
+
+		const priceDiv = document.createElement('div');
+		priceDiv.append(buttonIcon, towerPriceSpan);
+
+		button.append(buttonSpan, priceDiv);
 
 		const titleSpan = document.createElement('span');
 		titleSpan.textContent = tower.towerType.toUpperCase();

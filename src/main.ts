@@ -1,4 +1,5 @@
-import './game/styles/global.css';
+import './styles/global.css';
+import './styles/modal.css';
 import { Game } from './game/index';
 // import { Title } from './game/templates/title';
 

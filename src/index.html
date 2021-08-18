@@ -6,15 +6,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Gordinho Defense</title>
 
-		<link rel="stylesheet" href="/src/game/styles/modal.css" />
+		<link rel="stylesheet" href="./styles/global.css" />
 		<script src="https://kit.fontawesome.com/183de1fcbf.js" crossorigin="anonymous"></script>
 	</head>
 	<body>
-		<script type="module" src="../src/main.ts"></script>
-
-		<a class="back-to-index" href="/index.html"><i class="fas fa-arrow-left"></i></a>
-
 		<div id="app">
+			<a class="back-to-index" href="/index.html"><i class="fas fa-arrow-left"></i></a>
 			<div id="scene-container">
 				<!-- THREE Canvas goes here -->
 			</div>
@@ -23,5 +20,7 @@
 			<div id="sell-tower-modal"></div>
 			<!-- ---------------------------------------------------- -->
 		</div>
+
+		<script defer type="module" src="./main.ts"></script>
 	</body>
 </html>

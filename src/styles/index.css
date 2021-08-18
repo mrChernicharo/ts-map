@@ -1,0 +1,30 @@
+h1 {
+	text-align: center;
+}
+.hero-container {
+	background: url('/assets/img/hero2.jpg') center / cover no-repeat;
+	height: 600px;
+}
+
+img {
+	width: clamp(400px, 700px, 100vw);
+}
+
+.start {
+	display: flex;
+	justify-content: center;
+}
+a {
+	position: absolute;
+	padding: 0.5rem 2rem;
+	background-color: var(--color--highlight);
+	color: var(--color--txt);
+	font-size: 40px;
+	text-decoration: none;
+	transition: 0.3s;
+	bottom: 20%;
+}
+
+a:hover {
+	opacity: 0.7;
+}

@@ -9,7 +9,10 @@ export class Wall extends Mesh {
 		super();
 		this.binCode = binCode;
 
-		this.material = new MeshToonMaterial({ color: 0x9a9a9a });
+		// this.material = new MeshToonMaterial({ color: 0x9a9a9a });
+		// this.material = new MeshToonMaterial({ color: 0x983502 });
+		this.material = new MeshToonMaterial({ color: 0x8f7856 });
+		0xac3902;
 		this.geometry = this.getGeometry();
 
 		new Mesh(this.geometry, this.material);

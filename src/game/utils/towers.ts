@@ -20,7 +20,7 @@ export const towerModels = {
 		rangeRadiusColor: 0xed1067,
 		color: 0x232323,
 		fireRate: 40,
-		damage: 40,
+		damage: 36,
 		price: 70,
 	},
 	rifle: {
@@ -32,7 +32,7 @@ export const towerModels = {
 		rangeRadiusColor: 0x00ab34,
 		color: 0xdedede,
 		fireRate: 24,
-		damage: 64,
+		damage: 52,
 		price: 100,
 	},
 };

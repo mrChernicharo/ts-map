@@ -115,10 +115,6 @@ export class Raycaster extends THREERaycaster {
 			if (obj.name === 'Ball') {
 				obj.material = new MeshToonMaterial({ color: 0x44ff11 });
 			}
-
-			// if (obj.name.includes('Enemy')) {
-			// 	obj.material = new MeshToonMaterial({ color: 0x44ff11, wireframe: true });
-			// }
 		});
 	}
 
@@ -133,14 +129,12 @@ export class Raycaster extends THREERaycaster {
 			if (obj.name === 'Ball') {
 				obj.material = new MeshToonMaterial({ color: 'purple' });
 			}
-
-			// if (obj.name.includes('Enemy')) {
-			// 	obj.material = new MeshToonMaterial({ color: 0xff9d00 });
-			// }
 		});
 	}
 
 	normalizeMousePos(event: MouseEvent) {
+		// console.log(event);
+
 		let x = (event.clientX / window.innerWidth) * 2 - 1;
 		let y = -(event.clientY / window.innerHeight) * 2 + 1;
 		return new Vector2(x, y);

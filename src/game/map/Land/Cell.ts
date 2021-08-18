@@ -85,7 +85,7 @@ export class Cell extends Mesh {
 	buildTiles(key, point, hasWall, buildPoint) {
 		const newTile = new Tile(buildPoint);
 		const { x, y, z } = point;
-		newTile.position.set(x, y + 24, z);
+		newTile.position.set(x, y + 21, z);
 
 		if (hasWall) {
 			this.add(newTile);
@@ -101,7 +101,7 @@ export class Cell extends Mesh {
 			if (this.binCode === '1111') extraTile = new Tile(buildPoint);
 			this.add(extraTile);
 
-			extraTile.position.set(cellSize / 2, 2 + 24, cellSize / 2);
+			extraTile.position.set(cellSize / 2, y + 21, cellSize / 2);
 		}
 	}
 	buildWall() {

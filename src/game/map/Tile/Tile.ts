@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, MeshToonMaterial, Object3D } from 'three';
+import { BoxGeometry, ExtrudeGeometry, Mesh, MeshToonMaterial, Object3D, Shape } from 'three';
 import { Tower } from '../../objects/Tower/Tower';
 import { cellSize } from '../../utils/constants';
 
@@ -6,7 +6,7 @@ export type TileState = 'idle' | 'hovered' | 'selected';
 export type BuildPoint = 'a' | 'b' | 'c' | 'd' | 'center';
 const materials = {
 	idle: { color: 0xac3902, opacity: 1, transparent: true },
-	hovered: { color: 0xac3902, opacity: 0.75, transparent: true },
+	hovered: { color: 0xbd4a13, opacity: 0.75, transparent: true },
 	selected: { color: 0x32ed32, opacity: 0.5, transparent: true },
 };
 
@@ -22,16 +22,20 @@ export class Tile extends Mesh {
 	}
 	_init() {
 		this.material = new MeshToonMaterial(materials.idle);
-		this.geometry = new BoxGeometry((cellSize / 2) * Math.sqrt(2), 6, (cellSize / 2) * Math.sqrt(2));
-
-		new Mesh(this.geometry, this.material);
+		this.geometry = new BoxGeometry(
+			(cellSize / 2) * Math.sqrt(2) - 0.5,
+			2,
+			(cellSize / 2) * Math.sqrt(2) - 0.5
+		);
 
 		this.name = 'Tile';
 		this.state = 'idle';
 		this.tower = null;
 
-		this.position.set(0, 24, 0);
 		this.rotateY(-Math.PI / 4);
+		// this.geometry.translate(100, 0, 0);
+
+		new Mesh(this.geometry, this.material);
 	}
 
 	setState(state: TileState) {

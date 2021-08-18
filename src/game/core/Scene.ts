@@ -20,7 +20,7 @@ class Scene extends THREEScene {
 		super();
 		new THREEScene();
 		this.state = gameState;
-		this.gui = new GUI();
+		// this.gui = new GUI();
 		this.fog = new Fog(0x003300, -1, 5000);
 		this.background = new Color(0x00000);
 

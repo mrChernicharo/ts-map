@@ -2,24 +2,52 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Gordinho Defense</title>
+		<title>Document</title>
 
-		<link rel="stylesheet" href="/src/game/styles/modal.css" />
-		<script src="https://kit.fontawesome.com/183de1fcbf.js" crossorigin="anonymous"></script>
+		<style>
+			h1 {
+				text-align: center;
+			}
+			.hero-container {
+				background: url('/public/assets/img/hero2.jpg') center / cover no-repeat;
+				height: 600px;
+			}
+
+			img {
+				width: clamp(400px, 700px, 100vw);
+			}
+
+			.start {
+				display: flex;
+				justify-content: center;
+			}
+			a {
+				position: absolute;
+				padding: 0.5rem 2rem;
+				background-color: var(--color--highlight);
+				color: var(--color--txt);
+				font-size: 40px;
+				text-decoration: none;
+				transition: 0.3s;
+				bottom: 20%;
+			}
+
+			a:hover {
+				opacity: 0.7;
+			}
+		</style>
 	</head>
 	<body>
 		<script type="module" src="/src/main.ts"></script>
 
-		<div id="app">
-			<div id="scene-container">
-				<!-- THREE Canvas goes here -->
-			</div>
-			<!-- ---------------------------------------------------- -->
-			<div id="buy-tower-modal"></div>
-			<div id="sell-tower-modal"></div>
-			<!-- ---------------------------------------------------- -->
+		<h1>Gordinho Defense</h1>
+
+		<div class="hero-container"></div>
+
+		<div class="start">
+			<a href="/main.html">Start Game</a>
 		</div>
 	</body>
 </html>

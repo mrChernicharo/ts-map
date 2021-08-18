@@ -60,8 +60,6 @@ export class TowerModal {
 
 			button.append(img, price);
 			outerLi.appendChild(button);
-
-			// outerLi.appendChild(ul);
 			this.buyTowerList.appendChild(outerLi);
 
 			button.addEventListener('mouseover', e => e.stopImmediatePropagation());
@@ -88,7 +86,7 @@ export class TowerModal {
 		button.textContent = 'Sell';
 
 		const titleSpan = document.createElement('span');
-		titleSpan.textContent = tower.towerType;
+		titleSpan.textContent = tower.towerType.toUpperCase();
 
 		const towerKeys = ['damage', 'fireRate', 'range'];
 

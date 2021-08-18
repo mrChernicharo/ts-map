@@ -2,9 +2,9 @@
 	background: var(--color-bg-dark);
 	position: absolute;
 	top: 3rem;
-	left: 2rem;
+	right: 2rem;
 	opacity: 0;
-	z-index: 1;
+	z-index: 2;
 }
 
 #buy-tower-modal ul {
@@ -15,6 +15,11 @@
 #buy-tower-modal ul li {
 	list-style: none;
 	display: flex;
+	padding: 0.25rem 0 0.25rem 0.25rem;
+}
+
+#buy-tower-modal ul li:last-child {
+	padding: 0.25rem;
 }
 
 #buy-tower-modal ul li button {
@@ -23,6 +28,9 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	background: var(--color-bg-dark);
+	color: var(--color--txt);
+	/* border: 1px solid var(--color--highlight); */
 }
 
 #buy-tower-modal ul li button img {
@@ -41,31 +49,47 @@
 	z-index: 3;
 }
 
+/* *********** SELL TOWER ********** */
+
 #sell-tower-modal {
-	/* background: var(--color-bg-dark); */
-	/* background: ; */
 	position: absolute;
 	top: 3rem;
 	left: 2rem;
 	opacity: 0;
-	z-index: 0;
+	z-index: 1;
 }
 #sell-tower-modal div.sell-tower-list {
 	background: var(--color-bg-dark);
 	list-style: none;
 }
+
+/* #sell-tower-modal div.sell-tower-list span {
+} */
+
+#sell-tower-modal div.sell-tower-list section {
+	font-size: 12px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
 #sell-tower-modal div.sell-tower-list button {
 	width: 100%;
 	background: var(--color-bg-dark);
 	color: var(--color--txt);
 	border: 1px solid var(--color--highlight);
 	width: 120px;
+	transition: 0.3s;
 }
+#sell-tower-modal div.sell-tower-list button:hover {
+	opacity: 0.7;
+}
+
 #sell-tower-modal.visible {
 	transition: 0.4s;
 	opacity: 1;
 	z-index: 2;
 }
+
 /* --color--bg: #0d2f50;
 --color--border: #05192d;
 --color--highlight: #134d6f;

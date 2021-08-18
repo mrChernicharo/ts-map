@@ -4,18 +4,19 @@
 	padding: 0;
 	--color--bg: #0d2f50;
 	--color-bg-dark: #222122;
+	--color-black: #000;
 	--color--border: #05192d;
 	--color--highlight: #134d6f;
 	--color--txt: #cdcdcd;
+	font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 body {
 	margin: 0;
 	padding: 0;
-	background-color: var(--color--bg);
+	background-color: var(--color-black);
 	color: var(--color--txt);
 }
 #app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;

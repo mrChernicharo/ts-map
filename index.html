@@ -26,8 +26,58 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Gordinho Defense</title>
-		<link rel="stylesheet" href="/src/styles/global.css" />
-		<link rel="stylesheet" href="/src/styles/index.css" />
+
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+				--color--bg: #0d2f50;
+				--color-bg-dark: #222122;
+				--color-black: #000;
+				--color--border: #05192d;
+				--color--highlight: #134d6f;
+				--color--txt: #cdcdcd;
+				font-family: Avenir, Helvetica, Arial, sans-serif;
+			}
+			body {
+				margin: 0;
+				padding: 0;
+				background-color: var(--color-black);
+				color: var(--color--txt);
+			}
+
+			h1 {
+				text-align: center;
+			}
+			.hero-container {
+				background: url('/assets/img/hero2.jpg') center / cover no-repeat;
+				height: 600px;
+			}
+
+			img {
+				width: clamp(400px, 700px, 100vw);
+			}
+
+			.start {
+				display: flex;
+				justify-content: center;
+			}
+			a {
+				position: absolute;
+				padding: 0.5rem 2rem;
+				background-color: var(--color--highlight);
+				color: var(--color--txt);
+				font-size: 40px;
+				text-decoration: none;
+				transition: 0.3s;
+				bottom: 20%;
+			}
+
+			a:hover {
+				opacity: 0.7;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Gordinho Defense</h1>

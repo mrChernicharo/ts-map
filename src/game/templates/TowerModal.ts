@@ -48,7 +48,7 @@ export class TowerModal {
 			const button = document.createElement('button');
 			const img = document.createElement('img');
 
-			img.src = `assets/img/${model}.png`;
+			img.src = `/assets/img/${model}.png`;
 
 			const price = document.createElement('div');
 			const priceIcon = document.createElement('i');

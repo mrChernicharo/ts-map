@@ -12,7 +12,6 @@ import {
 	LineDashedMaterial,
 } from 'three';
 import { AStarPathfinder, PathNode } from '../../helpers/aStarPathfinder';
-// import { AStarPathfinder } from '../../utils/AStarPathfinder';
 import {
 	cellSize,
 	GROUND_DEPTH,
@@ -34,12 +33,9 @@ export interface Spot {
 	origin: Vector3;
 	localPos: Vector3;
 	name: string;
-	// hl: number; // horizontal line  => // hl: Math.floor(i / (this.cols + 1)),
-	// vl: number; // vertical line  => // vl: i % (this.cols + 1),
 }
 
-const idMaker = idGenerator();
-const pathIntervalStep = undefined;
+const pathIntervalStep = 10;
 
 export class Ground extends Mesh {
 	cols: number;
@@ -48,6 +44,8 @@ export class Ground extends Mesh {
 	spots: Spot[] = [];
 	path: PathNode[] = [];
 	pathfinder: AStarPathfinder;
+	hasCompletePath: boolean;
+	idMaker;
 	constructor() {
 		super();
 
@@ -58,9 +56,22 @@ export class Ground extends Mesh {
 		this.material = new MeshBasicMaterial({ color: '#242424', wireframe: false });
 		this.name = 'Ground';
 
+		this._init();
+	}
+
+	async _init() {
+		this.idMaker = idGenerator();
 		this.createGrid();
 		this.getSpots();
-		this.initPathFinder();
+		await this.initPathFinder();
+	}
+
+	_restart() {
+		this.children = [];
+		this.cells = [];
+		this.spots = [];
+		this.path = [];
+		this._init();
 	}
 
 	createGrid() {
@@ -68,7 +79,7 @@ export class Ground extends Mesh {
 			for (let c = 0; c < this.cols; c++) {
 				let edges: { a: Bin; b: Bin; c: Bin; d: Bin };
 
-				const index = idMaker.next().value as number;
+				const index = this.idMaker.next().value as number;
 
 				let prev = this.cells[index - 1];
 				let top = this.cells[index - this.cols];
@@ -134,7 +145,7 @@ export class Ground extends Mesh {
 		return (edges.a + edges.b + edges.c + edges.d) as BinCode;
 	}
 
-	initPathFinder() {
+	async initPathFinder() {
 		this.pathfinder = new AStarPathfinder(this.spots, levelStart, levelFinish);
 
 		const interval = setInterval(() => {
@@ -145,10 +156,15 @@ export class Ground extends Mesh {
 				this.path = this.pathfinder.getPathArray();
 				this.createPathLine();
 
-				// emit event notifying path completion
+				if (this.pathfinder.step() === -1) {
+					this.hasCompletePath = false;
+					return this._restart();
+				}
+				if (this.pathfinder.step() === 1) {
+					this.hasCompletePath = true;
+					return;
+				}
 			}
-
-			// this.drawPathSpots();
 		}, pathIntervalStep);
 	}
 

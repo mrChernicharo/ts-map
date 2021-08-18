@@ -6,6 +6,7 @@ import { GUI } from '../helpers/GUI';
 import { GameState } from './dependecies/GameState';
 import { EventsManager } from '../managers/EventsManager';
 import { Ground } from '../map/Land/Ground';
+import { LoadingScreen } from '../templates/Loading';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -16,6 +17,8 @@ class Scene extends THREEScene {
 	orbitControls: OrbitControls;
 	EventsManager: EventsManager;
 	gui: GUI;
+	loading: LoadingScreen;
+	ready = false;
 	constructor(private domContainer: HTMLDivElement, gameState: GameState) {
 		super();
 		new THREEScene();
@@ -23,18 +26,23 @@ class Scene extends THREEScene {
 		// this.gui = new GUI();
 		this.fog = new Fog(0x003300, -1, 5000);
 		this.background = new Color(0x00000);
-
+		this.loading = new LoadingScreen();
 		this._init();
 	}
 
-	_init() {
+	async _init() {
 		this._initCore();
-
-		this.addObjects();
-
 		this.setResizeListener();
 
-		return this;
+		const ground = await this.addObjects();
+
+		const groundInterval = setInterval(() => {
+			if (ground.hasCompletePath) {
+				clearInterval(groundInterval);
+				this.ready = true;
+				this.loading.done();
+			}
+		}, 400);
 	}
 
 	_initCore() {
@@ -50,14 +58,18 @@ class Scene extends THREEScene {
 		this.EventsManager = new EventsManager(this);
 	}
 
-	addObjects() {
-		// adding test objects
+	async addObjects() {
+		const ground = await this.groundInit();
 
-		const ground = new Ground();
+		// if (ground.hasCompletePath) {
+
+		// }
 
 		const objects = [ground, this.lights];
 
 		this.add(...objects);
+
+		return ground;
 	}
 
 	setResizeListener() {
@@ -80,6 +92,19 @@ class Scene extends THREEScene {
 
 	onResize() {
 		console.log('resized viewport!');
+	}
+
+	async groundInit(): Promise<Ground> {
+		let promFn = new Promise((resolve, reject) => {
+			const ground = new Ground();
+			setTimeout(() => {
+				resolve(ground);
+			}, 600);
+		});
+
+		let promise = promFn;
+
+		return promise as Promise<Ground>;
 	}
 }
 export { Scene };

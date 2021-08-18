@@ -25,13 +25,11 @@ export class AStarPathfinder {
 	goal: Vector3;
 	lastCheckedNode: PathNode;
 
-	loading: LoadingScreen;
 	constructor(spots: Spot[], start: Vector3, goal: Vector3) {
 		this.start = start;
 		this.goal = goal;
 		this.spots = spots;
 		this.openSet = [this.createNode(new Vector3(0, 0, 0), start, false)];
-		this.loading = new LoadingScreen();
 		this.initNodes();
 	}
 
@@ -100,7 +98,7 @@ export class AStarPathfinder {
 
 			// Did I finish?
 			if (current.pos.distanceTo(this.goal) < 3) {
-				this.gameResolve(true);
+				console.log('DONE! 😎');
 				return 1;
 			}
 
@@ -136,7 +134,7 @@ export class AStarPathfinder {
 
 			return 0; // and keep going!
 		} else {
-			this.gameResolve(false);
+			console.log('NO SOLUTION! 😅');
 			return -1;
 		}
 	}
@@ -155,15 +153,5 @@ export class AStarPathfinder {
 		if (!path.length) console.warn('loop step() method first to get the nodes!');
 
 		return path.reverse().map((node, i) => ({ i, ...node }));
-	}
-
-	gameResolve(successful: boolean) {
-		if (successful) {
-			console.log('DONE! 😎');
-			this.loading.done();
-		} else {
-			console.log('NO SOLUTION! 😅');
-			window.location.reload();
-		}
 	}
 }

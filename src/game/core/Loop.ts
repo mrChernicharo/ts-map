@@ -24,7 +24,6 @@ interface IUpdatable extends Mesh {
 
 const clock = new Clock();
 const enemyGen = enemyFactory();
-// const towerGen = towerGenerator;
 
 class Loop {
 	updatables: IUpdatable[];
@@ -80,27 +79,28 @@ class Loop {
 	tick() {
 		const delta = clock.getDelta();
 		const elapsed = clock.getElapsedTime();
+		if (this.scene.ready) {
+			this.spawnEnemies(delta, elapsed);
 
-		this.spawnEnemies(delta, elapsed);
+			// if ((elapsed % 3) + delta >= 3) {
+			for (const tower of this.getTowers()) {
+				for (const enemy of this.getEnemies()) {
+					const distance = tower.position.distanceTo(enemy.position);
+					const inRange = tower.range - distance > -10;
 
-		// if ((elapsed % 3) + delta >= 3) {
-		for (const tower of this.getTowers()) {
-			for (const enemy of this.getEnemies()) {
-				const distance = tower.position.distanceTo(enemy.position);
-				const inRange = tower.range - distance > -10;
-
-				if (inRange) {
-					if (tower.cooldownTime < 0.1) {
-						// console.log('attack');
-						const missile = tower.attack(enemy);
-						this.add(missile);
+					if (inRange) {
+						if (tower.cooldownTime < 0.1) {
+							// console.log('attack');
+							const missile = tower.attack(enemy);
+							this.add(missile);
+						}
 					}
 				}
 			}
-		}
 
-		this.removeDeadEnemies();
-		this.removeMissiles();
+			this.removeDeadEnemies();
+			this.removeMissiles();
+		}
 
 		for (const object of this.updatables) {
 			object.tick(delta);

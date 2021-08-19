@@ -1,14 +1,16 @@
 import {
 	BoxGeometry,
-	Clock,
+	CircleGeometry,
 	Color,
 	ConeGeometry,
 	CylinderGeometry,
+	ExtrudeGeometry,
 	Group,
 	Mesh,
 	MeshPhongMaterial,
 	MeshToonMaterial,
 	Object3D,
+	Shape,
 	Vector3,
 } from 'three';
 import { PathNode } from '../../helpers/aStarPathfinder';
@@ -16,16 +18,10 @@ import { Ground } from '../../map/Land/Ground';
 import { levelStart, pathFindingDelay, cellSize } from '../../utils/constants';
 import { enemyFactory, random } from '../../utils/functions';
 import { Tower } from '../Tower/Tower';
+import { enemyModels } from '../../utils/enemies';
 
-export type EnemyState = 'idle' | 'hovered' | 'selected';
+export type IEnemyType = 'jeep' | 'tank';
 const enemyGen = enemyFactory();
-
-const wheelPositions = (size: number) => ({
-	a: { x: -size, y: -size },
-	b: { x: size, y: -size },
-	c: { x: size, y: size },
-	d: { x: -size, y: size },
-});
 
 const colors = {
 	normal: 0xff9d00,
@@ -38,12 +34,12 @@ export class Enemy extends Group {
 	nextPos: Vector3;
 	velocity: Vector3;
 	nxPathIdx = 1; // nextPathIndex
-	state: EnemyState;
 	hp: number;
-	strictnessToPath = random(1, 16);
+	strictnessToPath = random(1, 12);
 	group: Group;
 	timeUnhurt = 0;
 	currColor = colors.normal;
+	enemyType: IEnemyType;
 	constructor(speed: number) {
 		super();
 
@@ -92,38 +88,7 @@ export class Enemy extends Group {
 	_assemblyGeometry() {
 		new Group();
 
-		const [x, y, z] = Object.values(this.path[0].clone());
-		this.position.set(x, y + 4, z);
-
-		const material = new MeshToonMaterial({ color: colors.normal });
-		const geometry = new BoxGeometry(8, 4, 12);
-		const core = new Mesh(geometry, material);
-		core.name = 'Enemy-core';
-
-		const cabinGeo = new BoxGeometry(6, 2, 8);
-		const cabin = new Mesh(cabinGeo, material);
-		cabin.name = 'Enemy-cabin';
-		cabin.translateY(3);
-		cabin.translateZ(-1.5);
-
-		const wheelCoords = wheelPositions(5);
-		Object.values(wheelCoords).forEach(coors => {
-			const wheelMat = new MeshToonMaterial({ color: 0x343434 });
-			const wheelGeo = new CylinderGeometry(4, 4, 2);
-			const wheel = new Mesh(wheelGeo, wheelMat);
-			wheel.rotateX(Math.PI / 2);
-			wheel.rotateZ(Math.PI / 2);
-			wheel.name = 'Enemy-wheel';
-			this.add(wheel);
-			wheel.position.set(coors.x, 0, coors.y);
-		});
-		// wheel.position.set(x, y, z);
-		// wheel.position.set()
-
-		this.add(core);
-		this.add(cabin);
-
-		// const;
+		enemyModels.jeep.geometryFn(this, colors.normal);
 	}
 
 	changeColor(color: number) {
@@ -156,7 +121,7 @@ export class Enemy extends Group {
 			this.velocity = pos.clone().sub(next).normalize();
 			this.lookAt(next);
 
-			const wheels = this.children.filter(c => c.name === 'Enemy-wheel');
+			const wheels = this.children.filter(c => ['Enemy-wheel', 'Enemy-wheel-center'].includes(c.name));
 			wheels.forEach(w => w.rotateY(-0.1));
 
 			this.position.sub(this.velocity.multiplyScalar(delta * this.speed));

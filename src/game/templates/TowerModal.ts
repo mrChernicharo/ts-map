@@ -110,7 +110,7 @@ export class TowerModal {
 		button.append(buttonSpan, priceDiv);
 
 		const titleSpan = document.createElement('span');
-		titleSpan.textContent = tower.towerType.toUpperCase();
+		titleSpan.textContent = towerModels[tower.towerType].title.toUpperCase();
 
 		const towerKeys = ['damage', 'fireRate', 'range'];
 

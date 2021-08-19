@@ -84,3 +84,10 @@ export const towerFeatIcons = {
 	range: 'fas fa-circle-notch',
 	fireRate: 'fas fa-meteor',
 };
+
+export const playerIcons = {
+	life: 'fab fa-diaspora',
+	gold: 'fas fa-coins',
+};
+
+export const playerHP = 10;

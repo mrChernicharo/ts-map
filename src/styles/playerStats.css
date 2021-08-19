@@ -1,0 +1,38 @@
+#player-stats {
+	width: 240px;
+	height: 40px;
+	background-color: var(--color-bg-dark);
+	color: var(--color--txt);
+	position: fixed;
+	bottom: 0.75rem;
+	right: 0.75rem;
+	display: grid;
+	grid-template-columns: 1fr 48px;
+}
+
+#player-stats ul {
+	list-style: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: red;
+}
+#player-stats ul li {
+	margin-right: 2px;
+}
+#player-stats ul li:last-child {
+	margin-right: 0;
+}
+
+#player-stats ul li.down {
+	color: var(--color-black);
+}
+#player-stats section {
+	border: 2px solid var(--color--border);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#player-stats section i {
+	color: var(--color-gold);
+}

@@ -7,6 +7,7 @@ import { GameState } from './dependecies/GameState';
 import { EventsManager } from '../managers/EventsManager';
 import { Ground } from '../map/Land/Ground';
 import { LoadingScreen } from '../templates/Loading';
+import { PlayerStats } from '../templates/PlayerStats';
 
 // class WorldScene
 class Scene extends THREEScene {
@@ -41,6 +42,8 @@ class Scene extends THREEScene {
 				clearInterval(groundInterval);
 				this.ready = true;
 				this.loading.done();
+
+				this.appendPlayerStats();
 			}
 		}, 400);
 	}
@@ -60,10 +63,6 @@ class Scene extends THREEScene {
 
 	async addObjects() {
 		const ground = await this.groundInit();
-
-		// if (ground.hasCompletePath) {
-
-		// }
 
 		const objects = [ground, this.lights];
 
@@ -105,6 +104,10 @@ class Scene extends THREEScene {
 		let promise = promFn;
 
 		return promise as Promise<Ground>;
+	}
+
+	appendPlayerStats() {
+		new PlayerStats();
 	}
 }
 export { Scene };

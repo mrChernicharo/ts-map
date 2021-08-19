@@ -5,6 +5,9 @@ export const enemyModels = {
 		title: 'jeep',
 		geometryFn: (enemy, color) => jeepGeometry(enemy, color),
 	},
+	tank: {
+		title: 'tank',
+	},
 };
 
 function jeepGeometry(enemy, color) {

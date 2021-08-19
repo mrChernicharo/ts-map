@@ -20,6 +20,9 @@ body {
 
 a.back-to-index {
 	position: absolute;
+	color: var(--color--txt);
+	top: 0.5rem;
+	right: 0.75rem;
 }
 #app {
 	-webkit-font-smoothing: antialiased;

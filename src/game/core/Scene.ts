@@ -1,4 +1,4 @@
-import { Scene as THREEScene, Color, Fog, WebGL1Renderer, Light, DirectionalLight } from 'three';
+import { Scene as THREEScene, Color, Fog, WebGLRenderer, Light, DirectionalLight } from 'three';
 import { OrbitControls } from './dependecies/OrbitControls';
 import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
 import { Camera } from './dependecies/Camera';
@@ -11,7 +11,7 @@ import { LoadingScreen } from '../templates/Loading';
 // class WorldScene
 class Scene extends THREEScene {
 	state: GameState;
-	renderer: WebGL1Renderer;
+	renderer: WebGLRenderer;
 	lights: Light;
 	camera: Camera;
 	orbitControls: OrbitControls;
@@ -46,7 +46,7 @@ class Scene extends THREEScene {
 	}
 
 	_initCore() {
-		this.renderer = new WebGL1Renderer({ antialias: true });
+		this.renderer = new WebGLRenderer({ antialias: true });
 		this.renderer.physicallyCorrectLights = true;
 
 		this.camera = new Camera();

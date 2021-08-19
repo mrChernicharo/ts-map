@@ -1,4 +1,4 @@
-import { Clock, Mesh, Quaternion, Vector3, WebGL1Renderer } from 'three';
+import { Clock, Mesh, Quaternion, Vector3, WebGLRenderer } from 'three';
 import { Camera } from './dependecies/Camera';
 import { Cube } from '../helpers/objects/Cube';
 import { Scene } from './Scene';
@@ -22,16 +22,18 @@ interface IUpdatable extends Mesh {
 	tick: (delta: number) => void;
 }
 
-const clock = new Clock();
 const enemyGen = enemyFactory();
 
 class Loop {
 	updatables: IUpdatable[];
 	camera: Camera;
 	scene: Scene;
-	renderer: WebGL1Renderer;
+	renderer: WebGLRenderer;
 	eventsManager: EventsManager;
-	constructor(camera: Camera, scene: Scene, renderer: WebGL1Renderer, eventsManager: EventsManager) {
+	pause = false;
+	clock = new Clock();
+
+	constructor(camera: Camera, scene: Scene, renderer: WebGLRenderer, eventsManager: EventsManager) {
 		this.camera = camera;
 		this.scene = scene;
 		this.renderer = renderer;
@@ -49,6 +51,8 @@ class Loop {
 	}
 
 	start() {
+		this.clock.start();
+
 		this.renderer.setAnimationLoop(() => {
 			this.tick();
 
@@ -57,7 +61,7 @@ class Loop {
 	}
 
 	stop() {
-		this.renderer.setAnimationLoop(null);
+		this.clock.stop();
 	}
 
 	add(item: any) {
@@ -77,8 +81,9 @@ class Loop {
 	}
 
 	tick() {
-		const delta = clock.getDelta();
-		const elapsed = clock.getElapsedTime();
+		const delta = this.clock.getDelta();
+		const elapsed = this.clock.getElapsedTime();
+
 		if (this.scene.ready) {
 			this.spawnEnemies(delta, elapsed);
 

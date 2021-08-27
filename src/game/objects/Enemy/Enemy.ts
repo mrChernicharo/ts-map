@@ -134,15 +134,15 @@ export class Enemy extends Group {
 			}
 		} else {
 			// fim do caminho
-			// this.hasCompletedPath = true;
-			// this.die();
+			this.hasCompletedPath = true;
+			this.die();
 		}
 	}
 
 	getFuturePosition(time) {}
 
 	tick(delta: number) {
-		this.move(delta);
+		if (this.isAlive()) this.move(delta);
 
 		this.timeUnhurt += delta;
 

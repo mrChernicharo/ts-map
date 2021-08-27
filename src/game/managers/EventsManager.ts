@@ -3,7 +3,14 @@ import { Vector3 } from 'three';
 import { InputManager } from './InputManager';
 import { Raycaster } from '../core/dependecies/Raycaster';
 import { Cell } from '../map/Land/Cell';
-import { ADD_TO_LOOP, cellSize, CREATE_TOWER, TOWER_CREATED, TOWER_SOLD } from '../utils/constants';
+import {
+	ADD_TO_LOOP,
+	cellSize,
+	CREATE_TOWER,
+	GAME_READY,
+	TOWER_CREATED,
+	TOWER_SOLD,
+} from '../utils/constants';
 import { random, towerGenerator } from '../utils/functions';
 import { TilesEventManager } from '../map/Tile/TilesEventManager';
 import { EnemiesEventManager } from '../objects/Enemy/EnemiesEventManager';
@@ -39,6 +46,14 @@ export class EventsManager {
 	setWindowEvents() {
 		window.addEventListener('keydown', e => this.inputManager.handleKeyDown(e));
 		window.addEventListener('keyup', e => this.inputManager.handleKeyUp(e));
+	}
+
+	setSceneEvents() {
+		this.scene.eventsManager.emitter.on(GAME_READY, () => {
+			console.log("game's ready!");
+
+			this.emitter.emit(GAME_READY);
+		});
 	}
 
 	setRaycasterEvents() {

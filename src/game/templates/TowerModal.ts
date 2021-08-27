@@ -124,8 +124,8 @@ export class TowerModal {
 				span.textContent = String(value);
 				icon.setAttribute('class', towerFeatIcons[key]);
 
-				li.appendChild(span);
 				li.appendChild(icon);
+				li.appendChild(span);
 				featSection.appendChild(li);
 			});
 

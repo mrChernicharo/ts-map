@@ -52,6 +52,8 @@ export const binCodes: BinCode[] = [
 
 export const binOptions: Bin[] = ['1', '0', '0', '0', '0', '1', '1', '1', '1', '1', '1']; // 40% chance
 
+export const GAME_READY = 'gameReady';
+
 export const IDLE_CLICK = 'idleClick';
 export const IDLE_HOVER = 'idleHover';
 export const TILE_HOVER = 'tileHover';

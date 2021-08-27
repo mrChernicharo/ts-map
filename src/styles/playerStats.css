@@ -15,11 +15,19 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: red;
 }
+
 #player-stats ul li {
 	margin-right: 2px;
 }
+#player-stats ul li.empty {
+	color: var(--color-black);
+}
+
+#player-stats ul li.filled {
+	color: var(--color-life);
+}
+
 #player-stats ul li:last-child {
 	margin-right: 0;
 }

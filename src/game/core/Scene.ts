@@ -1,6 +1,13 @@
 import { Scene as THREEScene, Color, Fog, WebGLRenderer, Light, DirectionalLight } from 'three';
 import { OrbitControls } from './dependecies/OrbitControls';
-import { levelStart, levelFinish, GROUND_WIDTH, GROUND_DEPTH, cellSize } from '../utils/constants';
+import {
+	levelStart,
+	levelFinish,
+	GROUND_WIDTH,
+	GROUND_DEPTH,
+	cellSize,
+	GAME_READY,
+} from '../utils/constants';
 import { Camera } from './dependecies/Camera';
 import { GUI } from '../helpers/GUI';
 import { GameState } from './dependecies/GameState';
@@ -16,7 +23,7 @@ class Scene extends THREEScene {
 	lights: Light;
 	camera: Camera;
 	orbitControls: OrbitControls;
-	EventsManager: EventsManager;
+	eventsManager: EventsManager;
 	gui: GUI;
 	loading: LoadingScreen;
 	ready = false;
@@ -40,6 +47,9 @@ class Scene extends THREEScene {
 		const groundInterval = setInterval(() => {
 			if (ground.hasCompletePath) {
 				clearInterval(groundInterval);
+
+				this.eventsManager.emitter.emit(GAME_READY);
+
 				this.ready = true;
 				this.loading.done();
 			}
@@ -56,7 +66,7 @@ class Scene extends THREEScene {
 
 		this.lights = new DirectionalLight('white', 1.8);
 
-		this.EventsManager = new EventsManager(this);
+		this.eventsManager = new EventsManager(this);
 	}
 
 	async addObjects() {

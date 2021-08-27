@@ -5,7 +5,11 @@ const playerDiv = document.querySelector('#player-stats') as HTMLElement;
 const playerLife = 10;
 
 export class PlayerStats {
-	constructor() {
+	lifeItems: HTMLLIElement[];
+	moneySpan: HTMLSpanElement;
+	money: number;
+	constructor(initialMoney: number) {
+		this.money = initialMoney;
 		this._initTemplate();
 	}
 
@@ -17,12 +21,14 @@ export class PlayerStats {
 		moneyIcon.setAttribute('class', playerIcons.gold);
 
 		const moneySpan = document.createElement('span');
-		moneySpan.textContent = String(90);
+		moneySpan.textContent = String(this.money);
 
 		moneySection.append(moneyIcon, moneySpan);
 
 		for (let i = 0; i < playerLife; i++) {
 			const lifeLi = document.createElement('li');
+			lifeLi.setAttribute('class', 'life-icon empty');
+
 			const lifeIcon = document.createElement('i');
 			lifeIcon.setAttribute('class', playerIcons.life);
 
@@ -31,9 +37,17 @@ export class PlayerStats {
 		}
 
 		playerDiv.append(lifeUl, moneySection);
+
+		this.lifeItems = Array.from(lifeUl.children) as HTMLLIElement[];
+		this.moneySpan = moneySpan;
+
+		console.log(this.lifeItems);
 	}
 
 	updateLifePoints() {}
 
-	updateMoney(value: number) {}
+	updateMoney(value: number) {
+		this.money += value;
+		this.moneySpan.textContent = String(this.money);
+	}
 }

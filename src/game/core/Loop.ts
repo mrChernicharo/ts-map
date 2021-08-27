@@ -7,6 +7,7 @@ import {
 	levelFinish,
 	levelStart,
 	enemyInterval,
+	GAME_READY,
 	TOWER_CREATED,
 	TOWER_SOLD,
 	MISSILE_FIRED,
@@ -45,7 +46,7 @@ class Loop {
 
 	_init() {
 		this.setEvents();
-		this.player = new Player();
+		this.player = new Player(this.eventsManager);
 
 		const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelFinish)];
 		this.add(startFlag);

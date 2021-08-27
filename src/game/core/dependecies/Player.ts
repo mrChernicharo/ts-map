@@ -1,7 +1,7 @@
 import { EventsManager } from '../../managers/EventsManager';
 import { Tower } from '../../objects/Tower/Tower';
 import { PlayerStats } from '../../templates/PlayerStats';
-import { GAME_READY, TOWER_CREATED } from '../../utils/constants';
+import { GAME_READY, TOWER_CREATED, TOWER_SOLD } from '../../utils/constants';
 import { towerModels } from '../../utils/towers';
 
 export class Player {
@@ -20,36 +20,34 @@ export class Player {
 		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => {
 			this.subtracMoney(towerModels[tower.towerType].price);
 		});
+		this.eventsManager.emitter.on(TOWER_SOLD, (tower: Tower) => {
+			this.addMoney(towerModels[tower.towerType].sellPrice());
+		});
 	}
 
 	_initStats() {
-		const fillLifeIcons = (icon: HTMLLIElement) => {
-			icon.classList.remove('empty');
-			icon.classList.add('filled');
-		};
-
 		this.statsPanel.lifeItems.forEach((icon, i) => {
-			setTimeout(() => fillLifeIcons(icon), 60 * i);
+			setTimeout(() => {
+				this.statsPanel.toggleLifeIcon(i);
+			}, 60 * i);
 		});
 	}
 
 	addMoney(value: number) {
 		this.gold += value;
-		// this.statsPanel
+		this.statsPanel.updateMoney(value);
 	}
 	subtracMoney(value: number) {
 		this.gold -= value;
-		console.log('gold ', this.gold, this.statsPanel, this);
-
 		this.statsPanel.updateMoney(-value);
 	}
 
 	addLife(value = 1) {
 		this.life += value;
-		// this.statsPanel
+		this.statsPanel.updateLifePoints(value);
 	}
 	subtracLife(value = 1) {
 		this.life -= value;
-		// this.statsPanel
+		this.statsPanel.updateLifePoints(-value);
 	}
 }

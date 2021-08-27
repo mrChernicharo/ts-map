@@ -102,7 +102,7 @@ export class TowerModal {
 
 		const towerPriceSpan = document.createElement('span');
 		towerPriceSpan.classList.add('tower-price');
-		towerPriceSpan.textContent = String(Math.round(towerModels[tower.towerType].price * 0.65));
+		towerPriceSpan.textContent = String(towerModels[tower.towerType].sellPrice());
 
 		const priceDiv = document.createElement('div');
 		priceDiv.append(buttonIcon, towerPriceSpan);

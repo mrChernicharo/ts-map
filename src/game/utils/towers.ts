@@ -11,6 +11,7 @@ export const towerModels = {
 		fireRate: 120, // 2 shots/s
 		damage: 8,
 		price: 45,
+		sellPrice: getPrice,
 	},
 	shotgun: {
 		title: 'shotgun',
@@ -24,6 +25,7 @@ export const towerModels = {
 		fireRate: 40,
 		damage: 36,
 		price: 70,
+		sellPrice: getPrice,
 	},
 	rifle: {
 		title: 'rifle',
@@ -37,5 +39,10 @@ export const towerModels = {
 		fireRate: 24,
 		damage: 52,
 		price: 100,
+		sellPrice: getPrice,
 	},
 };
+
+function getPrice() {
+	return Math.round(this.price * 0.65);
+}

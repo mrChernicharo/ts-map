@@ -7,7 +7,7 @@
 	bottom: 0.75rem;
 	right: 0.75rem;
 	display: grid;
-	grid-template-columns: 1fr 48px;
+	grid-template-columns: 1fr 64px;
 }
 
 #player-stats ul {
@@ -19,6 +19,7 @@
 
 #player-stats ul li {
 	margin-right: 2px;
+	font-size: 12px;
 }
 #player-stats ul li.empty {
 	color: var(--color-black);
@@ -32,9 +33,6 @@
 	margin-right: 0;
 }
 
-#player-stats ul li.down {
-	color: var(--color-black);
-}
 #player-stats section {
 	border: 2px solid var(--color-border);
 	display: flex;

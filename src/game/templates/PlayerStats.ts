@@ -44,7 +44,16 @@ export class PlayerStats {
 		console.log(this.lifeItems);
 	}
 
-	updateLifePoints() {}
+	toggleLifeIcon(index: number) {
+		const icon = this.lifeItems[index];
+
+		icon.classList.toggle('empty');
+		icon.classList.toggle('filled');
+	}
+
+	updateLifePoints(value: number) {
+		console.log(`update life by ${value}`);
+	}
 
 	updateMoney(value: number) {
 		this.money += value;

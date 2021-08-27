@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { Raycaster } from '../../core/dependecies/Raycaster';
-import { ENEMY_CLICK, ENEMY_HOVER } from '../../utils/constants';
+import { ENEMY_CLICK, ENEMY_HOVER, HURT_PLAYER } from '../../utils/constants';
 import { random } from '../../utils/functions';
 import { Enemy } from './Enemy';
 

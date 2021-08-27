@@ -2,6 +2,8 @@ import { BufferGeometry, Line, Material, Vector3 } from 'three';
 import { Enemy } from '../objects/Enemy/Enemy';
 import { Tower } from '../objects/Tower/Tower';
 
+export const PLAYER_LIVES = 10;
+
 //prettier-ignore
 export type BinCode = 
  '1000'| '0100' | '0010' | '0001' 
@@ -32,8 +34,8 @@ export const cellPoints = {
 	d: new Vector3(0, 0, cellSize),
 };
 
-export const enemyMods = {
-	speed: 20,
+export const ENEMY_DEFAULTS = {
+	speed: 30,
 };
 
 export const missileMods = {
@@ -54,6 +56,9 @@ export const binOptions: Bin[] = ['1', '0', '0', '0', '0', '1', '1', '1', '1', '
 
 export const GAME_READY = 'gameReady';
 
+export const ADD_TO_LOOP = 'addToLoop';
+export const HURT_PLAYER = 'hurtPlayer';
+
 export const IDLE_CLICK = 'idleClick';
 export const IDLE_HOVER = 'idleHover';
 export const TILE_HOVER = 'tileHover';
@@ -69,8 +74,6 @@ export const TOWER_CREATED = 'towerCreated';
 export const TOWER_SOLD = 'towerSold';
 
 export const MISSILE_FIRED = 'missileFired';
-
-export const ADD_TO_LOOP = 'addToLoop';
 
 // export const randomBinCode = () => binCodes[Math.round(Math.random() * 15)];
 

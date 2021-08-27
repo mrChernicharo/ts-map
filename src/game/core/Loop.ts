@@ -11,6 +11,7 @@ import {
 	TOWER_CREATED,
 	TOWER_SOLD,
 	MISSILE_FIRED,
+	HURT_PLAYER,
 } from '../utils/constants';
 import { enemyFactory } from '../utils/functions';
 import { Flag } from '../helpers/objects/Flag';
@@ -132,7 +133,14 @@ class Loop {
 	removeDeadEnemies() {
 		this.getEnemies()
 			.filter(enemy => !enemy.isAlive())
-			.forEach(enemy => this.remove(enemy));
+			.forEach(enemy => {
+				if (enemy.hasCompletedPath) {
+					console.log('hurt player!');
+					this.player.subtracLife();
+					// this.eventsManager.emitter.emit(HURT_PLAYER, enemy)
+				}
+				this.remove(enemy);
+			});
 	}
 
 	getMissiles() {

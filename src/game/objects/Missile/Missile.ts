@@ -11,7 +11,7 @@ import {
 	Vector2,
 	Vector3,
 } from 'three';
-import { enemyMods, missileMods } from '../../utils/constants';
+import { ENEMY_DEFAULTS, missileMods } from '../../utils/constants';
 import { Enemy } from '../Enemy/Enemy';
 import { Tower } from '../Tower/Tower';
 

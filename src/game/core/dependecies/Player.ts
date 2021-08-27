@@ -1,16 +1,17 @@
 import { EventsManager } from '../../managers/EventsManager';
 import { Tower } from '../../objects/Tower/Tower';
+import { GameOverBanner } from '../../templates/GameOverBanner';
 import { PlayerStats } from '../../templates/PlayerStats';
-import { GAME_READY, TOWER_CREATED, TOWER_SOLD } from '../../utils/constants';
+import { PLAYER_LIVES, GAME_READY, TOWER_CREATED, TOWER_SOLD } from '../../utils/constants';
 import { towerModels } from '../../utils/towers';
 
 export class Player {
-	life = 10;
+	life = PLAYER_LIVES;
 	gold = 120;
 	statsPanel: PlayerStats;
 	eventsManager: EventsManager;
 	constructor(eventsManager: EventsManager) {
-		this.statsPanel = new PlayerStats(this.gold);
+		this.statsPanel = new PlayerStats(this.gold, PLAYER_LIVES);
 		this.eventsManager = eventsManager;
 		this._init();
 	}
@@ -26,7 +27,7 @@ export class Player {
 	}
 
 	_initStats() {
-		this.statsPanel.lifeItems.forEach((icon, i) => {
+		this.statsPanel.lifeElements.forEach((icon, i) => {
 			setTimeout(() => {
 				this.statsPanel.toggleLifeIcon(i);
 			}, 60 * i);
@@ -49,5 +50,9 @@ export class Player {
 	subtracLife(value = 1) {
 		this.life -= value;
 		this.statsPanel.updateLifePoints(-value);
+
+		if (this.life === 0) {
+			new GameOverBanner();
+		}
 	}
 }

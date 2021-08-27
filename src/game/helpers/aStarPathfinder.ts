@@ -134,7 +134,8 @@ export class AStarPathfinder {
 
 			return 0; // and keep going!
 		} else {
-			console.log('NO SOLUTION! 😅');
+			// console.log('NO SOLUTION! 😅');
+
 			return -1;
 		}
 	}

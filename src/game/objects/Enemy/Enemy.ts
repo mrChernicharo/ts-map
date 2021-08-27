@@ -40,6 +40,7 @@ export class Enemy extends Group {
 	timeUnhurt = 0;
 	currColor = colors.normal;
 	enemyType: IEnemyType;
+	hasCompletedPath = false;
 	constructor(speed: number) {
 		super();
 
@@ -104,12 +105,12 @@ export class Enemy extends Group {
 		this.changeColor(colors.takingDamage[tower.towerType]);
 	}
 
-	die() {
-		this.hp -= 100;
-	}
-
 	isAlive() {
 		return this.hp > 0;
+	}
+
+	die() {
+		this.hp = 0;
 	}
 
 	move(delta: number) {
@@ -133,7 +134,8 @@ export class Enemy extends Group {
 			}
 		} else {
 			// fim do caminho
-			this.die();
+			// this.hasCompletedPath = true;
+			// this.die();
 		}
 	}
 

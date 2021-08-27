@@ -8,7 +8,7 @@ export class LoadingScreen {
 	}
 	_init() {
 		const loadingTxt = document.createElement('h2');
-		loadingTxt.textContent = 'Creating Maze...';
+		loadingTxt.textContent = 'Generating Maze...';
 
 		const spinner = document.createElement('img');
 		spinner.setAttribute('src', spinnerSvg);

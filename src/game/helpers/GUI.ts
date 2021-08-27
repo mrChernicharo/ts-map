@@ -1,6 +1,6 @@
 import { GUI as THREEDatGUI } from 'three/examples/jsm/libs/dat.gui.module';
 import {
-	enemyMods,
+	ENEMY_DEFAULTS,
 	GROUND_DEPTH,
 	GROUND_WIDTH,
 	levelFinish,
@@ -37,7 +37,7 @@ export class GUI extends THREEDatGUI {
 		// const enemyFolder = this.addFolder('👾 Enemy');
 		// const speed = enemyFolder.addFolder('speed');
 
-		// speed.add(enemyMods, 'speed', 2, 100);
+		// speed.add(ENEMY_DEFAULTS, 'speed', 2, 100);
 
 		// const missileFolder = this.addFolder('🚀 Missile');
 		// const rotationX = missileFolder.addFolder('rotationX');

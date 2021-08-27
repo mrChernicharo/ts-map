@@ -1,0 +1,36 @@
+#game-over-banner {
+	--font: 3rem;
+	pointer-events: none;
+	position: absolute;
+	top: calc(50%);
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 20rem;
+	opacity: 0;
+	transition: 2s ease-in;
+}
+
+#game-over-banner h1 {
+	font-size: var(--font);
+	color: white;
+	z-index: 100;
+}
+
+#overlay {
+	pointer-events: none;
+	position: absolute;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 99;
+	background: #000;
+	opacity: 0;
+	transition: 4s ease-in;
+}
+
+#overlay.show {
+	opacity: 0.6;
+}
+#game-over-banner.visible {
+	opacity: 1;
+}

@@ -2,6 +2,7 @@ import './styles/global.css';
 import './styles/modal.css';
 import './styles/loading.css';
 import './styles/playerStats.css';
+import './styles/gameOverBanner.css';
 
 import { Game } from './game/index';
 

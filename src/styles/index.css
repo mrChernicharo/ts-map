@@ -17,8 +17,8 @@ img {
 a {
 	position: absolute;
 	padding: 0.5rem 2rem;
-	background-color: var(--color--highlight);
-	color: var(--color--txt);
+	background-color: var(--color-highlight);
+	color: var(--color-txt);
 	font-size: 40px;
 	text-decoration: none;
 	transition: 0.3s;

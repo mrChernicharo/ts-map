@@ -2,7 +2,7 @@
 	width: 240px;
 	height: 40px;
 	background-color: var(--color-bg-dark);
-	color: var(--color--txt);
+	color: var(--color-txt);
 	position: fixed;
 	bottom: 0.75rem;
 	right: 0.75rem;
@@ -28,7 +28,7 @@
 	color: var(--color-black);
 }
 #player-stats section {
-	border: 2px solid var(--color--border);
+	border: 2px solid var(--color-border);
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -17,6 +17,7 @@ import { Enemy } from '../objects/Enemy/Enemy';
 import { EventsManager } from '../managers/EventsManager';
 import { Tower } from '../objects/Tower/Tower';
 import { Missile } from '../objects/Missile/Missile';
+import { Player } from './dependecies/Player';
 
 interface IUpdatable extends Mesh {
 	tick: (delta: number) => void;
@@ -32,7 +33,7 @@ class Loop {
 	eventsManager: EventsManager;
 	pause = false;
 	clock = new Clock();
-
+	player: Player;
 	constructor(camera: Camera, scene: Scene, renderer: WebGLRenderer, eventsManager: EventsManager) {
 		this.camera = camera;
 		this.scene = scene;
@@ -44,6 +45,7 @@ class Loop {
 
 	_init() {
 		this.setEvents();
+		this.player = new Player();
 
 		const [startFlag, endFlag] = [new Flag(levelStart), new Flag(levelFinish)];
 		this.add(startFlag);

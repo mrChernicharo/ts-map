@@ -42,8 +42,6 @@ class Scene extends THREEScene {
 				clearInterval(groundInterval);
 				this.ready = true;
 				this.loading.done();
-
-				this.appendPlayerStats();
 			}
 		}, 400);
 	}
@@ -104,10 +102,6 @@ class Scene extends THREEScene {
 		let promise = promFn;
 
 		return promise as Promise<Ground>;
-	}
-
-	appendPlayerStats() {
-		new PlayerStats();
 	}
 }
 export { Scene };

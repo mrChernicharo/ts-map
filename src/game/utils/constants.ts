@@ -89,5 +89,3 @@ export const playerIcons = {
 	life: 'fab fa-diaspora',
 	gold: 'fas fa-coins',
 };
-
-export const playerHP = 10;

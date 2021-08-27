@@ -9,7 +9,6 @@ import { Missile } from '../Missile/Missile';
 
 export type TowerType = 'machineGun' | 'shotgun' | 'rifle';
 
-// let stopLoggin = false;
 export class Tower extends Mesh {
 	tile: Tile;
 	towerType: TowerType;
@@ -60,23 +59,14 @@ export class Tower extends Mesh {
 		if (this.cooldownTime >= 0) {
 			this.cooldownTime -= delta;
 		}
-		// else if (this.cooldownTime < 0 && !stopLoggin) {
-		// 	// console.log('ready to shoot');
-		// 	stopLoggin = true;
-		// }
 	}
 
 	attack(enemy: Enemy) {
-		// console.log(enemy);
-
 		this.cooldownTime = 60 / towerModels[this.towerType].fireRate;
-		// stopLoggin = false;
 
 		const missile = new Missile(this, enemy);
 
 		return missile;
-
-		// console.log(`attack!!! ${this.towerType + ':' + this.id} -> ${enemy.id + ':' + enemy.hp}`);
 	}
 
 	highlight() {
@@ -98,14 +88,14 @@ export class Tower extends Mesh {
 	_createTowerRangeCircle() {
 		const material = new MeshToonMaterial({
 			color: towerModels[this.towerType].rangeRadiusColor,
-			opacity: 0.3,
+			opacity: 0.2,
 			transparent: true,
 		});
 		const geometry = new CircleGeometry(this.range, 20);
 
 		const rangeMesh = new Mesh(geometry, material);
 		rangeMesh.name = 'towerRange';
-		rangeMesh.position.y = -40 + Math.random();
+		rangeMesh.position.y = towerModels[this.towerType].rangeRadiusHeight + Math.random();
 		rangeMesh.rotateX(-Math.PI / 2);
 
 		this.add(rangeMesh);

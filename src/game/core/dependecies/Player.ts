@@ -30,7 +30,7 @@ export class Player {
 		this.statsPanel.lifeElements.forEach((icon, i) => {
 			setTimeout(() => {
 				this.statsPanel.toggleLifeIcon(i);
-			}, 60 * i);
+			}, 200 * i);
 		});
 	}
 

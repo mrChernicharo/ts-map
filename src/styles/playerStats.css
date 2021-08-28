@@ -20,6 +20,7 @@
 #player-stats ul li {
 	margin-right: 2px;
 	font-size: 12px;
+	transition: 1s;
 }
 #player-stats ul li.empty {
 	color: var(--color-black);

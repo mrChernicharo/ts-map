@@ -6,7 +6,7 @@ export class OrbitControls extends THREEOrbitControls {
 		super(camera, domContainer);
 
 		this.enableDamping = true;
-		this.maxPolarAngle = Math.PI / 2;
+		this.maxPolarAngle = Math.PI / 2.5;
 
 		this.minDistance = 100;
 		this.maxDistance = 2000;

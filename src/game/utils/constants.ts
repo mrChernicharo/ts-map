@@ -65,6 +65,8 @@ export const IDLE_HOVER = 'idleHover';
 export const TILE_HOVER = 'tileHover';
 export const TILE_CLICK = 'tileClick';
 export const CLEAR_TILE = 'clearTile';
+export const DISABLE_TILE_CLICK = 'enableTileFocus';
+export const ENABLE_TILE_CLICK = 'disableTileFocus';
 
 export const ENEMY_HOVER = 'enemyHover';
 export const ENEMY_CLICK = 'enemyClick';
@@ -73,6 +75,8 @@ export const INFLICT_DAMAGE = 'inflictDamage';
 export const CREATE_TOWER = 'createTower';
 export const TOWER_CREATED = 'towerCreated';
 export const TOWER_SOLD = 'towerSold';
+export const DISABLE_TOWER_CREATION = 'enableTowerCreation';
+export const ENABLE_TOWER_CREATION = 'disableTowerCreation';
 
 export const MISSILE_FIRED = 'missileFired';
 

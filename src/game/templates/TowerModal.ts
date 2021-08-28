@@ -5,6 +5,8 @@ import {
 	buyModalIcons,
 	CLEAR_TILE,
 	CREATE_TOWER,
+	DISABLE_TILE_CLICK,
+	ENABLE_TILE_CLICK,
 	sellModalIcons,
 	towerFeatIcons,
 	TOWER_SOLD,
@@ -43,7 +45,6 @@ export class TowerModal {
 		sellModal.classList.remove('visible');
 	}
 
-	// depend on the towerModels list only
 	_createBuyModal() {
 		this.buyTowerList = document.createElement('ul');
 		this.sellTowerDiv = document.createElement('div');
@@ -64,7 +65,7 @@ export class TowerModal {
 			priceIcon.setAttribute('class', buyModalIcons.price);
 
 			const priceSpan = document.createElement('span');
-			priceSpan.textContent = towerModels[model].price;
+			priceSpan.textContent = String(towerModels[model].price);
 
 			priceDiv.append(priceIcon, priceSpan);
 
@@ -72,17 +73,24 @@ export class TowerModal {
 			outerLi.appendChild(button);
 			this.buyTowerList.appendChild(outerLi);
 
-			button.addEventListener('mouseover', e => e.stopImmediatePropagation());
 			button.addEventListener('click', e => {
-				e.stopImmediatePropagation();
 				this.emitter.emit(CREATE_TOWER, model);
 			});
 		});
 
 		buyModal.appendChild(this.buyTowerList);
+
+		// events:
+		// prevenindo bug do click atravessando a div....solução:
+		// desliga Tile.clickListeners no Modal.mouseover, religa no mouseout
+		buyModal.addEventListener('mouseover', e => {
+			this.emitter.emit(DISABLE_TILE_CLICK);
+		});
+		buyModal.addEventListener('mouseout', e => {
+			this.emitter.emit(ENABLE_TILE_CLICK);
+		});
 		buyModal.addEventListener('mousemove', e => {
 			this.emitter.emit(CLEAR_TILE);
-			e.stopImmediatePropagation();
 		});
 	}
 
@@ -135,12 +143,16 @@ export class TowerModal {
 
 		sellModal.appendChild(this.sellTowerDiv);
 
+		// events:
 		sellModal.addEventListener('mousemove', e => {
-			e.stopImmediatePropagation();
 			this.emitter.emit(CLEAR_TILE);
+			this.emitter.emit(DISABLE_TILE_CLICK);
+		});
+
+		sellModal.addEventListener('mouseout', e => {
+			this.emitter.emit(ENABLE_TILE_CLICK);
 		});
 		button.addEventListener('click', e => {
-			e.stopImmediatePropagation();
 			this.emitter.emit(TOWER_SOLD);
 		});
 	}

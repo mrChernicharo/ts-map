@@ -11,18 +11,22 @@ import {
 	TOWER_SOLD,
 	CREATE_TOWER,
 	CLEAR_TILE,
+	DISABLE_TILE_CLICK,
+	ENABLE_TILE_CLICK,
 } from '../../utils/constants';
 import { random } from '../../utils/functions';
 
 import { Cell } from '../Land/Cell';
 import { Tile } from './Tile';
 
-export class TilesEventManager {
+export class TilesManager {
 	raycaster: Raycaster;
 	previousTileClicked: Tile;
 	previousTileHovered: Tile;
 	emitter: EventEmitter;
 	towerModal: TowerModal;
+	canClick = true;
+
 	constructor(raycaster: Raycaster) {
 		this.raycaster = raycaster;
 		this._init();
@@ -32,7 +36,6 @@ export class TilesEventManager {
 	_init() {
 		this.previousTileClicked = null;
 		this.previousTileHovered = null;
-		// this.currentTower = null
 		this.emitter = new EventEmitter();
 		this.towerModal = new TowerModal();
 	}
@@ -42,12 +45,22 @@ export class TilesEventManager {
 		this.raycaster.emitter.on(TILE_HOVER, (tile: Tile) => this.handleTileHover(tile));
 		this.raycaster.emitter.on(IDLE_CLICK, () => this.clearTileSelection());
 		this.raycaster.emitter.on(IDLE_HOVER, () => this.clearTileHover());
+
 		this.towerModal.emitter.on(CREATE_TOWER, (towerType: TowerType) => this.createTower(towerType));
 		this.towerModal.emitter.on(TOWER_SOLD, () => this.sellTower());
 		this.towerModal.emitter.on(CLEAR_TILE, () => this.clearTileHover());
+
+		this.towerModal.emitter.on(DISABLE_TILE_CLICK, () => {
+			this.canClick = false;
+		});
+		this.towerModal.emitter.on(ENABLE_TILE_CLICK, () => {
+			this.canClick = true;
+		});
 	}
 
 	handleTileClick(tile: Tile) {
+		if (!this.canClick) return;
+
 		if (tile.state === 'hovered' || tile.state === 'idle') {
 			tile.setState('selected');
 
@@ -73,7 +86,7 @@ export class TilesEventManager {
 		}
 
 		if (tile.state === 'selected') {
-			tile.setState('hovered');
+			tile.setState('idle');
 			this.previousTileClicked?.tower?.removeHighlight();
 
 			return;
@@ -101,9 +114,6 @@ export class TilesEventManager {
 	clearTileHover() {
 		if (this.previousTileHovered?.state !== 'selected') this.previousTileHovered?.setState('idle');
 	}
-	// clearTiles() {
-	// 	this.previousTileHovered.setState('idle');
-	// }
 
 	createTower(towerType: TowerType) {
 		const tile = this.previousTileClicked;

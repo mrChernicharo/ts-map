@@ -49,6 +49,7 @@ class Scene extends THREEScene {
 				clearInterval(groundInterval);
 
 				this.eventsManager.emitter.emit(GAME_READY);
+				console.log("game's ready");
 
 				this.ready = true;
 				this.loading.done();

@@ -7,13 +7,13 @@
 	transform: translate(-50%, -50%);
 	min-width: 20rem;
 	opacity: 0;
-	transition: 2s ease-in;
+	transition: 3s ease-in;
+	z-index: 100;
 }
 
 #game-over-banner h1 {
 	font-size: var(--font);
 	color: white;
-	z-index: 100;
 }
 
 #overlay {
@@ -25,11 +25,11 @@
 	z-index: 99;
 	background: #000;
 	opacity: 0;
-	transition: 4s ease-in;
+	transition: 6s ease-in;
 }
 
 #overlay.show {
-	opacity: 0.6;
+	opacity: 0.9;
 }
 #game-over-banner.visible {
 	opacity: 1;

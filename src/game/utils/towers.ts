@@ -1,4 +1,21 @@
-export const towerModels = {
+export interface ITowers {
+	[key: string]: {
+		title: string;
+		topRadius: number;
+		bottomRadius: number;
+		height: number;
+		range: number;
+		rangeRadiusColor: number;
+		rangeRadiusHeight: number;
+		color: number;
+		fireRate: number;
+		damage: number;
+		price: number;
+		sellPrice: () => number;
+	};
+}
+
+export const towerModels: ITowers = {
 	machineGun: {
 		title: 'machine gun',
 		topRadius: 8,

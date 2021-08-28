@@ -1,6 +1,6 @@
 import { Vector3 } from 'three';
-import { Camera } from '../core/dependecies/Camera';
-import { Scene } from '../core/Scene';
+import { Camera } from '../../core/dependecies/Camera';
+import { Scene } from '../../core/Scene';
 
 const logGen = generateLog();
 
@@ -60,14 +60,14 @@ export class InputManager {
 		}
 	}
 	handleMouseUp(event: MouseEvent) {
-		logGen.next();
+		// logGen.next();
 	}
 	handleMouseDown(event: MouseEvent) {
-		logGen.next();
+		// logGen.next();
 	}
 	handleMouseWheel(event: WheelEvent) {
 		// console.log(event);
-		logGen.next();
+		// logGen.next();
 	}
 }
 

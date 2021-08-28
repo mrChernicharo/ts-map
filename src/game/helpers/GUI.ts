@@ -5,7 +5,7 @@ import {
 	GROUND_WIDTH,
 	levelFinish,
 	levelStart,
-	missileMods,
+	// missileMods,
 } from '../utils/constants';
 
 export class GUI extends THREEDatGUI {

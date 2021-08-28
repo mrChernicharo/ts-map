@@ -1,17 +1,4 @@
-import {
-	Clock,
-	Color,
-	CylinderGeometry,
-	Light,
-	LightProbe,
-	Mesh,
-	MeshToonMaterial,
-	PointLight,
-	Quaternion,
-	Vector2,
-	Vector3,
-} from 'three';
-import { ENEMY_DEFAULTS, missileMods } from '../../utils/constants';
+import { Clock, Color, CylinderGeometry, Light, LightProbe, Mesh, MeshToonMaterial, Vector3 } from 'three';
 import { Enemy } from '../Enemy/Enemy';
 import { Tower } from '../Tower/Tower';
 

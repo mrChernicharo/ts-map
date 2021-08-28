@@ -157,6 +157,9 @@ class Loop {
 					console.log('hurt player!');
 					this.player.subtracLife();
 					// this.eventsManager.emitter.emit(HURT_PLAYER, enemy)
+				} else {
+					console.log('gimme that gold!');
+					this.player.addMoney(2);
 				}
 				this.remove(enemy);
 			});

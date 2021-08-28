@@ -25,8 +25,9 @@ export const towerModels: ITowers = {
 		rangeRadiusColor: 0x0056ed,
 		rangeRadiusHeight: -38,
 		color: 0x8a8a8a,
-		fireRate: 120, // 2 shots/s
-		damage: 8,
+		// fireRate: 120, // 2 shots/s
+		fireRate: 110,
+		damage: 7,
 		price: 45,
 		sellPrice: getPrice,
 	},
@@ -39,9 +40,9 @@ export const towerModels: ITowers = {
 		rangeRadiusColor: 0xed1067,
 		rangeRadiusHeight: -32,
 		color: 0x232323,
-		fireRate: 40,
-		damage: 36,
-		price: 70,
+		fireRate: 50,
+		damage: 40,
+		price: 65,
 		sellPrice: getPrice,
 	},
 	rifle: {
@@ -53,9 +54,9 @@ export const towerModels: ITowers = {
 		rangeRadiusColor: 0x00ab34,
 		rangeRadiusHeight: -40,
 		color: 0xdedede,
-		fireRate: 24,
-		damage: 52,
-		price: 100,
+		fireRate: 28,
+		damage: 60,
+		price: 90,
 		sellPrice: getPrice,
 	},
 };

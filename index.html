@@ -31,7 +31,9 @@
 			}
 			.hero-container {
 				background: url('/assets/img/hero2.jpg') center / cover no-repeat;
-				height: 600px;
+
+				min-height: 82vh;
+				max-height: 600px;
 			}
 
 			img {
@@ -56,6 +58,12 @@
 			a:hover {
 				opacity: 0.7;
 			}
+
+			.visit-span {
+				position: absolute;
+				bottom: 1rem;
+				right: 1rem;
+			}
 		</style>
 	</head>
 	<body>
@@ -66,5 +74,38 @@
 		<div class="start">
 			<a href="/src/index.html">Start Game</a>
 		</div>
+
+		<div class="visit-count"></div>
+
+		<script defer>
+			let visitCount = 0;
+			getAPICount().then(apidata => {
+				console.log(apidata);
+				// visitCount = apidata.value;
+
+				const visitSpan = document.createElement('span');
+				visitSpan.classList.add('visit-span');
+				visitSpan.innerText = `this page has been visited ${apidata.value} times`;
+
+				const visitContainer = document.querySelector('.visit-count');
+				visitContainer.append(visitSpan);
+
+				visitContainer.append();
+			});
+
+			// const visitCount = apidata.va
+
+			async function getAPICount() {
+				const countApiUrl = 'https://api.countapi.xyz/hit/';
+				const namespace = 'chernicharo-gordinho-defense-three/';
+				const secretKey = 'zuYfRkvDaZXL4zalSMfFJNmzOtfnricK';
+				const endpoint = countApiUrl + namespace + secretKey;
+
+				const req = await fetch(endpoint);
+				const data = await req.json();
+
+				return data;
+			}
+		</script>
 	</body>
 </html>

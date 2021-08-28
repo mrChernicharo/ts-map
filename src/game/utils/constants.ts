@@ -20,40 +20,16 @@ export const GROUND_WIDTH = 400;
 export const GROUND_DEPTH = 600;
 
 export const levelStart = new Vector3(-GROUND_WIDTH / 2, ZERO, GROUND_DEPTH / 2);
-export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
-// export const levelFinish = new Vector3(-GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
-
-export const enemyInterval = 2;
+// export const levelFinish = new Vector3(GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
+export const levelFinish = new Vector3(-GROUND_WIDTH / 2, ZERO, -GROUND_DEPTH / 2);
 
 export const pathFindingDelay = GROUND_WIDTH * GROUND_DEPTH * 0.0024;
-
-export const cellPoints = {
-	a: new Vector3(0, 0, 0),
-	b: new Vector3(cellSize, 0, 0),
-	c: new Vector3(cellSize, 0, cellSize),
-	d: new Vector3(0, 0, cellSize),
-};
 
 export const ENEMY_DEFAULTS = {
 	// speed: 200,
 	speed: 30,
+	interval: 2,
 };
-
-export const missileMods = {
-	x: 0,
-	y: 0,
-	z: 0,
-};
-
-// prettier-ignore
-export const binCodes: BinCode[] = [
-  '1000','0100','0010','0001',
-  '1100','0110','0011','1001',
-  '0101','1010','1111','0000',
-  '1011','1101','1110','0111',
-];
-
-export const binOptions: Bin[] = ['1', '0', '0', '0', '0', '1', '1', '1', '1', '1', '1']; // 40% chance
 
 export const GAME_READY = 'gameReady';
 
@@ -99,3 +75,19 @@ export const playerIcons = {
 	life: 'fab fa-diaspora',
 	gold: 'fas fa-coins',
 };
+
+export const cellPoints = {
+	a: new Vector3(0, 0, 0),
+	b: new Vector3(cellSize, 0, 0),
+	c: new Vector3(cellSize, 0, cellSize),
+	d: new Vector3(0, 0, cellSize),
+};
+// prettier-ignore
+export const binCodes: BinCode[] = [
+  '1000','0100','0010','0001',
+  '1100','0110','0011','1001',
+  '0101','1010','1111','0000',
+  '1011','1101','1110','0111',
+];
+
+export const binOptions: Bin[] = ['1', '0', '0', '0', '0', '1', '1', '1', '1', '1', '1']; // 40% chance

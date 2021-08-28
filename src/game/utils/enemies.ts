@@ -1,4 +1,5 @@
 import { Group, MeshToonMaterial, BoxGeometry, Mesh, Shape, ExtrudeGeometry, CylinderGeometry } from 'three';
+import { Enemy } from '../objects/Enemy/Enemy';
 
 export const enemyModels = {
 	jeep: {
@@ -10,7 +11,7 @@ export const enemyModels = {
 	},
 };
 
-function jeepGeometry(enemy, color) {
+function jeepGeometry(enemy: Enemy, color: number) {
 	const wheelPositions = (size: number) => ({
 		a: { x: -size, y: -size },
 		b: { x: size, y: -size },

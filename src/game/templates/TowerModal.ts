@@ -31,20 +31,6 @@ export class TowerModal {
 		this._createBuyModal();
 	}
 
-	open(tile: Tile) {
-		if (tile.tower) {
-			sellModal.classList.add('visible');
-			this.createSellModal(tile.tower);
-		} else {
-			buyModal.classList.add('visible');
-		}
-	}
-
-	close() {
-		buyModal.classList.remove('visible');
-		sellModal.classList.remove('visible');
-	}
-
 	_createBuyModal() {
 		this.buyTowerList = document.createElement('ul');
 		this.sellTowerDiv = document.createElement('div');
@@ -155,5 +141,19 @@ export class TowerModal {
 		button.addEventListener('click', e => {
 			this.emitter.emit(TOWER_SOLD);
 		});
+	}
+
+	open(tile: Tile) {
+		if (tile.tower) {
+			sellModal.classList.add('visible');
+			this.createSellModal(tile.tower);
+		} else {
+			buyModal.classList.add('visible');
+		}
+	}
+
+	close() {
+		buyModal.classList.remove('visible');
+		sellModal.classList.remove('visible');
 	}
 }

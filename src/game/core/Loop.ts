@@ -6,7 +6,7 @@ import { Ball } from '../helpers/objects/Ball';
 import {
 	levelFinish,
 	levelStart,
-	enemyInterval,
+	ENEMY_DEFAULTS,
 	GAME_READY,
 	TOWER_CREATED,
 	TOWER_SOLD,
@@ -20,6 +20,7 @@ import { EventsManager } from '../managers/EventsManager';
 import { Tower } from '../objects/Tower/Tower';
 import { Missile } from '../objects/Missile/Missile';
 import { Player } from './dependecies/Player';
+import { towerModels } from '../utils/towers';
 
 interface IUpdatable extends Mesh {
 	tick: (delta: number) => void;
@@ -80,7 +81,23 @@ class Loop {
 	}
 
 	setEvents() {
-		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => this.add(tower));
+		this.eventsManager.emitter.on(TOWER_CREATED, (tower: Tower) => {
+			//************************//
+			// TÁ HORRÍVEL ISSO DAQUI //
+			//************************//
+
+			const towerPrice = towerModels[tower.towerType].price;
+
+			if (this.player.gold >= towerPrice) {
+				this.add(tower);
+			} else {
+				console.log('not enouth gold!');
+
+				tower.tile.tower = null;
+				tower.tile.setState('idle');
+				this.player.addMoney(towerPrice);
+			}
+		});
 		this.eventsManager.emitter.on(TOWER_SOLD, (tower: Tower) => this.remove(tower));
 	}
 
@@ -117,7 +134,9 @@ class Loop {
 	}
 
 	spawnEnemies(delta: number, elapsed: number) {
-		if ((elapsed % enemyInterval) + delta >= enemyInterval) {
+		const { interval } = ENEMY_DEFAULTS;
+
+		if ((elapsed % interval) + delta >= interval) {
 			const enemy = enemyGen.next().value;
 
 			if (enemy) this.add(enemy);

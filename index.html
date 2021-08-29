@@ -56,6 +56,12 @@
 			a:hover {
 				opacity: 0.7;
 			}
+			.visit-count {
+				position: fixed;
+				bottom: 1rem;
+				right: 1rem;
+				text-align: end;
+			}
 		</style>
 	</head>
 	<body>
@@ -66,5 +72,9 @@
 		<div class="start">
 			<a href="/src/index.html">Start Game</a>
 		</div>
+
+		<div class="visit-count"></div>
+
+		<script defer type="module" src="intro.ts"></script>
 	</body>
 </html>

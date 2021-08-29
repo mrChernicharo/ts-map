@@ -85,35 +85,22 @@ class Loop {
 	}
 
 	tick() {
+		if (!this.scene.ready) return;
+
 		const delta = this.clock.getDelta();
 		const elapsed = this.clock.getElapsedTime();
 
-		if (this.scene.ready) {
-			this.spawnEnemies(delta, elapsed);
+		this.spawnEnemies(delta, elapsed);
 
-			// if ((elapsed % 3) + delta >= 3) {
-			for (const tower of this.getTowers()) {
-				for (const enemy of this.getEnemies()) {
-					const distance = tower.position.distanceTo(enemy.position);
-					const inRange = tower.range - distance > -10;
+		this.manageAttacks();
 
-					if (inRange) {
-						if (tower.cooldownTime < 0.1) {
-							// console.log('attack');
-							const missile = tower.attack(enemy);
-							this.add(missile);
-						}
-					}
-				}
-			}
+		this.removeDeadEnemies();
 
-			this.removeDeadEnemies();
-			this.removeMissiles();
-		}
+		this.removeMissiles();
 
-		for (const object of this.updatables) {
+		this.updatables.forEach(object => {
 			object.tick(delta);
-		}
+		});
 	}
 
 	spawnEnemies(delta: number, elapsed: number) {
@@ -122,6 +109,23 @@ class Loop {
 
 			if (enemy) this.add(enemy);
 		}
+	}
+
+	manageAttacks() {
+		this.getTowers().forEach(tower => {
+			this.getEnemies().forEach((enemy, i) => {
+				const distance = tower.position.distanceTo(enemy.position);
+				const inRange = tower.range - distance > -10;
+
+				if (inRange) {
+					if (tower.cooldownTime < 0.1) {
+						// console.log('attack');
+						const missile = tower.attack(enemy);
+						this.add(missile);
+					}
+				}
+			});
+		});
 	}
 
 	removeMissiles() {

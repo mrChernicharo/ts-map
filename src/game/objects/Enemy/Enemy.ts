@@ -21,7 +21,6 @@ import { Tower } from '../Tower/Tower';
 import { enemyModels } from '../../utils/enemies';
 
 export type IEnemyType = 'jeep' | 'tank';
-const enemyGen = enemyFactory();
 
 const colors = {
 	normal: 0xff9d00,
@@ -35,7 +34,8 @@ export class Enemy extends Group {
 	velocity: Vector3;
 	nxPathIdx = 1; // nextPathIndex
 	hp: number;
-	strictnessToPath = random(1, 12);
+	// strictnessToPath = random(1, 12);
+	strictnessToPath = 4;
 	group: Group;
 	timeUnhurt = 0;
 	currColor = colors.normal;
@@ -119,15 +119,19 @@ export class Enemy extends Group {
 
 		if (nextClone) {
 			let next = new Vector3(nextClone.x, nextClone.y + 4, nextClone.z);
-			this.velocity = pos.clone().sub(next).normalize();
-			this.lookAt(next);
+
+			this.velocity = this.getNewVelocity(pos, next, 10);
+			// this.getFuturePosition(pos, next, delta);
+
+			const nextVel = this.velocity.multiplyScalar(delta * this.speed * 10);
+
+			this.position.sub(nextVel);
 
 			const wheels = this.children.filter(c => ['Enemy-wheel', 'Enemy-wheel-center'].includes(c.name));
 			wheels.forEach(w => w.rotateY(-0.1));
+			this.lookAt(next);
 
-			this.position.sub(this.velocity.multiplyScalar(delta * this.speed));
-
-			// cheguei no alvo ?
+			// cheguei na próxima pos ?
 			if (this.position.distanceTo(next) < this.strictnessToPath) {
 				this.nxPathIdx += 1;
 				this.nextPos = this.path[this.nxPathIdx];
@@ -139,7 +143,46 @@ export class Enemy extends Group {
 		}
 	}
 
-	getFuturePosition(time) {}
+	getNewVelocity(pos: Vector3, nextStep: Vector3, ticks = 1) {
+		const newVelocity = pos.sub(nextStep).normalize();
+
+		// const distanceToNextPathSpot = pos.distanceTo(nextStep);
+
+		const distToNextVelPoint = this.velocity?.distanceTo(newVelocity);
+
+		const posFuture = this.position
+			.clone()
+			.sub(newVelocity.clone().multiplyScalar(distToNextVelPoint).add(pos));
+
+		const tickedFuture = this.position.clone().sub(
+			newVelocity
+				.clone()
+				.multiplyScalar(distToNextVelPoint * ticks)
+				.add(pos)
+		);
+
+		console.log({
+			// velNew: newVelocity,
+			pos: this.position.clone(),
+			posFuture,
+			tickedFuture,
+			// d: distToNextVelPoint,
+		});
+
+		return newVelocity;
+	}
+
+	// getFuturePosition(pos: Vector3, nextStep: Vector3, delta: number, ticks = 1) {
+	// 	const newVelocity = pos.sub(nextStep).normalize();
+
+	// 	// const distanceToNextPathSpot = pos.distanceTo(nextStep);
+
+	// 	const distToNextVelPoint = this.velocity?.clone().distanceTo(newVelocity);
+
+	// 	console.log(
+	// 		this.position.clone().sub(pos.clone().multiplyScalar(distToNextVelPoint * delta * ticks))
+	// 	);
+	// }
 
 	tick(delta: number) {
 		if (this.isAlive()) this.move(delta);

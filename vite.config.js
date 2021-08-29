@@ -8,6 +8,7 @@ module.exports = defineConfig({
 				main: resolve(__dirname, 'index.html'),
 				src: resolve(__dirname, 'src/index.html'),
 			},
+			external: ['intro.ts'],
 		},
 	},
 });

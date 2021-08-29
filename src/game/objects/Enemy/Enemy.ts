@@ -27,8 +27,6 @@ const colors = {
 	takingDamage: { shotgun: 0xff0000, machineGun: 0xff6900, rifle: 0x34edab },
 };
 
-let calcTime = true;
-let nextStep;
 export class Enemy extends Group {
 	speed: number;
 	path: Vector3[];
@@ -147,42 +145,11 @@ export class Enemy extends Group {
 		}
 	}
 
-	getFuturePos(ticks: number, dist: number) {
-		if (calcTime) {
-			const [a, b, c, d, e] = [
-				this.path[this.nxPathIdx],
-				this.path[this.nxPathIdx + 1],
-				this.path[this.nxPathIdx + 2],
-				this.path[this.nxPathIdx + 3],
-				this.path[this.nxPathIdx + 4],
-			];
+	getFuturePos(ticks: number) {
+		const nextClone = this.nextPos?.clone();
+		const nextStep = new Vector3(nextClone.x, nextClone.y + 4, nextClone.z);
 
-			const [distToNext, distToNext2, distToNext3, distToNext4, distToNext5] = [
-				this.position.clone().distanceTo(a),
-				this.position.clone().distanceTo(a) + a.distanceTo(b),
-				this.position.clone().distanceTo(a) + a.distanceTo(b) + b.distanceTo(c),
-				this.position.clone().distanceTo(a) + a.distanceTo(b) + b.distanceTo(c) + c.distanceTo(d),
-				this.position.clone().distanceTo(a) +
-					a.distanceTo(b) +
-					b.distanceTo(c) +
-					c.distanceTo(d) +
-					d.distanceTo(e),
-			];
-
-			const dists = [distToNext, distToNext2, distToNext3, distToNext4, distToNext5];
-
-			let target = 0;
-			while (dists[target] < dist) {
-				target++;
-			}
-
-			const nextClone = this.path[this.nxPathIdx + target + 1];
-			nextStep = new Vector3(nextClone.x, nextClone.y + 4, nextClone.z);
-			const distToNextStep = this.position.clone().distanceTo(nextStep);
-
-			console.log(target);
-			calcTime = false;
-		}
+		// console.log(this.position.clone().distanceTo(nextClone));
 
 		return this._calcFuturePosition(this.position.clone(), nextStep, ticks);
 	}

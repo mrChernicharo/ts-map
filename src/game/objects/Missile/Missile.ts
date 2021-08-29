@@ -18,6 +18,8 @@ import { Tower } from '../Tower/Tower';
 export type ITrajectory = 'straight' | 'curved';
 export type IMissileShape = 'capsule' | 'continuous' | 'cone';
 
+let prevDist;
+let diff;
 export class Missile extends Mesh {
 	counter = 0;
 	frameCount = 0;
@@ -42,8 +44,8 @@ export class Missile extends Mesh {
 		this.name = 'Missile';
 		this.origin = this.tower.position;
 		this.clock = new Clock();
-		// this.speed = 50;
-		this.speed = 250;
+		this.speed = 120;
+		// this.speed = 240;
 		this._setMissileFeatures(this.tower);
 
 		this.material = new MeshToonMaterial({ color: 0xff6400 });
@@ -104,6 +106,7 @@ export class Missile extends Mesh {
 		// console.log(this.enemy.position);
 
 		const targetVec = this.position.clone().sub(this.enemy.position);
+		// const targetVec = this.position.clone().sub(this.enemy.getFuturePos(60));
 		const normalizedVec = targetVec.normalize();
 
 		return normalizedVec;
@@ -113,32 +116,54 @@ export class Missile extends Mesh {
 		return this.hit;
 	}
 
-	getEnemyFuturePosition(time) {}
-
 	tick(delta: number) {
-		const dist = this.position.distanceTo(this.enemy.position);
+		const distBulletEnemy = this.position.distanceTo(this.enemy.position);
+
+		const nextPos = this.position.clone().sub(this.getVelocity().clone());
+		// const distBulletTower = this.tower.position.distanceTo(nextPos);
+		// const distTowerEnemy = this.tower.position.clone().distanceTo(this.enemy.getFuturePos(60).clone());
+
+		if (this.counter === 0) {
+			// this.lookAt(this.enemy.getFuturePos(60));
+			this.lookAt(this.enemy.position);
+
+			console.log({
+				// distBulletTower,
+				distBulletEnemy,
+				// distTowerEnemy,
+			});
+		}
+
+		if (this.counter === 3) {
+			const ticksToGetToEnemy = distBulletEnemy / diff;
+			console.log(ticksToGetToEnemy);
+		}
+
+		if (this.counter % 2 === 0) {
+			prevDist = distBulletEnemy;
+			console.log(prevDist);
+		} else {
+			diff = prevDist - distBulletEnemy;
+			console.log(prevDist, distBulletEnemy, diff);
+		}
+
+		this.counter++;
 
 		this.position.sub(this.getVelocity().multiplyScalar(delta * this.speed));
 		this.travelTime += delta;
 
-		// the solution to the bullet facing enemy problem!
-		this.lookAt(this.enemy.position);
+		this.frameCount++;
 
-		// if (this.counter < 1) {
-		// 	this.counter++;
-		// }
-
-		if (dist < 4) {
+		if (distBulletEnemy < 10) {
 			this.hit = true;
 
 			this.enemy.takeDamage(this.tower.damage, this.tower);
 
-			// console.log({
-			// 	cl: this.clock.elapsedTime,
-			// 	enemy: this.enemy,
-			// 	frameCount: this.frameCount,
-			// 	travelTime: this.travelTime,
-			// });
+			console.log({
+				count: this.counter,
+				frameCount: this.frameCount,
+				travelTime: this.travelTime,
+			});
 		}
 	}
 }

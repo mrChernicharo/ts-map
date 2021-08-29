@@ -6,12 +6,12 @@ import { Ball } from '../helpers/objects/Ball';
 import {
 	levelFinish,
 	levelStart,
-	enemyInterval,
 	GAME_READY,
 	TOWER_CREATED,
 	TOWER_SOLD,
 	MISSILE_FIRED,
 	HURT_PLAYER,
+	ENEMY_DEFAULTS,
 } from '../utils/constants';
 import { enemyFactory } from '../utils/functions';
 import { Flag } from '../helpers/objects/Flag';
@@ -104,7 +104,7 @@ class Loop {
 	}
 
 	spawnEnemies(delta: number, elapsed: number) {
-		if ((elapsed % enemyInterval) + delta >= enemyInterval) {
+		if ((elapsed % ENEMY_DEFAULTS.interval) + delta >= ENEMY_DEFAULTS.interval) {
 			const enemy = enemyGen.next().value;
 
 			if (enemy) this.add(enemy);

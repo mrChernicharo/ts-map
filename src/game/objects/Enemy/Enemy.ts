@@ -120,11 +120,13 @@ export class Enemy extends Group {
 		if (nextClone) {
 			let next = new Vector3(nextClone.x, nextClone.y + 4, nextClone.z);
 
-			this.velocity = this.getNewVelocity(pos, next, 10);
-			// this.getFuturePosition(pos, next, delta);
+			// const ticks = 10;
+			// console.log({ pos: pos.clone(), future: this.getFuturePos(ticks), ticks });
 
-			const nextVel = this.velocity.multiplyScalar(delta * this.speed * 10);
+			this._calcFuturePosition(pos, next);
+			this.velocity = this._getNewVelocity(pos, next);
 
+			const nextVel = this.velocity.multiplyScalar(delta * this.speed);
 			this.position.sub(nextVel);
 
 			const wheels = this.children.filter(c => ['Enemy-wheel', 'Enemy-wheel-center'].includes(c.name));
@@ -143,46 +145,36 @@ export class Enemy extends Group {
 		}
 	}
 
-	getNewVelocity(pos: Vector3, nextStep: Vector3, ticks = 1) {
-		const newVelocity = pos.sub(nextStep).normalize();
+	_getNewVelocity(pos: Vector3, nextStep: Vector3) {
+		return pos.clone().sub(nextStep).normalize();
+	}
 
-		// const distanceToNextPathSpot = pos.distanceTo(nextStep);
+	_calcFuturePosition(pos: Vector3, nextStep: Vector3, ticks = 1) {
+		const newVelocity = this._getNewVelocity(pos, nextStep).clone();
 
-		const distToNextVelPoint = this.velocity?.distanceTo(newVelocity);
+		const distToNextVelPoint = this.velocity?.clone().distanceTo(newVelocity);
 
-		const posFuture = this.position
-			.clone()
-			.sub(newVelocity.clone().multiplyScalar(distToNextVelPoint).add(pos));
-
-		const tickedFuture = this.position.clone().sub(
+		const futureVel = this.position.clone().sub(
 			newVelocity
 				.clone()
 				.multiplyScalar(distToNextVelPoint * ticks)
-				.add(pos)
+				.add(pos.clone())
 		);
 
-		console.log({
-			// velNew: newVelocity,
-			pos: this.position.clone(),
-			posFuture,
-			tickedFuture,
-			// d: distToNextVelPoint,
-		});
+		const futurePos = pos.clone().add(futureVel);
 
-		return newVelocity;
+		return futurePos;
 	}
 
-	// getFuturePosition(pos: Vector3, nextStep: Vector3, delta: number, ticks = 1) {
-	// 	const newVelocity = pos.sub(nextStep).normalize();
+	getFuturePos(ticks: number) {
+		const nextClone = this.nextPos?.clone();
 
-	// 	// const distanceToNextPathSpot = pos.distanceTo(nextStep);
-
-	// 	const distToNextVelPoint = this.velocity?.clone().distanceTo(newVelocity);
-
-	// 	console.log(
-	// 		this.position.clone().sub(pos.clone().multiplyScalar(distToNextVelPoint * delta * ticks))
-	// 	);
-	// }
+		return this._calcFuturePosition(
+			this.position.clone(),
+			new Vector3(nextClone.x, nextClone.y + 4, nextClone.z),
+			ticks
+		);
+	}
 
 	tick(delta: number) {
 		if (this.isAlive()) this.move(delta);

@@ -27,6 +27,8 @@ const colors = {
 	takingDamage: { shotgun: 0xff0000, machineGun: 0xff6900, rifle: 0x34edab },
 };
 
+let calcTime = true;
+let nextStep;
 export class Enemy extends Group {
 	speed: number;
 	path: Vector3[];
@@ -145,8 +147,44 @@ export class Enemy extends Group {
 		}
 	}
 
-	_getNewVelocity(pos: Vector3, nextStep: Vector3) {
-		return pos.clone().sub(nextStep).normalize();
+	getFuturePos(ticks: number, dist: number) {
+		if (calcTime) {
+			const [a, b, c, d, e] = [
+				this.path[this.nxPathIdx],
+				this.path[this.nxPathIdx + 1],
+				this.path[this.nxPathIdx + 2],
+				this.path[this.nxPathIdx + 3],
+				this.path[this.nxPathIdx + 4],
+			];
+
+			const [distToNext, distToNext2, distToNext3, distToNext4, distToNext5] = [
+				this.position.clone().distanceTo(a),
+				this.position.clone().distanceTo(a) + a.distanceTo(b),
+				this.position.clone().distanceTo(a) + a.distanceTo(b) + b.distanceTo(c),
+				this.position.clone().distanceTo(a) + a.distanceTo(b) + b.distanceTo(c) + c.distanceTo(d),
+				this.position.clone().distanceTo(a) +
+					a.distanceTo(b) +
+					b.distanceTo(c) +
+					c.distanceTo(d) +
+					d.distanceTo(e),
+			];
+
+			const dists = [distToNext, distToNext2, distToNext3, distToNext4, distToNext5];
+
+			let target = 0;
+			while (dists[target] < dist) {
+				target++;
+			}
+
+			const nextClone = this.path[this.nxPathIdx + target + 1];
+			nextStep = new Vector3(nextClone.x, nextClone.y + 4, nextClone.z);
+			const distToNextStep = this.position.clone().distanceTo(nextStep);
+
+			console.log(target);
+			calcTime = false;
+		}
+
+		return this._calcFuturePosition(this.position.clone(), nextStep, ticks);
 	}
 
 	_calcFuturePosition(pos: Vector3, nextStep: Vector3, ticks = 1) {
@@ -166,14 +204,8 @@ export class Enemy extends Group {
 		return futurePos;
 	}
 
-	getFuturePos(ticks: number) {
-		const nextClone = this.nextPos?.clone();
-
-		return this._calcFuturePosition(
-			this.position.clone(),
-			new Vector3(nextClone.x, nextClone.y + 4, nextClone.z),
-			ticks
-		);
+	_getNewVelocity(pos: Vector3, nextStep: Vector3) {
+		return pos.clone().sub(nextStep).normalize();
 	}
 
 	tick(delta: number) {

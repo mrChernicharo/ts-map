@@ -20,6 +20,7 @@ export type IMissileShape = 'capsule' | 'continuous' | 'cone';
 
 let prevDist;
 let diff;
+let ticksToHit = 0;
 export class Missile extends Mesh {
 	counter = 0;
 	frameCount = 0;
@@ -44,8 +45,9 @@ export class Missile extends Mesh {
 		this.name = 'Missile';
 		this.origin = this.tower.position;
 		this.clock = new Clock();
-		this.speed = 120;
-		// this.speed = 240;
+		// this.speed = 60;
+		// this.speed = 120;
+		this.speed = 240;
 		this._setMissileFeatures(this.tower);
 
 		this.material = new MeshToonMaterial({ color: 0xff6400 });
@@ -102,11 +104,13 @@ export class Missile extends Mesh {
 		return geometry;
 	}
 
-	getVelocity() {
-		// console.log(this.enemy.position);
+	getVelocity(counter?, dist?) {
+		// const targetVec = this.position.clone().sub(this.enemy.position);
 
-		const targetVec = this.position.clone().sub(this.enemy.position);
-		// const targetVec = this.position.clone().sub(this.enemy.getFuturePos(60));
+		const targetVec = this.position
+			.clone()
+			.sub(ticksToHit ? this.enemy.getFuturePos(ticksToHit - counter, dist) : this.enemy.position);
+
 		const normalizedVec = targetVec.normalize();
 
 		return normalizedVec;
@@ -119,38 +123,34 @@ export class Missile extends Mesh {
 	tick(delta: number) {
 		const distBulletEnemy = this.position.distanceTo(this.enemy.position);
 
-		const nextPos = this.position.clone().sub(this.getVelocity().clone());
-		// const distBulletTower = this.tower.position.distanceTo(nextPos);
-		// const distTowerEnemy = this.tower.position.clone().distanceTo(this.enemy.getFuturePos(60).clone());
-
-		if (this.counter === 0) {
-			// this.lookAt(this.enemy.getFuturePos(60));
-			this.lookAt(this.enemy.position);
-
-			console.log({
-				// distBulletTower,
-				distBulletEnemy,
-				// distTowerEnemy,
-			});
-		}
+		// if (this.counter === 4) {
+		// 	// this.lookAt(this.enemy.getFuturePos(60));
+		// }
 
 		if (this.counter === 3) {
-			const ticksToGetToEnemy = distBulletEnemy / diff;
-			console.log(ticksToGetToEnemy);
+			ticksToHit = distBulletEnemy / diff + 2;
+			console.log({ ticksToHit, aproxDistPerTick: diff });
 		}
 
 		if (this.counter % 2 === 0) {
 			prevDist = distBulletEnemy;
-			console.log(prevDist);
+
+			if (distBulletEnemy > 10) {
+				this.lookAt(this.enemy.getFuturePos(ticksToHit, distBulletEnemy));
+			}
 		} else {
 			diff = prevDist - distBulletEnemy;
-			console.log(prevDist, distBulletEnemy, diff);
+		}
+
+		if (this.counter === 0) {
+			this.velocity = this.getVelocity(this.counter, distBulletEnemy).multiplyScalar(
+				delta * this.speed
+			);
 		}
 
 		this.counter++;
 
-		this.position.sub(this.getVelocity().multiplyScalar(delta * this.speed));
-		this.travelTime += delta;
+		this.position.sub(this.velocity);
 
 		this.frameCount++;
 
@@ -162,7 +162,7 @@ export class Missile extends Mesh {
 			console.log({
 				count: this.counter,
 				frameCount: this.frameCount,
-				travelTime: this.travelTime,
+				pos: this.enemy.position,
 			});
 		}
 	}

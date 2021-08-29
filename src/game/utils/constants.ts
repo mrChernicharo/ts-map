@@ -34,7 +34,7 @@ export const cellPoints = {
 
 export const ENEMY_DEFAULTS = {
 	// speed: 200,
-	speed: 20,
+	speed: 40,
 	interval: 4,
 };
 
